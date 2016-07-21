@@ -8,7 +8,7 @@ import (
 )
 
 var hangeulRange = []rune("가힣")
-var cutSet = " •-“”"
+var cutSet = " •-“”."
 
 func Parse(r io.Reader, w io.Writer) {
 	in := bufio.NewScanner(r)
@@ -25,11 +25,11 @@ func Parse(r io.Reader, w io.Writer) {
 			}
 		}
 
-		if len(term) == 0 {
-			break
+		sTerm := sanitize(term)
+		sDef := sanitize(def)
+		if len(sTerm) > 0 && len(sDef) > 0 {
+			w.Write([]byte(fmt.Sprintf("%s\t%s\n", sTerm, sDef)))
 		}
-
-		w.Write([]byte(fmt.Sprintf("%s\t%s\n", sanitize(term), sanitize(def))))
 	}
 }
 
