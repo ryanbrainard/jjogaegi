@@ -8,7 +8,7 @@ import (
 )
 
 var hangeulRange = []rune("가힣")
-var cutSet = " •-“”."
+var cutSet = " “”."
 
 func Parse(r io.Reader, w io.Writer) {
 	in := bufio.NewScanner(r)
@@ -18,7 +18,9 @@ func Parse(r io.Reader, w io.Writer) {
 		def := []rune{}
 
 		for i, c := range line {
-			if hasHangeul(line[i:]) {
+			if isHeader(term, c) {
+				continue
+			} else if hasHangeul(line[i:]) {
 				term = append(term, c)
 			} else {
 				def = append(def, c)
@@ -44,6 +46,10 @@ func hasHangeul(s string) bool {
 		}
 	}
 	return false
+}
+
+func isHeader(term []rune, r rune) bool {
+	return len(term) == 0 && !isHangeul(r)
 }
 
 func sanitize(rs []rune) string {
