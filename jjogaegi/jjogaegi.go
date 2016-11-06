@@ -8,7 +8,7 @@ import (
 )
 
 var hangeulRange = []rune("가힣")
-var cutSet = " “”."
+var cutSet = " :“”."
 
 func Parse(r io.Reader, w io.Writer) {
 	in := bufio.NewScanner(r)
