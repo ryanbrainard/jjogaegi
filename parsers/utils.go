@@ -20,6 +20,23 @@ func hasHangeul(s string) bool {
 	return false
 }
 
+func splitHangeul(s string) (hangeul string, rest string) {
+	hangeulRunes := []rune{}
+	restRunes := []rune{}
+
+	for i, c := range s {
+		if isHeader(hangeulRunes, c) {
+			continue
+		} else if hasHangeul(s[i:]) {
+			hangeulRunes = append(hangeulRunes, c)
+		} else {
+			restRunes = append(restRunes, c)
+		}
+	}
+
+	return string(hangeulRunes), string(restRunes)
+}
+
 func isHeader(term []rune, r rune) bool {
 	return len(term) == 0 && !isHangeul(r)
 }

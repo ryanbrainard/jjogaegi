@@ -8,7 +8,7 @@ import (
 	"github.com/ryanbrainard/jjogaegi/formatters"
 )
 
-var flagParser = flag.String("parser", "list", "type of parser for input [list|table]")
+var flagParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")
 var flagFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
 
 func main() {
@@ -25,8 +25,10 @@ func parser() jjogaegi.ParseFunc {
 	switch *flagParser {
 	case "list":
 		return parsers.ParseList
-	case "table":
-		return parsers.ParseTable
+	case "naver-table":
+		return parsers.ParseNaverTable
+	case "naver-json":
+		return parsers.ParseNaverJSON
 	default:
 		panic("Unknown parser")
 	}

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func ParseTable(r io.Reader, items chan<- *jjogaegi.Item) {
+func ParseNaverTable(r io.Reader, items chan<- *jjogaegi.Item) {
 	i := 0
 	rawTerms := []string{}
 	scanner := bufio.NewScanner(r)
@@ -25,16 +25,7 @@ func ParseTable(r io.Reader, items chan<- *jjogaegi.Item) {
 			continue
 		}
 
-		rawTerm := rawTerms[i]
-		hangeulTerm := []rune{}
-		hanjaTerm := []rune{}
-		for j, t := range rawTerm {
-			if hasHangeul(rawTerm[j:]) {
-				hangeulTerm = append(hangeulTerm, t)
-			} else {
-				hanjaTerm = append(hanjaTerm, t)
-			}
-		}
+		hangeulTerm, hanjaTerm := splitHangeul(rawTerms[i])
 
 		items <- &jjogaegi.Item{
 			Term:    sanitize(string(hangeulTerm)),
