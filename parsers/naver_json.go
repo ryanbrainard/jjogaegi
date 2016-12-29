@@ -7,13 +7,27 @@ import (
 	"golang.org/x/net/html"
 	"io"
 	"strings"
+	"bufio"
 )
 
+var callbackStartBytes = []byte("window.__jindo2_callback")
+var callbackEndByte = byte('(')
+
 func ParseNaverJSON(r io.Reader, items chan<- *jjogaegi.Item) {
-	dec := json.NewDecoder(r)
+	buf := bufio.NewReader(r)
+	header, err := buf.Peek(len(callbackStartBytes))
+	if err != nil {
+		panic(err)
+	}
+
+	if string(header) == string(callbackStartBytes) {
+		buf.ReadString(callbackEndByte)
+	}
+
+	dec := json.NewDecoder(buf)
 
 	// read open bracket
-	_, err := dec.Token()
+	_, err = dec.Token()
 	if err != nil {
 		panic(err)
 	}
