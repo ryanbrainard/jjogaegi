@@ -25,5 +25,5 @@ func isHeader(term []rune, r rune) bool {
 }
 
 func sanitize(s string) string {
-	return strings.Trim(s, cutSet)
+	return strings.TrimSpace(strings.Trim(s, cutSet))
 }
