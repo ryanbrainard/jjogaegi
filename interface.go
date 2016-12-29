@@ -3,9 +3,9 @@ package jjogaegi
 import "io"
 
 type Item struct {
-	Term string
+	Term    string
 	SubTerm string
-	Def string
+	Def     string
 }
 
 type ParseFunc func(reader io.Reader, items chan<- *Item)

@@ -1,10 +1,10 @@
 package parsers
 
 import (
+	"github.com/ryanbrainard/jjogaegi"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
-	"github.com/ryanbrainard/jjogaegi"
 )
 
 func TestParseNaverTable(t *testing.T) {

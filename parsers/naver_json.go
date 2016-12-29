@@ -2,11 +2,11 @@ package parsers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/ryanbrainard/jjogaegi"
 	"golang.org/x/net/html"
 	"io"
 	"strings"
-	"fmt"
 )
 
 func ParseNaverJSON(r io.Reader, items chan<- *jjogaegi.Item) {
@@ -68,7 +68,7 @@ func (i NaverItem) renderMeans() string {
 }
 
 type NaverMean struct {
-	Seq int `json:"seq"`
+	Seq  int    `json:"seq"`
 	Mean string `json:"mean"`
 }
 

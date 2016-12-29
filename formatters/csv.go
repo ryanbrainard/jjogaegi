@@ -2,8 +2,8 @@ package formatters
 
 import (
 	"encoding/csv"
-	"io"
 	"github.com/ryanbrainard/jjogaegi"
+	"io"
 )
 
 func FormatCSV(items <-chan *jjogaegi.Item, w io.Writer) {

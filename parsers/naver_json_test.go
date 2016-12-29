@@ -1,10 +1,10 @@
 package parsers
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
 	"github.com/ryanbrainard/jjogaegi"
+	"github.com/stretchr/testify/assert"
 	"os"
+	"testing"
 )
 
 func TestParseNaverJSON(t *testing.T) {

@@ -1,8 +1,8 @@
 package formatters
 
 import (
-	"io"
 	"github.com/ryanbrainard/jjogaegi"
+	"io"
 )
 
 func FormatTSV(items <-chan *jjogaegi.Item, w io.Writer) {

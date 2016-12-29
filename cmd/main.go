@@ -1,11 +1,11 @@
 package main
 
 import (
-	"os"
 	"flag"
 	"github.com/ryanbrainard/jjogaegi"
-	"github.com/ryanbrainard/jjogaegi/parsers"
 	"github.com/ryanbrainard/jjogaegi/formatters"
+	"github.com/ryanbrainard/jjogaegi/parsers"
+	"os"
 )
 
 var flagParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")

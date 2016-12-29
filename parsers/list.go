@@ -2,8 +2,8 @@ package parsers
 
 import (
 	"bufio"
-	"io"
 	"github.com/ryanbrainard/jjogaegi"
+	"io"
 )
 
 func ParseList(r io.Reader, items chan<- *jjogaegi.Item) {
@@ -14,7 +14,7 @@ func ParseList(r io.Reader, items chan<- *jjogaegi.Item) {
 		term, def := splitHangeul(line)
 		items <- &jjogaegi.Item{
 			Term: sanitize(term),
-			Def: sanitize(def),
+			Def:  sanitize(def),
 		}
 	}
 
