@@ -64,7 +64,7 @@ func (i NaverItem) renderMeans() string {
 		rm += m.render()
 		renderedMeans = append(renderedMeans, rm)
 	}
-	return strings.Join(renderedMeans, "\n")
+	return strings.Join(renderedMeans, "  ")
 }
 
 type NaverMean struct {
