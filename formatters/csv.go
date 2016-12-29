@@ -1,22 +1,23 @@
 package formatters
 
 import (
+	"encoding/csv"
 	"io"
-	"fmt"
 	"github.com/ryanbrainard/jjogaegi"
-	"strings"
 )
 
 func FormatCSV(items <-chan *jjogaegi.Item, w io.Writer) {
+	formatXSV(items, w, ',')
+}
+
+func formatXSV(items <-chan *jjogaegi.Item, w io.Writer, delim rune) {
+	cw := csv.NewWriter(w)
+	cw.Comma = delim
 	for item := range items {
-		w.Write([]byte(fmt.Sprintf("\"%s\",\"%s\"\n",
-			sanitizeSigleQuotes(mergeTermSubTerm(item)),
-			sanitizeSigleQuotes(item.Def))))
+		cw.Write([]string{
+			mergeTermSubTerm(item),
+			item.Def,
+		})
 	}
+	cw.Flush()
 }
-
-
-func sanitizeSigleQuotes(s string) string {
-	return strings.Replace(s, "'", "\"", -1)
-}
-
