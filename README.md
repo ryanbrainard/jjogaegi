@@ -10,18 +10,18 @@ First install [Go](https://golang.org/doc/install) and then install `jjogaegi`:
 
 ## Usage
 
-Pipe a list of 한글 terms with English definitions into `jjogaegi` and they will be parsed into tab-separated values. The tab character is inserted after the last 한글 character on the line, with spaces preserved and extraneous characters and headings removed. For example (GitHub does not format tabs correctly, but those are tabs between the terms and definitions in the output):
+Pipe a list of 한글 terms with English definitions into `jjogaegi` and they will be parsed and formatted. The delimiter is inserted after the last 한글 character on the line, with spaces preserved and extraneous characters and headings removed. For example:
 
-    $ cat <<EOF | jjogaegi
+    $ cat <<EOF | jjogaegi --parser list --formatter csv
     My Word List
     •컴퓨터를 켜다 to turn on the computer
     •브라우저를 열다 to open the web browser
     •검색어를 입력하다 to type in the search word
     EOF
     
-    컴퓨터를 켜다	to turn on the computer
-    브라우저를 열다	to open the web browser
-    검색어를 입력하다	to type in the search word
+    컴퓨터를 켜다,to turn on the computer
+    브라우저를 열다,to open the web browser
+    검색어를 입력하다,to type in the search word
 
 The output can then be used with Quizlet's [import](https://quizlet.com/help/2444107/convert-a-word-doc-into-a-quizlet-set) feature to create flashcards. 
 
