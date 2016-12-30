@@ -3,8 +3,8 @@ package formatters
 import (
 	"bytes"
 	"github.com/ryanbrainard/jjogaegi/pkg"
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestFormatCSV(t *testing.T) {

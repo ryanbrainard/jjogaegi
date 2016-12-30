@@ -41,7 +41,7 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		}
 
 		for _, item := range page.Items {
-			hangulTerm, hanjaTerm := splitHangul(item.EntryName)
+			hangulTerm, hanjaTerm := splitHangul(item.renderItem())
 			items <- &pkg.Item{
 				Hangul: hangulTerm,
 				Hanja:  hanjaTerm,
@@ -68,6 +68,10 @@ type NaverItem struct {
 	Means     []NaverMean `json:"means"`
 }
 
+func (i NaverItem) renderItem() string {
+	return stripHTML(i.EntryName)
+}
+
 func (i NaverItem) renderMeans() string {
 	renderedMeans := []string{}
 	for _, m := range i.Means {
@@ -87,15 +91,19 @@ type NaverMean struct {
 }
 
 func (m NaverMean) render() string {
-	z := html.NewTokenizer(strings.NewReader(m.Mean))
-	s := ""
+	return stripHTML(m.Mean)
+}
+
+func stripHTML(in string) string {
+	z := html.NewTokenizer(strings.NewReader(in))
+	out := ""
 	for {
 		switch z.Next() {
 		case html.TextToken:
-			s += string(z.Text())
+			out += string(z.Text())
 		case html.ErrorToken:
-			return s
+			return out
 		}
 	}
-	return s
+	return out
 }
