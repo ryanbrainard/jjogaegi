@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
-	"github.com/ryanbrainard/jjogaegi"
 	"github.com/ryanbrainard/jjogaegi/formatters"
 	"github.com/ryanbrainard/jjogaegi/parsers"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 	"os"
 )
 
@@ -13,7 +13,7 @@ var flagFormatter = flag.String("formatter", "tsv", "type of formatter for outpu
 
 func main() {
 	flag.Parse()
-	jjogaegi.Run(
+	pkg.Run(
 		os.Stdin,
 		parser(),
 		formatter(),
@@ -21,7 +21,7 @@ func main() {
 	)
 }
 
-func parser() jjogaegi.ParseFunc {
+func parser() pkg.ParseFunc {
 	switch *flagParser {
 	case "list":
 		return parsers.ParseList
@@ -34,7 +34,7 @@ func parser() jjogaegi.ParseFunc {
 	}
 }
 
-func formatter() jjogaegi.FormatFunc {
+func formatter() pkg.FormatFunc {
 	switch *flagFormatter {
 	case "tsv":
 		return formatters.FormatTSV

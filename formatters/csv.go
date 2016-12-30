@@ -2,15 +2,15 @@ package formatters
 
 import (
 	"encoding/csv"
-	"github.com/ryanbrainard/jjogaegi"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
 )
 
-func FormatCSV(items <-chan *jjogaegi.Item, w io.Writer) {
+func FormatCSV(items <-chan *pkg.Item, w io.Writer) {
 	formatXSV(items, w, ',')
 }
 
-func formatXSV(items <-chan *jjogaegi.Item, w io.Writer, delim rune) {
+func formatXSV(items <-chan *pkg.Item, w io.Writer, delim rune) {
 	cw := csv.NewWriter(w)
 	cw.Comma = delim
 	for item := range items {

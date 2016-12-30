@@ -1,7 +1,7 @@
 package parsers
 
 import (
-	"github.com/ryanbrainard/jjogaegi"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
@@ -9,14 +9,14 @@ import (
 
 func TestParseListWithBullet(t *testing.T) {
 	in := strings.NewReader(" • 안녕 라이언 Hello, Ryan")
-	items := make(chan *jjogaegi.Item, 100)
+	items := make(chan *pkg.Item, 100)
 	ParseList(in, items)
-	assert.Equal(t, &jjogaegi.Item{Term: "안녕 라이언", Def: "Hello, Ryan"}, <-items)
+	assert.Equal(t, &pkg.Item{Term: "안녕 라이언", Def: "Hello, Ryan"}, <-items)
 }
 
 func TestParseListWithNumberAndColon(t *testing.T) {
 	in := strings.NewReader("1. 안녕 라이언: Hello, Ryan")
-	items := make(chan *jjogaegi.Item, 100)
+	items := make(chan *pkg.Item, 100)
 	ParseList(in, items)
-	assert.Equal(t, &jjogaegi.Item{Term: "안녕 라이언", Def: "Hello, Ryan"}, <-items)
+	assert.Equal(t, &pkg.Item{Term: "안녕 라이언", Def: "Hello, Ryan"}, <-items)
 }

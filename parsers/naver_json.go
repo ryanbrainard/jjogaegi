@@ -1,19 +1,19 @@
 package parsers
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/ryanbrainard/jjogaegi"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 	"golang.org/x/net/html"
 	"io"
 	"strings"
-	"bufio"
 )
 
 var callbackStartBytes = []byte("window.__jindo2_callback")
 var callbackEndByte = byte('(')
 
-func ParseNaverJSON(r io.Reader, items chan<- *jjogaegi.Item) {
+func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item) {
 	buf := bufio.NewReader(r)
 	header, err := buf.Peek(len(callbackStartBytes))
 	if err != nil {
@@ -42,7 +42,7 @@ func ParseNaverJSON(r io.Reader, items chan<- *jjogaegi.Item) {
 
 		for _, item := range page.Items {
 			hangeulTerm, hanjaTerm := splitHangeul(item.EntryName)
-			items <- &jjogaegi.Item{
+			items <- &pkg.Item{
 				Term:    hangeulTerm,
 				SubTerm: hanjaTerm,
 				Def:     item.renderMeans(),

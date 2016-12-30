@@ -1,4 +1,4 @@
-package jjogaegi
+package pkg
 
 import "io"
 

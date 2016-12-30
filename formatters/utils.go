@@ -1,10 +1,10 @@
 package formatters
 
 import (
-	"github.com/ryanbrainard/jjogaegi"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func mergeTermSubTerm(item *jjogaegi.Item) string {
+func mergeTermSubTerm(item *pkg.Item) string {
 	s := item.Term
 	if len(item.SubTerm) > 0 {
 		s += " (" + item.SubTerm + ")"

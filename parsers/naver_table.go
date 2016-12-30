@@ -2,12 +2,12 @@ package parsers
 
 import (
 	"bufio"
-	"github.com/ryanbrainard/jjogaegi"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
 	"strings"
 )
 
-func ParseNaverTable(r io.Reader, items chan<- *jjogaegi.Item) {
+func ParseNaverTable(r io.Reader, items chan<- *pkg.Item) {
 	i := 0
 	rawTerms := []string{}
 	scanner := bufio.NewScanner(r)
@@ -27,7 +27,7 @@ func ParseNaverTable(r io.Reader, items chan<- *jjogaegi.Item) {
 
 		hangeulTerm, hanjaTerm := splitHangeul(rawTerms[i])
 
-		items <- &jjogaegi.Item{
+		items <- &pkg.Item{
 			Term:    sanitize(string(hangeulTerm)),
 			SubTerm: sanitize(string(hanjaTerm)),
 			Def:     sanitize(string(line)),
