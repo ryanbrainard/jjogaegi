@@ -25,12 +25,12 @@ func ParseNaverTable(r io.Reader, items chan<- *pkg.Item) {
 			continue
 		}
 
-		hangeulTerm, hanjaTerm := splitHangeul(rawTerms[i])
+		hangulTerm, hanjaTerm := splitHangul(rawTerms[i])
 
 		items <- &pkg.Item{
-			Term:    sanitize(string(hangeulTerm)),
-			SubTerm: sanitize(string(hanjaTerm)),
-			Def:     sanitize(string(line)),
+			Hangul: sanitize(string(hangulTerm)),
+			Hanja:  sanitize(string(hanjaTerm)),
+			Def:    sanitize(string(line)),
 		}
 
 		i++

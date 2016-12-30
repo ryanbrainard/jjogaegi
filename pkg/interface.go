@@ -3,9 +3,9 @@ package pkg
 import "io"
 
 type Item struct {
-	Term    string
-	SubTerm string
-	Def     string
+	Hangul string
+	Hanja  string
+	Def    string
 }
 
 type ParseFunc func(reader io.Reader, items chan<- *Item)

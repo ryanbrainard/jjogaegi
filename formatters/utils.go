@@ -5,9 +5,9 @@ import (
 )
 
 func mergeTermSubTerm(item *pkg.Item) string {
-	s := item.Term
-	if len(item.SubTerm) > 0 {
-		s += " (" + item.SubTerm + ")"
+	s := item.Hangul
+	if len(item.Hanja) > 0 {
+		s += " (" + item.Hanja + ")"
 	}
 	return s
 }

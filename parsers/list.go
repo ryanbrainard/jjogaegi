@@ -11,10 +11,10 @@ func ParseList(r io.Reader, items chan<- *pkg.Item) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		term, def := splitHangeul(line)
+		hangul, def := splitHangul(line)
 		items <- &pkg.Item{
-			Term: sanitize(term),
-			Def:  sanitize(def),
+			Hangul: sanitize(hangul),
+			Def:    sanitize(def),
 		}
 	}
 

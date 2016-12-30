@@ -4,41 +4,41 @@ import (
 	"strings"
 )
 
-var hangeulRange = []rune("가힣")
+var hangulRange = []rune("가힣")
 var cutSet = " :“”.\n"
 
-func isHangeul(r rune) bool {
-	return r >= hangeulRange[0] && r <= hangeulRange[1]
+func isHangul(r rune) bool {
+	return r >= hangulRange[0] && r <= hangulRange[1]
 }
 
-func hasHangeul(s string) bool {
+func hasHangul(s string) bool {
 	for _, r := range s {
-		if isHangeul(r) {
+		if isHangul(r) {
 			return true
 		}
 	}
 	return false
 }
 
-func splitHangeul(s string) (hangeul string, rest string) {
-	hangeulRunes := []rune{}
+func splitHangul(s string) (hangul string, rest string) {
+	hangulRunes := []rune{}
 	restRunes := []rune{}
 
 	for i, c := range s {
-		if isHeader(hangeulRunes, c) {
+		if isHeader(hangulRunes, c) {
 			continue
-		} else if hasHangeul(s[i:]) {
-			hangeulRunes = append(hangeulRunes, c)
+		} else if hasHangul(s[i:]) {
+			hangulRunes = append(hangulRunes, c)
 		} else {
 			restRunes = append(restRunes, c)
 		}
 	}
 
-	return string(hangeulRunes), string(restRunes)
+	return string(hangulRunes), string(restRunes)
 }
 
 func isHeader(term []rune, r rune) bool {
-	return len(term) == 0 && !isHangeul(r)
+	return len(term) == 0 && !isHangul(r)
 }
 
 func sanitize(s string) string {

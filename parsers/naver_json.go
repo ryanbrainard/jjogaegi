@@ -41,11 +41,11 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item) {
 		}
 
 		for _, item := range page.Items {
-			hangeulTerm, hanjaTerm := splitHangeul(item.EntryName)
+			hangulTerm, hanjaTerm := splitHangul(item.EntryName)
 			items <- &pkg.Item{
-				Term:    hangeulTerm,
-				SubTerm: hanjaTerm,
-				Def:     item.renderMeans(),
+				Hangul: hangulTerm,
+				Hanja:  hanjaTerm,
+				Def:    item.renderMeans(),
 			}
 		}
 	}
