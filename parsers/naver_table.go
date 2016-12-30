@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func ParseNaverTable(r io.Reader, items chan<- *pkg.Item) {
+func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	i := 0
 	rawTerms := []string{}
 	scanner := bufio.NewScanner(r)

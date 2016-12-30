@@ -8,21 +8,23 @@ import (
 	"os"
 )
 
-var flagParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")
-var flagFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
+var fParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")
+var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
+var fHanja = flag.String("hanja", "none", "include hanja [none|parens|sep]")
 
 func main() {
 	flag.Parse()
 	pkg.Run(
 		os.Stdin,
+		os.Stdout,
 		parser(),
 		formatter(),
-		os.Stdout,
+		options(),
 	)
 }
 
 func parser() pkg.ParseFunc {
-	switch *flagParser {
+	switch *fParser {
 	case "list":
 		return parsers.ParseList
 	case "naver-table":
@@ -35,12 +37,27 @@ func parser() pkg.ParseFunc {
 }
 
 func formatter() pkg.FormatFunc {
-	switch *flagFormatter {
+	switch *fFormatter {
 	case "tsv":
 		return formatters.FormatTSV
 	case "csv":
 		return formatters.FormatCSV
 	default:
 		panic("Unknown formatter")
+	}
+}
+
+func options() map[string]string {
+	return map[string]string{
+		pkg.OPT_HANJA: hanja(),
+	}
+}
+
+func hanja() string {
+	switch *fHanja {
+	case pkg.OPT_HANJA_NONE, pkg.OPT_HANJA_PARENTHESIS, pkg.OPT_HANJA_SEPARATE:
+		return *fHanja
+	default:
+		panic("Unknown hanja option")
 	}
 }

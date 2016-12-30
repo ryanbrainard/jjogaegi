@@ -5,6 +5,6 @@ import (
 	"io"
 )
 
-func FormatTSV(items <-chan *pkg.Item, w io.Writer) {
-	formatXSV(items, w, '\t')
+func FormatTSV(items <-chan *pkg.Item, w io.Writer, options map[string]string) {
+	formatXSV(items, w, options, '\t')
 }

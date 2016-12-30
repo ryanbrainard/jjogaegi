@@ -4,10 +4,17 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func mergeTermSubTerm(item *pkg.Item) string {
-	s := item.Hangul
-	if len(item.Hanja) > 0 {
-		s += " (" + item.Hanja + ")"
+func formatHangulHanja(item *pkg.Item, options map[string]string) []string {
+	switch options[pkg.OPT_HANJA] {
+	case pkg.OPT_HANJA_PARENTHESIS:
+		s := item.Hangul
+		if len(item.Hanja) > 0 {
+			s += " (" + item.Hanja + ")"
+		}
+		return []string{s}
+	case pkg.OPT_HANJA_SEPARATE:
+		return []string{item.Hangul, item.Hanja}
+	default:
+		return []string{item.Hangul}
 	}
-	return s
 }

@@ -34,11 +34,23 @@ The parser and formatter can be set for different inputs and outputs with the `-
 
 ## Parsers
 
+Options for `--parser` flag:
+
  - `list`: (default) list of Korean terms followed by English definitions. Splits the line after the last 한글 character. Does not support 漢字.
  - `naver-json`: Naver wordbook JSON. Supports 漢字. 
  - `naver-table`: Naver wordbook printed PDF table. Supports 漢字. 
 
 ## Formatters
 
+Options for `--formatter` flag:
+
  - `tsv`: (default) tab-separated values
  - `csv`: comma-separated values
+ 
+## Hanja
+
+Options for `--hanja` flag:
+
+ - `none`: (default) do not output 漢字
+ - `parens`: output 漢字 in parenthesis next to the term
+ - `sep`: output 漢字 in a separate column

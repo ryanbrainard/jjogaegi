@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-func ParseList(r io.Reader, items chan<- *pkg.Item) {
+func ParseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	scanner := bufio.NewScanner(r)
 
 	for scanner.Scan() {

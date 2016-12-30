@@ -13,7 +13,7 @@ import (
 var callbackStartBytes = []byte("window.__jindo2_callback")
 var callbackEndByte = byte('(')
 
-func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item) {
+func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	buf := bufio.NewReader(r)
 	header, err := buf.Peek(len(callbackStartBytes))
 	if err != nil {

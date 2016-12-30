@@ -4,8 +4,8 @@ import (
 	"io"
 )
 
-func Run(in io.Reader, parse ParseFunc, format FormatFunc, out io.Writer) {
+func Run(in io.Reader, out io.Writer, parse ParseFunc, format FormatFunc, options map[string]string) {
 	items := make(chan *Item)
-	go parse(in, items)
-	format(items, out)
+	go parse(in, items, options)
+	format(items, out, options)
 }
