@@ -1,15 +1,16 @@
 # 쪼개기
 
-Parses lists Korean vocabulary and formats it for easy importing into [Quizlet](https://quizlet.com/) (and probably other flashcard apps).
+Parses Korean vocabulary and formats items for easy importing into [Quizlet](https://quizlet.com/), [Anki](http://ankisrs.net/), and other flashcard apps.
 
+## Installation
 
-## Setup
+First install [Go](https://golang.org/doc/install) and then install `jjogaegi`:
 
-    $ go install
+    $ go get github.com/ryanbrainard/jjogaegi
 
 ## Usage
 
-Pipe a list of 한글 terms with English definitions into `jjogaegi` and they will be parsed into tab-separated values. The tab character is inserted after the last 한글 character on the line, with spaces preserved and extraneous characters and headings removed. For example:
+Pipe a list of 한글 terms with English definitions into `jjogaegi` and they will be parsed into tab-separated values. The tab character is inserted after the last 한글 character on the line, with spaces preserved and extraneous characters and headings removed. For example (GitHub does not format tabs correctly, but those are tabs between the terms and definitions in the output):
 
     $ cat <<EOF | jjogaegi
     My Word List
@@ -22,7 +23,7 @@ Pipe a list of 한글 terms with English definitions into `jjogaegi` and they wi
     브라우저를 열다	to open the web browser
     검색어를 입력하다	to type in the search word
 
-The output can then be used with Quizlet's [import](https://quizlet.com/help/2444107/convert-a-word-doc-into-a-quizlet-set) feature to create flashcards.
+The output can then be used with Quizlet's [import](https://quizlet.com/help/2444107/convert-a-word-doc-into-a-quizlet-set) feature to create flashcards. 
 
 On MacOS, this works great with `pbpaste` and `ppbcopy` to avoid manually copying and pasting the input and output:
 
