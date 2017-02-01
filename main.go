@@ -11,6 +11,7 @@ import (
 var fParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens|sep]")
+var fHeader = flag.String("header", "", "header to prepend to output")
 
 func main() {
 	flag.Parse()
@@ -50,6 +51,7 @@ func formatter() pkg.FormatFunc {
 func options() map[string]string {
 	return map[string]string{
 		pkg.OPT_HANJA: hanja(),
+		pkg.OPT_HEADER: *fHeader,
 	}
 }
 

@@ -19,6 +19,13 @@ func TestFormatCSV(t *testing.T) {
 	assert.Equal(t, "처리,handling\n", out.String())
 }
 
+func TestFormatCSV_Header(t *testing.T) {
+	header := "tag: jjogaegi"
+	items, out := setupTestFormat()
+	FormatCSV(items, out, map[string]string{pkg.OPT_HEADER: header})
+	assert.Equal(t, header + "\n처리,handling\n", out.String())
+}
+
 func TestFormatCSV_HanjaMerge(t *testing.T) {
 	items, out := setupTestFormat()
 	FormatCSV(items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})

@@ -11,6 +11,7 @@ func FormatCSV(items <-chan *pkg.Item, w io.Writer, options map[string]string) {
 }
 
 func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, delim rune) {
+	writeHeader(w, options)
 	cw := csv.NewWriter(w)
 	cw.Comma = delim
 	for item := range items {
