@@ -3,12 +3,18 @@ package pkg
 import "io"
 
 type Item struct {
-	Hangul string
-	Hanja  string
-	Def    string
+	Hangul   string
+	Hanja    string
+	Def      string
+	Examples []Example
 }
 
-type ParseFunc func(reader io.Reader, items chan<- *Item, options map[string]string)
+type Example struct {
+	Korean  string
+	English string
+}
+
+type ParseFunc func(reader io.Reader, items chan <- *Item, options map[string]string)
 
 type FormatFunc func(items <-chan *Item, writer io.Writer, options map[string]string)
 

@@ -15,7 +15,12 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 	cw := csv.NewWriter(w)
 	cw.Comma = delim
 	for item := range items {
-		cw.Write(append(formatHangulHanja(item, options), item.Def))
+		var firstExample pkg.Example
+		if len(item.Examples) > 0 {
+			firstExample = item.Examples[0]
+		}
+
+		cw.Write(append(formatHangulHanja(item, options), item.Def, firstExample.Korean, firstExample.English))
 	}
 	cw.Flush()
 }
