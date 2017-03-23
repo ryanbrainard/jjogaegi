@@ -38,8 +38,9 @@ The parser and formatter can be set for different inputs and outputs with the `-
 Options for `--parser` flag:
 
  - `list`: (default) list of Korean terms followed by English definitions. Splits the line after the last 한글 character. Does not support 漢字.
- - `naver-json`: Naver wordbook JSON. Supports 漢字. 
+ - `naver-json`: Naver wordbook JSON. Supports Id, 漢字.
  - `naver-table`: Naver wordbook printed PDF table. Supports 漢字. 
+ - `krdict-xml`: [한국어기초사전](https://krdict.korean.go.kr) XML. Supports Id, 漢字, pronunciations, antonyms.
 
 ## Formatters
 
