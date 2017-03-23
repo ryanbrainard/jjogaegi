@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-var fParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json]")
+var fParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json|krdict-xml]")
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens|sep]")
 var fHeader = flag.String("header", "", "header to prepend to output")
@@ -32,6 +32,8 @@ func parser() pkg.ParseFunc {
 		return parsers.ParseNaverTable
 	case "naver-json":
 		return parsers.ParseNaverJSON
+	case "krdict-xml":
+		return parsers.ParseKrDictXML
 	default:
 		panic("Unknown parser")
 	}

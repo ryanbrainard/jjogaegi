@@ -34,7 +34,7 @@ func TestParseKrDictOppositesXML(t *testing.T) {
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
-	KrDictXML(in, items, map[string]string{})
+	ParseKrDictXML(in, items, map[string]string{})
 	assert.Equal(t, xmlTestItems[0], <-items)
 	assert.Equal(t, xmlTestItems[1], <-items)
 }

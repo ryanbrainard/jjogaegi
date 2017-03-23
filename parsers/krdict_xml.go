@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func KrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
+func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	root, err := xmlpath.Parse(r)
 	if err != nil {
 		log.Fatal(err)
