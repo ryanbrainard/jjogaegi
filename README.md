@@ -52,6 +52,5 @@ Options for `--formatter` flag:
 
 Options for `--hanja` flag:
 
- - `none`: (default) do not output 漢字
- - `parens`: output 漢字 in parenthesis next to the term
- - `sep`: output 漢字 in a separate column
+ - `none`: (default) do not include 漢字 with 한글
+ - `parens`: output 漢字 in parenthesis next to 한글
