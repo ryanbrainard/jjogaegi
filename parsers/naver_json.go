@@ -7,6 +7,7 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"golang.org/x/net/html"
 	"io"
+	"strconv"
 	"strings"
 )
 
@@ -54,6 +55,7 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			}
 
 			items <- &pkg.Item{
+				Id:     strings.Join([]string{"naver", strconv.Itoa(item.EntryID)}, ":"),
 				Hangul: hangulTerm,
 				Hanja:  hanjaTerm,
 				Def: pkg.Translation{
@@ -77,6 +79,7 @@ type NaverPage struct {
 }
 
 type NaverItem struct {
+	EntryID   int         `json:"entryID"`
 	EntryName string      `json:"entryName"`
 	Means     []NaverMean `json:"means"`
 }
