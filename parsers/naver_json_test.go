@@ -32,7 +32,7 @@ var testItem = &pkg.Item{
 }
 
 func TestParseNaverJSON(t *testing.T) {
-	in, err := os.Open("naver_json_sample.json")
+	in, err := os.Open("fixtures/naver_json_sample.json")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
@@ -41,7 +41,7 @@ func TestParseNaverJSON(t *testing.T) {
 }
 
 func TestParseNaverJSONCallback(t *testing.T) {
-	in, err := os.Open("naver_json_sample.callback.js")
+	in, err := os.Open("fixtures/naver_json_sample.callback.js")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
