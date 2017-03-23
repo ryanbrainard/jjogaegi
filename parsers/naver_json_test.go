@@ -8,7 +8,7 @@ import (
 )
 
 var testItem = &pkg.Item{
-	Id:     "naver:412949959",
+	Id:     "naver:KE_729520861170427890b0340413d2af5a",
 	Hangul: "처리",
 	Hanja:  "處理 (2)",
 	Def: pkg.Translation{
