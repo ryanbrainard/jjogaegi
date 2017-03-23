@@ -44,39 +44,6 @@
 					<feat att="type" val="구" />
 					<feat att="example" val="보험에 가입하다." />
 				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="상품에 가입하다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="연맹에 가입하다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="정당에 가입하다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="회원으로 가입하다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="문장" />
-					<feat att="example" val="국제 연합에 가입한 회원국은 총 백구십이 개국이다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="문장" />
-					<feat att="example" val="그는 차를 새로 산 뒤에 바로 자동차 보험에 가입했다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="문장" />
-					<feat att="example" val="헬스클럽에서는 회원으로 가입한 고객에게 운동복을 선물로 주었다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="대화" />
-					<feat att="example" val="매주 등산을 가려고 해도 같이 갈 사람이 없어서 고민이야." />
-					<feat att="example" val="그래? 그럼, 등산 동호회에 가입해 봐." />
-				</SenseExample>
 			</Sense>
 		</LexicalEntry>
 		<LexicalEntry att="id" val="15404">
@@ -127,31 +94,6 @@
 				<SenseExample>
 					<feat att="type" val="구" />
 					<feat att="example" val="감옥에 갇히다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="방에 갇히다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="안에 갇히다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="구" />
-					<feat att="example" val="엘리베이터에 갇히다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="문장" />
-					<feat att="example" val="그녀는 다른 사람의 물건을 훔친 죄로 일 년 동안 감옥에 갇혔다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="문장" />
-					<feat att="example" val="아파트 엘리베이터가 고장 나서 세 시간이나 안에 갇혀 꼼짝도 못했다." />
-				</SenseExample>
-				<SenseExample>
-					<feat att="type" val="대화" />
-					<feat att="example" val="먼저 건물에 난 불을 빨리 꺼야 해요." />
-					<feat att="example" val="그러기 전에 건물 안에 갇힌 사람들부터 구해야죠." />
 				</SenseExample>
 			</Sense>
 		</LexicalEntry>

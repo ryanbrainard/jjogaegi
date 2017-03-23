@@ -8,30 +8,37 @@ import (
 )
 
 func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
-	root, err := xmlpath.Parse(r)
+	rootNode, err := xmlpath.Parse(r)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	iter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(root)
-
+	entriesIter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(rootNode)
 	for {
-		if !iter.Next() {
+		if !entriesIter.Next() {
 			break
 		}
+		entryNode := entriesIter.Node()
 
-		node := iter.Node()
-
-		items <- &pkg.Item{
-			Hangul: get(node, "Lemma/feat/@val"),
-			Hanja:  get(node, "feat[@att='origin']/@val"),
-			Def:    get(node, "Sense/feat[@att='definition']/@val"),
-			Examples: []pkg.Example{
-				{
-					Korean: get(node, "Sense/SenseExample/feat[@att='example']/@val"),
-				},
-			},
+		item := &pkg.Item{
+			Hangul:   get(entryNode, "Lemma/feat/@val"),
+			Hanja:    get(entryNode, "feat[@att='origin']/@val"),
+			Def:      get(entryNode, "Sense/feat[@att='definition']/@val"),
 		}
+
+		examplesIter := xmlpath.MustCompile("Sense/SenseExample").Iter(entryNode)
+		for {
+			if !examplesIter.Next() {
+				break
+			}
+			exampleNode := examplesIter.Node()
+
+			item.Examples = append(item.Examples, pkg.Example{
+				Korean: get(exampleNode, "feat[@att='example']/@val"),
+			})
+		}
+
+		items <- item
 	}
 
 	close(items)

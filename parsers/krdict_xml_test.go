@@ -16,6 +16,9 @@ var xmlTestItems = []*pkg.Item{
 			{
 				Korean: "동아리에 가입하다.",
 			},
+			{
+				Korean: "보험에 가입하다.",
+			},
 		},
 	},
 	{
@@ -24,6 +27,9 @@ var xmlTestItems = []*pkg.Item{
 		Examples: []pkg.Example{
 			{
 				Korean: "갇힌 몸.",
+			},
+			{
+				Korean: "감옥에 갇히다.",
 			},
 		},
 	},
