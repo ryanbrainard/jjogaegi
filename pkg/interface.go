@@ -1,25 +1,29 @@
 package pkg
 
-import "io"
+import (
+	"io"
+)
 
 type Item struct {
-	Hangul   string
-	Hanja    string
-	Def      string
-	Examples []Example
+	Id            string
+	Hangul        string
+	Hanja         string
+	Pronunciation string
+	Def           Translation
+	Antonym       string
+	Examples      []Translation
 }
 
-type Example struct {
+type Translation struct {
 	Korean  string
 	English string
 }
 
-type ParseFunc func(reader io.Reader, items chan <- *Item, options map[string]string)
+type ParseFunc func(reader io.Reader, items chan<- *Item, options map[string]string)
 
 type FormatFunc func(items <-chan *Item, writer io.Writer, options map[string]string)
 
 const OPT_HANJA = "hanja"
 const OPT_HANJA_NONE = "none"
 const OPT_HANJA_PARENTHESIS = "parens"
-const OPT_HANJA_SEPARATE = "sep"
 const OPT_HEADER = "header"

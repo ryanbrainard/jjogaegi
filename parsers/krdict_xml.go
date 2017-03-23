@@ -5,12 +5,20 @@ import (
 	"io"
 	"launchpad.net/xmlpath"
 	"log"
+	"strings"
 )
+
+const SupportedLanguage = "kor"
 
 func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	rootNode, err := xmlpath.Parse(r)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	lang := get(rootNode, "/LexicalResource/Lexicon/feat[@att='language']/@val")
+	if lang != SupportedLanguage {
+		log.Fatalf("Only %q supported.", SupportedLanguage)
 	}
 
 	entriesIter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(rootNode)
@@ -21,9 +29,14 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		entryNode := entriesIter.Node()
 
 		item := &pkg.Item{
-			Hangul:   get(entryNode, "Lemma/feat/@val"),
-			Hanja:    get(entryNode, "feat[@att='origin']/@val"),
-			Def:      get(entryNode, "Sense/feat[@att='definition']/@val"),
+			Id:            strings.Join([]string{"krdict", lang, get(entryNode, ".[@att='id']/@val")}, ":"),
+			Hangul:        get(entryNode, "Lemma/feat/@val"),
+			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
+			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),
+			Antonym:       get(entryNode, "Sense/SenseRelation/feat[@val='반대말']/../feat[@att='lemma']/@val"),
+			Def: pkg.Translation{
+				Korean: get(entryNode, "Sense/feat[@att='definition']/@val"),
+			},
 		}
 
 		examplesIter := xmlpath.MustCompile("Sense/SenseExample").Iter(entryNode)
@@ -33,7 +46,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			}
 			exampleNode := examplesIter.Node()
 
-			item.Examples = append(item.Examples, pkg.Example{
+			item.Examples = append(item.Examples, pkg.Translation{
 				Korean: get(exampleNode, "feat[@att='example']/@val"),
 			})
 		}

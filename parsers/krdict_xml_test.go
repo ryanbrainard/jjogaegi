@@ -9,10 +9,15 @@ import (
 
 var xmlTestItems = []*pkg.Item{
 	{
-		Hangul: "가입하다",
-		Hanja:  "加入하다",
-		Def:    "단체에 들어가거나 상품 및 서비스를 받기 위해 계약을 하다.",
-		Examples: []pkg.Example{
+		Id:            "krdict:kor:15392",
+		Hangul:        "가입하다",
+		Hanja:         "加入하다",
+		Pronunciation: "가이파다",
+		Def: pkg.Translation{
+			Korean: "단체에 들어가거나 상품 및 서비스를 받기 위해 계약을 하다.",
+		},
+		Antonym: "탈퇴하다",
+		Examples: []pkg.Translation{
 			{
 				Korean: "동아리에 가입하다.",
 			},
@@ -22,9 +27,13 @@ var xmlTestItems = []*pkg.Item{
 		},
 	},
 	{
-		Hangul: "갇히다",
-		Def:    "어떤 공간이나 상황에서 나가지 못하게 되다.",
-		Examples: []pkg.Example{
+		Id:            "krdict:kor:15404",
+		Hangul:        "갇히다",
+		Pronunciation: "가치다",
+		Def: pkg.Translation{
+			Korean: "어떤 공간이나 상황에서 나가지 못하게 되다.",
+		},
+		Examples: []pkg.Translation{
 			{
 				Korean: "갇힌 몸.",
 			},

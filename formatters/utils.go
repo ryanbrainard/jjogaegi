@@ -1,8 +1,8 @@
 package formatters
 
 import (
-	"io"
 	"github.com/ryanbrainard/jjogaegi/pkg"
+	"io"
 )
 
 func writeHeader(out io.Writer, options map[string]string) {
@@ -11,17 +11,15 @@ func writeHeader(out io.Writer, options map[string]string) {
 	}
 }
 
-func formatHangulHanja(item *pkg.Item, options map[string]string) []string {
+func formatHangulHanja(item *pkg.Item, options map[string]string) string {
 	switch options[pkg.OPT_HANJA] {
 	case pkg.OPT_HANJA_PARENTHESIS:
 		s := item.Hangul
 		if len(item.Hanja) > 0 {
 			s += " (" + item.Hanja + ")"
 		}
-		return []string{s}
-	case pkg.OPT_HANJA_SEPARATE:
-		return []string{item.Hangul, item.Hanja}
+		return s
 	default:
-		return []string{item.Hangul}
+		return item.Hangul
 	}
 }

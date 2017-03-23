@@ -10,7 +10,7 @@ import (
 
 var fParser = flag.String("parser", "list", "type of parser for input [list|naver-table|naver-json|krdict-xml]")
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [tsv|csv]")
-var fHanja = flag.String("hanja", "sep", "include hanja [sep|parens|none]")
+var fHanja = flag.String("hanja", "sep", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
 
 func main() {
@@ -52,14 +52,14 @@ func formatter() pkg.FormatFunc {
 
 func options() map[string]string {
 	return map[string]string{
-		pkg.OPT_HANJA: hanja(),
+		pkg.OPT_HANJA:  hanja(),
 		pkg.OPT_HEADER: *fHeader,
 	}
 }
 
 func hanja() string {
 	switch *fHanja {
-	case pkg.OPT_HANJA_NONE, pkg.OPT_HANJA_PARENTHESIS, pkg.OPT_HANJA_SEPARATE:
+	case pkg.OPT_HANJA_NONE, pkg.OPT_HANJA_PARENTHESIS:
 		return *fHanja
 	default:
 		panic("Unknown hanja option")

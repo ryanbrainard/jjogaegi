@@ -13,7 +13,7 @@ import (
 var callbackStartBytes = []byte("window.__jindo2_callback")
 var callbackEndByte = byte('(')
 
-func ParseNaverJSON(r io.Reader, items chan <- *pkg.Item, options map[string]string) {
+func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	buf := bufio.NewReader(r)
 	header, err := buf.Peek(len(callbackStartBytes))
 	if err != nil {
@@ -43,12 +43,12 @@ func ParseNaverJSON(r io.Reader, items chan <- *pkg.Item, options map[string]str
 		for _, item := range page.Items {
 			hangulTerm, hanjaTerm := splitHangul(item.renderItem())
 
-			examples := []pkg.Example{}
+			examples := []pkg.Translation{}
 			for _, means := range item.Means {
 				for _, example := range means.Examples {
-					examples = append(examples, pkg.Example{
+					examples = append(examples, pkg.Translation{
 						English: stripHTML(example.English),
-						Korean: example.Korean,
+						Korean:  example.Korean,
 					})
 				}
 			}
@@ -56,7 +56,8 @@ func ParseNaverJSON(r io.Reader, items chan <- *pkg.Item, options map[string]str
 			items <- &pkg.Item{
 				Hangul: hangulTerm,
 				Hanja:  hanjaTerm,
-				Def:    item.renderMeans(),
+				Def: pkg.Translation{
+					English: item.renderMeans()},
 				Examples: examples,
 			}
 		}
@@ -98,8 +99,8 @@ func (i NaverItem) renderMeans() string {
 }
 
 type NaverMean struct {
-	Seq      int    `json:"seq"`
-	Mean     string `json:"mean"`
+	Seq      int            `json:"seq"`
+	Mean     string         `json:"mean"`
 	Examples []NaverExample `json:"examples"`
 }
 

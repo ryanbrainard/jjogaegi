@@ -30,7 +30,9 @@ func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]str
 		items <- &pkg.Item{
 			Hangul: sanitize(string(hangulTerm)),
 			Hanja:  sanitize(string(hanjaTerm)),
-			Def:    sanitize(string(line)),
+			Def: pkg.Translation{
+				English: sanitize(string(line)),
+			},
 		}
 
 		i++
