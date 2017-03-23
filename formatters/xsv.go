@@ -23,6 +23,7 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			item.Pronunciation,
 			item.Def.Korean,
 			item.Def.English,
+			item.Antonym,
 			firstExample.Korean,
 			firstExample.English,
 		})
