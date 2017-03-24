@@ -9,7 +9,7 @@ import (
 
 var xmlTestItems = []*pkg.Item{
 	{
-		Id:            "krdict:kor:15392",
+		Id:            "krdict:kor:15392:단어",
 		Hangul:        "가입하다",
 		Hanja:         "加入하다",
 		Pronunciation: "가이파다",
@@ -27,7 +27,7 @@ var xmlTestItems = []*pkg.Item{
 		},
 	},
 	{
-		Id:            "krdict:kor:15404",
+		Id:            "krdict:kor:15404:단어",
 		Hangul:        "갇히다",
 		Pronunciation: "가치다",
 		Def: pkg.Translation{
