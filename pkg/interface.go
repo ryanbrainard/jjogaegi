@@ -9,6 +9,7 @@ type Item struct {
 	Hangul        string
 	Hanja         string
 	Pronunciation string
+	AudioURL      string
 	Def           Translation
 	Antonym       string
 	Examples      []Translation

@@ -13,6 +13,7 @@ var xmlTestItems = []*pkg.Item{
 		Hangul:        "가입하다",
 		Hanja:         "加入하다",
 		Pronunciation: "가이파다",
+		AudioURL:      "http://dicmedia.korean.go.kr:8899/multimedia/sound_file/giyeok_2006/gaipada.wav",
 		Def: pkg.Translation{
 			Korean: "단체에 들어가거나 상품 및 서비스를 받기 위해 계약을 하다.",
 		},
@@ -30,6 +31,7 @@ var xmlTestItems = []*pkg.Item{
 		Id:            "krdict:kor:15404:단어",
 		Hangul:        "갇히다",
 		Pronunciation: "가치다",
+		AudioURL:      "http://dicmedia.korean.go.kr:8899/multimedia/sound_file/giyeok_2005/gachida.wav",
 		Def: pkg.Translation{
 			Korean: "어떤 공간이나 상황에서 나가지 못하게 되다.",
 		},
