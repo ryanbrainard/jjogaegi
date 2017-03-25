@@ -21,17 +21,12 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			secondExample = item.Examples[1]
 		}
 
-		var audioTag string
-		if item.AudioURL != "" {
-			audioTag = "[sound:" + item.AudioURL + "]"
-		}
-
 		cw.Write([]string{
 			item.Id,
 			formatHangulHanja(item, options),
 			item.Hanja,
 			item.Pronunciation,
-			audioTag,
+			formatAudioTag(item, options),
 			item.Def.Korean,
 			item.Def.English,
 			item.Antonym,

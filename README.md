@@ -55,3 +55,9 @@ Options for `--hanja` flag:
 
  - `none`: (default) do not include 漢字 with 한글
  - `parens`: output 漢字 in parenthesis next to 한글
+
+## Audio Dir
+
+Options for `--audiodir` flag:
+
+If set, audio will be downloaded into the directory specified
