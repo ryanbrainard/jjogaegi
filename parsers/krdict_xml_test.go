@@ -22,25 +22,24 @@ var xmlTestItems = []*pkg.Item{
 			{
 				Korean: "동아리에 가입하다.",
 			},
-			{
-				Korean: "보험에 가입하다.",
-			},
 		},
 	},
 	{
-		Id:            "krdict:kor:15404:단어",
-		Hangul:        "갇히다",
-		Pronunciation: "가치다",
-		AudioURL:      "http://dicmedia.korean.go.kr:8899/multimedia/sound_file/giyeok_2005/gachida.wav",
+		Id:            "krdict:kor:82614:단어",
+		Hangul:        "탈퇴하다",
+		Hanja:         "脫退하다",
+		Pronunciation: "탈퇴하다",
+		AudioURL:      "http://dicmedia.korean.go.kr:8899/multimedia/sound_file/tieut_2005/taltoehada.wav",
 		Def: pkg.Translation{
-			Korean: "어떤 공간이나 상황에서 나가지 못하게 되다.",
+			Korean: "소속해 있던 조직이나 단체에서 관계를 끊고 나오다.",
 		},
+		Antonym: "가입하다",
 		Examples: []pkg.Translation{
 			{
-				Korean: "갇힌 몸.",
+				Korean: "신속히 탈퇴하다.",
 			},
 			{
-				Korean: "감옥에 갇히다.",
+				Korean: "나는 공부에 전념하기 위해 동아리에서 탈퇴했다.",
 			},
 		},
 	},

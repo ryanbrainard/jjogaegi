@@ -40,12 +40,22 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			},
 		}
 
+		exampleType := ""
 		examplesIter := xmlpath.MustCompile("Sense/SenseExample").Iter(entryNode)
 		for {
 			if !examplesIter.Next() {
 				break
 			}
 			exampleNode := examplesIter.Node()
+
+			nextExampleType := get(exampleNode, "feat[@att='type']/@val")
+			if nextExampleType == exampleType {
+				continue // choose one of each example type
+			}
+			if nextExampleType == "대화" {
+				continue
+			}
+			exampleType = nextExampleType
 
 			item.Examples = append(item.Examples, pkg.Translation{
 				Korean: get(exampleNode, "feat[@att='example']/@val"),
