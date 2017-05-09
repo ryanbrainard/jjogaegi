@@ -102,8 +102,9 @@ Here's how to export XML from the dictionary:
 1. [Create a login](https://krdict.korean.go.kr/login/privateForm).
 1. [Sign in](https://krdict.korean.go.kr/login/login).
 1. Search for a word and go to the entry. Be sure you are in the basic Korean dictionary, not the Korean-English dictionary.
-1. Click **단어장에 추가** and follow the prompts. Rinse and repeat.
-1. Click **내 정보 관리** and then the **내 단어장** tab.
+1. Click **단어장에 추가** and follow the prompts to add the word to a word book.
+1. Add more words.
+1. Click **내 정보 관리** and then go to the **내 단어장** tab.
 1. Select the words you want to export
 1. Click **단어장 내려받기**, choose **XML**, and **내려받기**.
 1. Go to the **사전 내려받기** tab.
@@ -113,7 +114,7 @@ Here's how to export XML from the dictionary:
 Now, you can use `jjogaegi` to convert the XML file into a TSV file for [Anki](https://apps.ankiweb.net/) . Make sure you have `jjogaegi` [installed](#installation) and run:
 
 ```sh
-$ cat input.xml | jjogaegi --parser krdict-xml --header 'tags: example' --audiodir /path/to/anki/media' > output.tsv
+$ cat input.xml | jjogaegi --parser krdict-xml --header 'tags: example' --audiodir '/path/to/anki/media' > output.tsv
 ```
 
 Let's break down this command a bit:
@@ -121,8 +122,8 @@ Let's break down this command a bit:
  - `cat input.xml |` prints the XML file and pipes it to the next command.
  - `jjogaegi` processes the XML with options:
      - `--parser krdict-xml` sets the parser for this dictionary.
-     - `--header 'tags: example'` [sets tags for Anki](https://apps.ankiweb.net/docs/manual.html#adding-tags).
-     - `--audiodir /path/to/anki/media'` sets the the directory to download audio files. See [Anki file locations](https://apps.ankiweb.net/docs/manual.html#files) for details on what this should be set to on your computer.
+     - `--header 'tags: example'` sets [tags for Anki](https://apps.ankiweb.net/docs/manual.html#adding-tags).
+     - `--audiodir '/path/to/anki/media'` sets the the directory to download audio files. See [Anki file locations](https://apps.ankiweb.net/docs/manual.html#files) for details on what this should be set to on your computer.
  - `> output.tsv` save the output to a file.
 
 Now, open Anki, go to **File**, **Import**, choose the TSV file and follow the wizard.
