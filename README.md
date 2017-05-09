@@ -1,4 +1,4 @@
-# 쪼개기
+# jjogaegi (쪼개기)
 
 Parses Korean vocabulary and formats items for easy importing from lists or dictionaries into [Quizlet](https://quizlet.com/), [Anki](http://ankisrs.net/), and other flashcard apps.
 
