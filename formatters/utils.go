@@ -47,7 +47,7 @@ func formatAudioTag(item *pkg.Item, options map[string]string) string {
 }
 
 func downloadAudio(url string, filename string) error {
-	log.Printf("download url=%q filename=%q", url, filename)
+	log.Printf("download type=audio url=%q filename=%q", url, filename)
 
 	resp, err := http.Get(url)
 	if err != nil {

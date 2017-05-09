@@ -1,14 +1,19 @@
 package parsers
 
 import (
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
-	"launchpad.net/xmlpath"
 	"log"
 	"strings"
+
+	"net/http"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
+	"golang.org/x/net/html"
+	"launchpad.net/xmlpath"
 )
 
-const SupportedLanguage = "kor"
+const supportedLanguage = "kor"
+const supportedLexicalUnit = "단어"
 
 func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 	rootNode, err := xmlpath.Parse(r)
@@ -17,8 +22,8 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 	}
 
 	lang := get(rootNode, "/LexicalResource/Lexicon/feat[@att='language']/@val")
-	if lang != SupportedLanguage {
-		log.Fatalf("Only %q supported.", SupportedLanguage)
+	if lang != supportedLanguage {
+		log.Fatalf("Only %q supported.", supportedLanguage)
 	}
 
 	entriesIter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(rootNode)
@@ -28,15 +33,23 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		}
 		entryNode := entriesIter.Node()
 
+		lexicalUnit := get(entryNode, "feat[@att='lexicalUnit']/@val")
+		if lexicalUnit != supportedLexicalUnit {
+			continue
+		}
+
+		entryId := get(entryNode, ".[@att='id']/@val")
+
 		item := &pkg.Item{
-			Id:            strings.Join([]string{"krdict", lang, get(entryNode, ".[@att='id']/@val"), get(entryNode, "feat[@att='lexicalUnit']/@val")}, ":"),
+			Id:            strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
 			Hangul:        get(entryNode, "Lemma/feat/@val"),
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),
 			AudioURL:      get(entryNode, "WordForm/feat[@att='sound']/@val"),
 			Antonym:       get(entryNode, "Sense/SenseRelation/feat[@val='반대말']/../feat[@att='lemma']/@val"),
 			Def: pkg.Translation{
-				Korean: get(entryNode, "Sense/feat[@att='definition']/@val"),
+				Korean:  get(entryNode, "Sense/feat[@att='definition']/@val"),
+				English: fetchEnglishDefinition(entryId),
 			},
 		}
 
@@ -71,11 +84,83 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 func get(node *xmlpath.Node, xpath string) string {
 	path := xmlpath.MustCompile(xpath)
 
-	//log.Printf("xpath=%q exists=%t", xpath, path.Exists(node))
-
 	if value, ok := path.String(node); ok {
 		return value
 	}
 
 	return ""
+}
+
+func fetchEnglishDefinition(entryId string) string {
+	url := "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=" + entryId
+
+	log.Printf("download type=eng url=%q", url)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Printf("download type=eng url=%q err=%q", url, err)
+		return ""
+	}
+	defer resp.Body.Close()
+
+	return extractEnglishDefinition(resp.Body)
+}
+
+func extractEnglishDefinition(r io.Reader) string {
+	z := html.NewTokenizer(r)
+	out := ""
+	stack := &tokenStack{}
+	processed := 0
+	for {
+		switch z.Next() {
+		case html.StartTagToken:
+			if string(z.Raw()) == `<p class="theme1 multiTrans manyLang6 transFont6" style="margin-bottom: 13px;">` {
+				stack.Push(z.Token())
+			}
+			if stack.Depth() > 0 && string(z.Raw()) == `<strong>` {
+				stack.Push(z.Token())
+			}
+			if string(z.Raw()) == `<p class="sub_p1 manyLang6 multiSenseDef defFont6" style="margin-left: 20px;line-height: 20px;">` {
+				stack.Push(z.Token())
+				out += " := "
+			}
+		case html.TextToken:
+			if stack.Depth() == 1 {
+				out += strings.Trim(string(z.Text()), " \n\t")
+			}
+		case html.EndTagToken:
+			if stack.Depth() > 0 && stack.Peek().Data == z.Token().Data {
+				stack.Pop()
+				processed++
+				if processed > 2 {
+					return out
+				}
+			}
+		case html.ErrorToken:
+			return out
+		}
+	}
+	return out
+}
+
+type tokenStack struct {
+	stack []html.Token
+}
+
+func (ts *tokenStack) Push(v html.Token) {
+	ts.stack = append(ts.stack, v)
+}
+
+func (ts *tokenStack) Pop() html.Token {
+	res := ts.stack[ts.Depth()-1]
+	ts.stack = ts.stack[:ts.Depth()-1]
+	return res
+}
+
+func (ts *tokenStack) Peek() html.Token {
+	return ts.stack[ts.Depth()-1]
+}
+
+func (ts *tokenStack) Depth() int {
+	return len(ts.stack)
 }
