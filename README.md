@@ -88,3 +88,7 @@ If set, string will be prepended to output
 Options for `--audiodir` flag:
 
 If set, audio will be downloaded into the directory specified
+
+# Disclaimer
+
+For personal use only. Do not use this tool for publishing copyrighted content. Respect copyright holders' rights of their content.
