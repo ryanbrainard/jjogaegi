@@ -1,13 +1,14 @@
 package formatters
 
 import (
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"path"
 	"strings"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
 func writeHeader(out io.Writer, options map[string]string) {
@@ -29,9 +30,9 @@ func formatHangulHanja(item *pkg.Item, options map[string]string) string {
 	}
 }
 
-func formatAudioTag(item *pkg.Item, options map[string]string) string {
+func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
 	if item.AudioURL == "" {
-		return ""
+		return "", nil
 	}
 
 	filename := item.AudioURL
@@ -39,11 +40,11 @@ func formatAudioTag(item *pkg.Item, options map[string]string) string {
 		filename = path.Base(item.AudioURL)
 		err := downloadAudio(item.AudioURL, path.Join(options[pkg.OPT_AUDIODIR], filename))
 		if err != nil {
-			log.Fatal(err)
+			return "", err
 		}
 	}
 
-	return "[sound:" + filename + "]"
+	return "[sound:" + filename + "]", nil
 }
 
 func downloadAudio(url string, filename string) error {

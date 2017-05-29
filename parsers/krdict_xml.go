@@ -7,6 +7,8 @@ import (
 
 	"net/http"
 
+	"fmt"
+
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"golang.org/x/net/html"
 	"launchpad.net/xmlpath"
@@ -15,15 +17,15 @@ import (
 const supportedLanguage = "kor"
 const supportedLexicalUnit = "단어"
 
-func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
+func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	rootNode, err := xmlpath.Parse(r)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	lang := get(rootNode, "/LexicalResource/Lexicon/feat[@att='language']/@val")
 	if lang != supportedLanguage {
-		log.Fatalf("Only %q supported.", supportedLanguage)
+		return fmt.Errorf("Only %q supported.", supportedLanguage)
 	}
 
 	entriesIter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(rootNode)
@@ -78,7 +80,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		items <- item
 	}
 
-	close(items)
+	return nil
 }
 
 func get(node *xmlpath.Node, xpath string) string {

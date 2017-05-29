@@ -2,12 +2,13 @@ package parsers
 
 import (
 	"bufio"
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
 	"strings"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
+func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	i := 0
 	rawTerms := []string{}
 	scanner := bufio.NewScanner(r)
@@ -38,7 +39,7 @@ func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]str
 		i++
 	}
 
-	close(items)
+	return nil
 }
 
 func SplitDefs(data []byte, atEOF bool) (advance int, token []byte, err error) {

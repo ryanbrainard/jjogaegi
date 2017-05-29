@@ -2,11 +2,12 @@ package parsers
 
 import (
 	"bufio"
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func ParseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
+func ParseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	scanner := bufio.NewScanner(r)
 
 	for scanner.Scan() {
@@ -20,5 +21,5 @@ func ParseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
 		}
 	}
 
-	close(items)
+	return nil
 }

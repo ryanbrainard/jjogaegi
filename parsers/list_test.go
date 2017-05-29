@@ -1,10 +1,11 @@
 package parsers
 
 import (
-	"github.com/ryanbrainard/jjogaegi/pkg"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseListWithBullet(t *testing.T) {

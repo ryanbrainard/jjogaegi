@@ -8,11 +8,13 @@ Parses Korean vocabulary and formats items for easy importing from lists or dict
 
 First install [Go](https://golang.org/doc/install) and then install `jjogaegi`:
 
-    $ go get github.com/ryanbrainard/jjogaegi
+    $ go get github.com/ryanbrainard/jjogaegi/cmd/jjogaegi
 
 ## Usage
 
 `jjogaegi` is a small, sharp UNIX-like tool. As such, it only reads from stdin and writes to stdout, so it can be used in a pipeline. Use a command like `cat` or `pbpaste` to input a file or the clipboard, and then use redirection (i.e. `>`) or `pbpaste` to output back to a file or the clipboard.
+
+This application also includes a [web interface](#web-interface) with a simplified set of options.
 
 #### File Based
 
@@ -88,6 +90,34 @@ If set, string will be prepended to output
 Options for `--audiodir` flag:
 
 If set, audio will be downloaded into the directory specified
+
+# Web Interface
+
+This application also has a web interface with a simplified set of options, which can easily be run locally or deployed to Heroku.
+
+## Running Locally
+
+Make sure you have [Go](http://golang.org/doc/install) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
+
+```sh
+$ go get -u github.com/ryanbrainard/jjogaegi
+$ cd $GOPATH/src/github.com/ryanbrainard/jjogaegi
+$ heroku local
+```
+
+Your app should now be running on [localhost:5000](http://localhost:5000/).
+
+## Deploying to Heroku
+
+```sh
+$ heroku create
+$ git push heroku master
+$ heroku open
+```
+
+or
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 # Examples
 

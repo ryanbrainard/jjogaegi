@@ -2,27 +2,31 @@ package formatters
 
 import (
 	"bytes"
+	"testing"
+
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestFormatCSV(t *testing.T) {
 	items, out := setupTestFormat()
-	FormatCSV(items, out, map[string]string{})
+	err := FormatCSV(items, out, map[string]string{})
+	assert.Nil(t, err)
 	assert.Equal(t, ",처리,處理,,,,handling,,k,e,,\n", out.String())
 }
 
 func TestFormatCSV_Header(t *testing.T) {
 	header := "tag: jjogaegi"
 	items, out := setupTestFormat()
-	FormatCSV(items, out, map[string]string{pkg.OPT_HEADER: header})
+	err := FormatCSV(items, out, map[string]string{pkg.OPT_HEADER: header})
+	assert.Nil(t, err)
 	assert.Equal(t, header+"\n,처리,處理,,,,handling,,k,e,,\n", out.String())
 }
 
 func TestFormatCSV_HanjaMerge(t *testing.T) {
 	items, out := setupTestFormat()
-	FormatCSV(items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
+	err := FormatCSV(items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
+	assert.Nil(t, err)
 	assert.Equal(t, ",처리 (處理),處理,,,,handling,,k,e,,\n", out.String())
 }
 

@@ -1,10 +1,11 @@
 package formatters
 
 import (
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func FormatTSV(items <-chan *pkg.Item, w io.Writer, options map[string]string) {
-	formatXSV(items, w, options, '\t')
+func FormatTSV(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+	return formatXSV(items, w, options, '\t')
 }

@@ -2,11 +2,12 @@ package formatters
 
 import (
 	"encoding/csv"
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"io"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, delim rune) {
+func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, delim rune) error {
 	writeHeader(w, options)
 	cw := csv.NewWriter(w)
 	cw.Comma = delim
@@ -21,12 +22,17 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			secondExample = item.Examples[1]
 		}
 
+		audioTag, err := formatAudioTag(item, options)
+		if err != nil {
+			return err
+		}
+
 		cw.Write([]string{
 			item.Id,
 			formatHangulHanja(item, options),
 			item.Hanja,
 			item.Pronunciation,
-			formatAudioTag(item, options),
+			audioTag,
 			item.Def.Korean,
 			item.Def.English,
 			item.Antonym,
@@ -37,4 +43,5 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 		})
 	}
 	cw.Flush()
+	return nil
 }
