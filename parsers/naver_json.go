@@ -4,20 +4,21 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/ryanbrainard/jjogaegi/pkg"
-	"golang.org/x/net/html"
 	"io"
 	"strings"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
+	"golang.org/x/net/html"
 )
 
 var callbackStartBytes = []byte("window.__jindo2_callback")
 var callbackEndByte = byte('(')
 
-func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]string) {
+func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	buf := bufio.NewReader(r)
 	header, err := buf.Peek(len(callbackStartBytes))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	if string(header) == string(callbackStartBytes) {
@@ -29,7 +30,7 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 	// read open bracket
 	_, err = dec.Token()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	for dec.More() {
@@ -37,7 +38,7 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		// decode an array value (Message)
 		err := dec.Decode(&page)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		for _, item := range page.Items {
@@ -67,10 +68,10 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 	// read closing bracket
 	_, err = dec.Token()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	close(items)
+	return nil
 }
 
 type NaverPage struct {

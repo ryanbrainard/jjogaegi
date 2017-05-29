@@ -1,0 +1,11 @@
+{
+  "name": "jjogaegi",
+  "description": "Korean Vocabulary Parser-Formatter",
+  "keywords": [
+    "korean",
+    "vocabulary",
+    "flashcard",
+    "go"
+  ],
+  "repository": "https://github.com/ryanbrainard/jjogaegi"
+}

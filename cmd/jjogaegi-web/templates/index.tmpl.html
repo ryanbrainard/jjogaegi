@@ -1,0 +1,68 @@
+<html>
+{{template "header.tmpl.html"}}
+<body>
+{{template "nav.tmpl.html"}}
+
+<div class="container">
+    <form method="post" action="">
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="parser">Parser</label>
+                {{ $selected := .Parser }} <!-- why needed? -->
+                <select class="form-control" id="parser" name="parser">
+                    <option></option>
+                    {{range $value, $label := .Capabilities.Parsers }}
+                    <option value="{{ $value }}" {{if (eq $value $selected) }}selected{{end}}>{{ $label }}</option>
+                    {{end}}
+                </select>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <label for="formatter">Formatter</label>
+                {{ $selected := .Formatter }} <!-- why needed? -->
+                <select class="form-control" id="formatter" name="formatter">
+                    {{range $value, $label := .Capabilities.Formatters }}
+                    <option value="{{ $value }}" {{if (eq $value $selected) }}selected{{end}}>{{ $label }}</option>
+                    {{end}}
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="input">Input</label>
+                <textarea class="form-control" id="input" name="input" rows="5">{{ .Input }}</textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <input type="submit" class="btn btn-primary" value="Process"/>
+            </div>
+        </div>
+    </form>
+
+    {{if .Error }}
+    <hr/>
+    <div class="row" id="error">
+        <div class="col-md-12">
+            <label>Error</label>
+            <pre class="text-danger">{{ .Error }}</pre>
+        </div>
+    </div>
+    {{end}}
+
+    {{if .Output }}
+    <hr/>
+    <div class="row" id="output">
+        <div class="col-md-12">
+            <label>Output</label>
+            <pre>{{ .Output }}</pre>
+        </div>
+    </div>
+    {{end}}
+</div>
+</body>
+</html>

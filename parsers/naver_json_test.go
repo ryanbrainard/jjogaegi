@@ -1,10 +1,11 @@
 package parsers
 
 import (
-	"github.com/ryanbrainard/jjogaegi/pkg"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/ryanbrainard/jjogaegi/pkg"
+	"github.com/stretchr/testify/assert"
 )
 
 var testItem = &pkg.Item{
