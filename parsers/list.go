@@ -14,6 +14,7 @@ func ParseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) e
 		line := scanner.Text()
 		hangul, def := splitHangul(line)
 		items <- &pkg.Item{
+			Id: sanitize(hangul),
 			Hangul: sanitize(hangul),
 			Def: pkg.Translation{
 				English: sanitize(def),

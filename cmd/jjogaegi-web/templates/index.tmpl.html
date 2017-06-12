@@ -58,8 +58,12 @@
     <hr/>
     <div class="row" id="output">
         <div class="col-md-12">
-            <label>Output</label>
-            <pre>{{ .Output }}</pre>
+          <label>Output</label>
+          <a download="jjogaegi-download.{{ .Formatter }}"
+             href="data:text/{{ .Formatter }},{{ .Output }}">
+             <span class="glyphicon glyphicon-download"></span>
+          </a>
+          <pre>{{ .Output }}</pre>
         </div>
     </div>
     {{end}}
