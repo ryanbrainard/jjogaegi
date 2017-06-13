@@ -16,6 +16,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 		return parsers.ParseNaverJSON
 	case "krdict-xml":
 		return parsers.ParseKrDictXML
+	case "memrise-list":
+		return parsers.ParseMemriseList
 	default:
 		return nil
 	}

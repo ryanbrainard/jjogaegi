@@ -92,10 +92,11 @@ type Capabilities struct {
 
 func (m *Model) init() {
 	m.Capabilities.Parsers = map[string]string{
-		"list":        "List",
-		"naver-table": "Naver Table",
-		"naver-json":  "Naver JSON",
-		"krdict-xml":  "KR Dict XML",
+		"list":         "List",
+		"naver-table":  "Naver Table",
+		"naver-json":   "Naver JSON",
+		"krdict-xml":   "KR Dict XML",
+		"memrise-list": "Memrise List",
 	}
 
 	m.Capabilities.Formatters = map[string]string{

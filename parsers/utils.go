@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"strings"
+	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
 var hangulRange = []rune("가힣")
@@ -43,4 +44,8 @@ func isHeader(term []rune, r rune) bool {
 
 func sanitize(s string) string {
 	return strings.TrimSpace(strings.Trim(s, cutSet))
+}
+
+func isMultiline(options map[string]string) bool {
+	return options[pkg.OPT_LINEBREAK] == pkg.OPT_LINEBREAK_MULTI
 }
