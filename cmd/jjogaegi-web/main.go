@@ -82,25 +82,9 @@ type Model struct {
 	Error        string
 	Parser       string `form:"parser"`
 	Formatter    string `form:"formatter"`
-	Capabilities Capabilities
-}
-
-type Capabilities struct {
-	Parsers    map[string]string
-	Formatters map[string]string
+	Capabilities cmd.Capabilities
 }
 
 func (m *Model) init() {
-	m.Capabilities.Parsers = map[string]string{
-		"list":         "List",
-		"naver-table":  "Naver Table",
-		"naver-json":   "Naver JSON",
-		"krdict-xml":   "KR Dict XML",
-		"memrise-list": "Memrise List",
-	}
-
-	m.Capabilities.Formatters = map[string]string{
-		"tsv": "TSV: Tab-Separated Values",
-		"csv": "CSV: Comma-Separated Values",
-	}
+	m.Capabilities = cmd.AppCapabilities
 }

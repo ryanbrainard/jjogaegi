@@ -6,6 +6,33 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
+type Capabilities struct {
+	Parsers    map[string]string
+	Formatters map[string]string
+}
+
+var AppCapabilities = Capabilities {
+	Formatters: map[string]string{
+		"list":         "List",
+		"naver-table":  "Naver Table",
+		"naver-json":   "Naver JSON",
+		"krdict-xml":   "KR Dict XML",
+		"memrise-list": "Memrise List",
+	},
+	Parsers: map[string]string{
+		"tsv": "TSV: Tab-Separated Values",
+		"csv": "CSV: Comma-Separated Values",
+	},
+}
+
+func Keys(m map[string]string) []string {
+	keys := []string{}
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
 func ParseOptParser(s string) pkg.ParseFunc {
 	switch s {
 	case "list":
