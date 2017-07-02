@@ -23,7 +23,8 @@
                 <label for="formatter">Formatter</label>
                 {{ $selected := .Formatter }} <!-- why needed? -->
                 <select class="form-control" id="formatter" name="formatter">
-                    {{range $value, $label := .Capabilities.Formatters }}
+                  <option></option>
+                  {{range $value, $label := .Capabilities.Formatters }}
                     <option value="{{ $value }}" {{if (eq $value $selected) }}selected{{end}}>{{ $label }}</option>
                     {{end}}
                 </select>
