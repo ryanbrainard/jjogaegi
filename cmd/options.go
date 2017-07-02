@@ -12,14 +12,14 @@ type Capabilities struct {
 }
 
 var AppCapabilities = Capabilities {
-	Formatters: map[string]string{
+	Parsers: map[string]string{
 		"list":         "List",
 		"naver-table":  "Naver Table",
 		"naver-json":   "Naver JSON",
 		"krdict-xml":   "KR Dict XML",
 		"memrise-list": "Memrise List",
 	},
-	Parsers: map[string]string{
+	Formatters: map[string]string{
 		"tsv": "TSV: Tab-Separated Values",
 		"csv": "CSV: Comma-Separated Values",
 	},
