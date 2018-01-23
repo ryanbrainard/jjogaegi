@@ -13,7 +13,7 @@ var fParser = flag.String("parser", "list", "type of parser for input [" + strin
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [" + strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|") + "]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
-var fAudiodir = flag.String("audiodir", "", "dir to download audio")
+var fMediadir = flag.String("mediadir", "", "dir to download media")
 
 func main() {
 	flag.Parse()
@@ -25,7 +25,7 @@ func main() {
 		map[string]string{
 			pkg.OPT_HANJA:    cmd.ParseOptHanja(*fHanja),
 			pkg.OPT_HEADER:   *fHeader,
-			pkg.OPT_AUDIODIR: *fAudiodir,
+			pkg.OPT_MEDIADIR: *fMediadir,
 		},
 	)
 	if err != nil {

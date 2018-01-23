@@ -36,9 +36,9 @@ func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
 	}
 
 	filename := item.AudioURL
-	if strings.HasPrefix(item.AudioURL, "http") && options[pkg.OPT_AUDIODIR] != "" {
+	if strings.HasPrefix(item.AudioURL, "http") && options[pkg.OPT_MEDIADIR] != "" {
 		filename = path.Base(item.AudioURL)
-		err := downloadAudio(item.AudioURL, path.Join(options[pkg.OPT_AUDIODIR], filename))
+		err := downloadMedia(item.AudioURL, path.Join(options[pkg.OPT_MEDIADIR], filename))
 		if err != nil {
 			return "", err
 		}
@@ -47,7 +47,25 @@ func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
 	return "[sound:" + filename + "]", nil
 }
 
-func downloadAudio(url string, filename string) error {
+// TODO: de-dupe
+func formatImageTag(item *pkg.Item, options map[string]string) (string, error) {
+	if item.ImageURL == "" {
+		return "", nil
+	}
+
+	filename := item.ImageURL
+	if strings.HasPrefix(item.ImageURL, "http") && options[pkg.OPT_MEDIADIR] != "" {
+		filename = path.Base(item.ImageURL)
+		err := downloadMedia(item.ImageURL, path.Join(options[pkg.OPT_MEDIADIR], filename))
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return "<img src=\"" + filename + "\">", nil
+}
+
+func downloadMedia(url string, filename string) error {
 	log.Printf("download type=audio url=%q filename=%q", url, filename)
 
 	resp, err := http.Get(url)

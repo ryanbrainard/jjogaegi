@@ -48,6 +48,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),
 			AudioURL:      get(entryNode, "WordForm/feat[@att='sound']/@val"),
+			ImageURL:      get(entryNode, "Sense/Multimedia/feat[@att='url']/@val"),
 			Antonym:       get(entryNode, "Sense/SenseRelation/feat[@val='반대말']/../feat[@att='lemma']/@val"),
 			Def: pkg.Translation{
 				Korean:  get(entryNode, "Sense/feat[@att='definition']/@val"),

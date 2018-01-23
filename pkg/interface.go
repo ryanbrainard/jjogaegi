@@ -10,6 +10,7 @@ type Item struct {
 	Hanja         string
 	Pronunciation string
 	AudioURL      string
+	ImageURL      string
 	Def           Translation
 	Antonym       string
 	Examples      []Translation
@@ -28,4 +29,4 @@ const OPT_HANJA = "hanja"
 const OPT_HANJA_NONE = "none"
 const OPT_HANJA_PARENTHESIS = "parens"
 const OPT_HEADER = "header"
-const OPT_AUDIODIR = "audiodir"
+const OPT_MEDIADIR = "mediadir"

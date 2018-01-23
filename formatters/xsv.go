@@ -27,6 +27,11 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			return err
 		}
 
+		imageTag, err := formatImageTag(item, options)
+		if err != nil {
+			return err
+		}
+
 		cw.Write([]string{
 			item.Id,
 			formatHangulHanja(item, options),
@@ -40,6 +45,7 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			firstExample.English,
 			secondExample.Korean,
 			secondExample.English,
+			imageTag,
 		})
 	}
 	cw.Flush()
