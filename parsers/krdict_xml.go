@@ -10,8 +10,8 @@ import (
 	"fmt"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
-	"golang.org/x/net/html"
 	"launchpad.net/xmlpath"
+	"os"
 )
 
 const supportedLanguage = "kor"
@@ -95,9 +95,7 @@ func get(node *xmlpath.Node, xpath string) string {
 }
 
 func fetchEnglishDefinition(entryId string) string {
-	url := "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=" + entryId
-
-	log.Printf("download type=eng url=%q", url)
+	url := fmt.Sprintf("https://krdict.korean.go.kr/api/view?key=%s&type_search=view&method=TARGET_CODE&part=word&q=%s&sort=dict&translated=y&trans_lang=1", os.Getenv("KRDICT_API_KEY"), entryId)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -110,60 +108,14 @@ func fetchEnglishDefinition(entryId string) string {
 }
 
 func extractEnglishDefinition(r io.Reader) string {
-	z := html.NewTokenizer(r)
-	out := ""
-	stack := &tokenStack{}
-	processed := 0
-	for {
-		switch z.Next() {
-		case html.StartTagToken:
-			if string(z.Raw()) == `<p class="theme1 multiTrans manyLang6 transFont6" style="margin-bottom: 13px;">` {
-				stack.Push(z.Token())
-			}
-			if stack.Depth() > 0 && string(z.Raw()) == `<strong>` {
-				stack.Push(z.Token())
-			}
-			if string(z.Raw()) == `<p class="sub_p1 manyLang6 multiSenseDef defFont6" style="margin-left: 20px;line-height: 20px;">` {
-				stack.Push(z.Token())
-				out += " := "
-			}
-		case html.TextToken:
-			if stack.Depth() == 1 {
-				out += strings.Trim(string(z.Text()), " \n\t")
-			}
-		case html.EndTagToken:
-			if stack.Depth() > 0 && stack.Peek().Data == z.Token().Data {
-				stack.Pop()
-				processed++
-				if processed > 2 {
-					return out
-				}
-			}
-		case html.ErrorToken:
-			return out
-		}
+	node, err := xmlpath.Parse(r)
+	if err != nil {
+		return ""
 	}
-	return out
-}
 
-type tokenStack struct {
-	stack []html.Token
-}
+	transPath := "/channel/item/word_info/sense_info/translation"
+	transWord := get(node, transPath + "/trans_word")
+	transDfn := get(node, transPath + "/trans_dfn")
 
-func (ts *tokenStack) Push(v html.Token) {
-	ts.stack = append(ts.stack, v)
-}
-
-func (ts *tokenStack) Pop() html.Token {
-	res := ts.stack[ts.Depth()-1]
-	ts.stack = ts.stack[:ts.Depth()-1]
-	return res
-}
-
-func (ts *tokenStack) Peek() html.Token {
-	return ts.stack[ts.Depth()-1]
-}
-
-func (ts *tokenStack) Depth() int {
-	return len(ts.stack)
+	return transWord + " := " + transDfn
 }

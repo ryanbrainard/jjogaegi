@@ -59,7 +59,7 @@ func TestParseKrDictOppositesXML(t *testing.T) {
 }
 
 func TestExtractEnglishDefinition(t *testing.T) {
-	in, err := os.Open("fixtures/kr_dict_en_15392.html")
+	in, err := os.Open("fixtures/kr_dict_en_15392.xml")
 	assert.Nil(t, err)
 
 	assert.Equal(t, "join; sign up := To join a group or sign up for goods and services.", extractEnglishDefinition(in))
