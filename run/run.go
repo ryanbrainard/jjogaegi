@@ -29,7 +29,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 
 	interceptors := []pkg.InterceptorFunc{
 		interceptors.GenerateNoteId,
-		interceptors.BackfillEnglishDefinition,
+		interceptors.KrDictEnhance,
 	}
 	intercepted := make(chan *pkg.Item)
 	g.Go(func() error {
