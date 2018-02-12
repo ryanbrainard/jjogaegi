@@ -68,8 +68,8 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			ImageTag:      imageTag,
 			Antonym:       get(entryNode, "Sense/SenseRelation/feat[@val='반대말']/../feat[@att='lemma']/@val"),
 			Def: pkg.Translation{
-				Korean:  get(entryNode, "Sense/feat[@att='definition']/@val"),
-				English: fetchEnglishDefinition(entryId),
+				Korean: get(entryNode, "Sense/feat[@att='definition']/@val"),
+				// English: def is fetcher in enhancer
 			},
 		}
 
@@ -109,32 +109,6 @@ func get(node *xmlpath.Node, xpath string) string {
 	}
 
 	return ""
-}
-
-func fetchEnglishDefinition(entryId string) string {
-	url := fmt.Sprintf("https://krdict.korean.go.kr/api/view?key=%s&type_search=view&method=TARGET_CODE&part=word&q=%s&sort=dict&translated=y&trans_lang=1", os.Getenv("KRDICT_API_KEY"), entryId)
-
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Printf("download type=eng url=%q err=%q", url, err)
-		return ""
-	}
-	defer resp.Body.Close()
-
-	return extractEnglishDefinition(resp.Body)
-}
-
-func extractEnglishDefinition(r io.Reader) string {
-	node, err := xmlpath.Parse(r)
-	if err != nil {
-		return ""
-	}
-
-	transPath := "/channel/item/word_info/sense_info/translation"
-	transWord := get(node, transPath+"/trans_word")
-	transDfn := get(node, transPath+"/trans_dfn")
-
-	return transWord + " := " + transDfn
 }
 
 func formatAudioTag(audioURL string, options map[string]string) (string, error) {

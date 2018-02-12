@@ -17,8 +17,8 @@ var xmlTestItems = []*pkg.Item{
 		Pronunciation: "가이파다",
 		AudioTag:      "[sound:gaipada.wav]",
 		Def: pkg.Translation{
-			Korean:  "단체에 들어가거나 상품 및 서비스를 받기 위해 계약을 하다.",
-			English: "join; sign up := To join a group or sign up for goods and services.",
+			Korean: "단체에 들어가거나 상품 및 서비스를 받기 위해 계약을 하다.",
+			// English: "join; sign up := To join a group or sign up for goods and services.",
 		},
 		Antonym: "탈퇴하다",
 		Examples: []pkg.Translation{
@@ -35,8 +35,8 @@ var xmlTestItems = []*pkg.Item{
 		Pronunciation: "탈퇴하다",
 		AudioTag:      "[sound:taltoehada.wav]",
 		Def: pkg.Translation{
-			Korean:  "소속해 있던 조직이나 단체에서 관계를 끊고 나오다.",
-			English: "withdraw; drop out; leave := To end one's relationship with an organization or group one had belonged to and leave.",
+			Korean: "소속해 있던 조직이나 단체에서 관계를 끊고 나오다.",
+			// English: "withdraw; drop out; leave := To end one's relationship with an organization or group one had belonged to and leave.",
 		},
 		Antonym: "가입하다",
 		Examples: []pkg.Translation{
@@ -59,11 +59,4 @@ func TestParseKrDictOppositesXML(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, xmlTestItems[0], <-items)
 	assert.Equal(t, xmlTestItems[1], <-items)
-}
-
-func TestExtractEnglishDefinition(t *testing.T) {
-	in, err := os.Open("fixtures/kr_dict_en_15392.xml")
-	assert.Nil(t, err)
-
-	assert.Equal(t, "join; sign up := To join a group or sign up for goods and services.", extractEnglishDefinition(in))
 }

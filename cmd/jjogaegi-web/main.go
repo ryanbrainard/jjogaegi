@@ -10,7 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ryanbrainard/jjogaegi/cmd"
-	"github.com/ryanbrainard/jjogaegi/pkg"
+	"github.com/ryanbrainard/jjogaegi/run"
 )
 
 func main() {
@@ -53,7 +53,7 @@ func main() {
 
 		output := &bytes.Buffer{}
 
-		err := pkg.Run(
+		err := run.Run(
 			strings.NewReader(m.Input),
 			output,
 			cmd.ParseOptParser(m.Parser),

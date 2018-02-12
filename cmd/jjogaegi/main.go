@@ -7,6 +7,7 @@ import (
 
 	"github.com/ryanbrainard/jjogaegi/cmd"
 	"github.com/ryanbrainard/jjogaegi/pkg"
+	"github.com/ryanbrainard/jjogaegi/run"
 )
 
 var fParser = flag.String("parser", "list", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
@@ -17,7 +18,7 @@ var fMediadir = flag.String("mediadir", "", "dir to download media")
 
 func main() {
 	flag.Parse()
-	err := pkg.Run(
+	err := run.Run(
 		os.Stdin,
 		os.Stdout,
 		cmd.ParseOptParser(*fParser),

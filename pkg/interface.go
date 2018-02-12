@@ -26,6 +26,8 @@ type ParseFunc func(reader io.Reader, items chan<- *Item, options map[string]str
 
 type FormatFunc func(items <-chan *Item, writer io.Writer, options map[string]string) error
 
+type InterceptorFunc func(item *Item, options map[string]string) error
+
 const OPT_HANJA = "hanja"
 const OPT_HANJA_NONE = "none"
 const OPT_HANJA_PARENTHESIS = "parens"
