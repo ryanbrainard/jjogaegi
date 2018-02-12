@@ -44,8 +44,6 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 
 		entryId := get(entryNode, ".[@att='id']/@val")
 
-		noteId := strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":")
-
 		audioURL := get(entryNode, "WordForm/feat[@att='sound']/@val")
 		audioTag, err := formatAudioTag(audioURL, options)
 		if err != nil {
@@ -59,8 +57,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		}
 
 		item := &pkg.Item{
-			NoteId:        noteId,
-			Id:            noteId,
+			Id:            strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
 			Hangul:        get(entryNode, "Lemma/feat/@val"),
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),

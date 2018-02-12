@@ -28,6 +28,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	})
 
 	interceptors := []pkg.InterceptorFunc{
+		interceptors.GenerateNoteId,
 		interceptors.BackfillEnglishDefinition,
 	}
 	intercepted := make(chan *pkg.Item)
