@@ -17,7 +17,7 @@ func BackfillEnglishDefinition(item *pkg.Item, options map[string]string) error 
 		return nil
 	}
 
-	if item.Def.English != "" {
+	if !(item.Def.English == "" || strings.TrimSpace(item.Def.English) == ":=") {
 		return nil
 	}
 
