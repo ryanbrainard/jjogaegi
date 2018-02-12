@@ -6,6 +6,7 @@ import (
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
 	"github.com/ryanbrainard/jjogaegi/pkg"
+	"golang.org/x/sync/errgroup"
 )
 
 func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc, options map[string]string) error {
@@ -17,36 +18,35 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		return fmt.Errorf("Missing or invalid formatter specified")
 	}
 
-	var err error // TODO: handle this with a channel??
+	var g errgroup.Group
 
 	parsed := make(chan *pkg.Item)
-	go func() {
-		err = parse(in, parsed, options)
+	g.Go(func() error {
+		err := parse(in, parsed, options)
 		close(parsed)
-	}()
+		return err
+	})
 
 	interceptors := []pkg.InterceptorFunc{
 		interceptors.BackfillEnglishDefinition,
 	}
 	intercepted := make(chan *pkg.Item)
-	go func() {
+	g.Go(func() error {
 		for item := range parsed {
 			for _, interceptor := range interceptors {
-				if err != nil {
-					break
+				if err := interceptor(item, options); err != nil {
+					return err
 				}
-				err = interceptor(item, options)
 			}
 			intercepted <- item
 		}
 		close(intercepted)
-	}()
-
-	// TODO: error handle
+		return nil
+	})
 
 	if err := format(intercepted, out, options); err != nil {
 		return err
 	}
 
-	return err
+	return g.Wait()
 }
