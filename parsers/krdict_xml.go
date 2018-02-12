@@ -114,8 +114,8 @@ func extractEnglishDefinition(r io.Reader) string {
 	}
 
 	transPath := "/channel/item/word_info/sense_info/translation"
-	transWord := get(node, transPath + "/trans_word")
-	transDfn := get(node, transPath + "/trans_dfn")
+	transWord := get(node, transPath+"/trans_word")
+	transDfn := get(node, transPath+"/trans_dfn")
 
 	return transWord + " := " + transDfn
 }

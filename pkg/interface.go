@@ -5,12 +5,15 @@ import (
 )
 
 type Item struct {
+	NoteId        string
 	Id            string
 	Hangul        string
 	Hanja         string
 	Pronunciation string
-	AudioURL      string
+	AudioURL      string // TODO: drop
+	AudioTag      string // TODO: drop
 	ImageURL      string
+	ImageTag      string
 	Def           Translation
 	Antonym       string
 	Examples      []Translation

@@ -31,6 +31,10 @@ func formatHangulHanja(item *pkg.Item, options map[string]string) string {
 }
 
 func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
+	if item.AudioTag != "" {
+		return item.AudioTag, nil
+	}
+
 	if item.AudioURL == "" {
 		return "", nil
 	}
@@ -49,6 +53,10 @@ func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
 
 // TODO: de-dupe
 func formatImageTag(item *pkg.Item, options map[string]string) (string, error) {
+	if item.ImageTag != "" {
+		return item.ImageTag, nil
+	}
+
 	if item.ImageURL == "" {
 		return "", nil
 	}

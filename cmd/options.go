@@ -11,8 +11,9 @@ type Capabilities struct {
 	Formatters map[string]string
 }
 
-var AppCapabilities = Capabilities {
+var AppCapabilities = Capabilities{
 	Parsers: map[string]string{
+		"tsv":          "TSV: Tab-Separated Values",
 		"list":         "List",
 		"naver-table":  "Naver Table",
 		"naver-json":   "Naver JSON",
@@ -35,6 +36,8 @@ func Keys(m map[string]string) []string {
 
 func ParseOptParser(s string) pkg.ParseFunc {
 	switch s {
+	case "tsv":
+		return parsers.ParseTSV
 	case "list":
 		return parsers.ParseList
 	case "naver-table":

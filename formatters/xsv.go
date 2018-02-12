@@ -22,17 +22,20 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			secondExample = item.Examples[1]
 		}
 
+		// TODO: move to parser
 		audioTag, err := formatAudioTag(item, options)
 		if err != nil {
 			return err
 		}
 
+		// TODO: move to parser
 		imageTag, err := formatImageTag(item, options)
 		if err != nil {
 			return err
 		}
 
 		cw.Write([]string{
+			item.NoteId,
 			item.Id,
 			formatHangulHanja(item, options),
 			item.Hanja,
