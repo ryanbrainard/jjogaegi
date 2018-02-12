@@ -10,8 +10,7 @@ import (
 
 var xmlTestItems = []*pkg.Item{
 	{
-		NoteId:        "krdict:kor:15392:단어",
-		Id:            "krdict:kor:15392:단어",
+		ExternalID:    "krdict:kor:15392:단어",
 		Hangul:        "가입하다",
 		Hanja:         "加入하다",
 		Pronunciation: "가이파다",
@@ -28,8 +27,7 @@ var xmlTestItems = []*pkg.Item{
 		},
 	},
 	{
-		NoteId:        "krdict:kor:82614:단어",
-		Id:            "krdict:kor:82614:단어",
+		ExternalID:    "krdict:kor:82614:단어",
 		Hangul:        "탈퇴하다",
 		Hanja:         "脫退하다",
 		Pronunciation: "탈퇴하다",

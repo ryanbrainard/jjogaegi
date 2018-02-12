@@ -55,9 +55,9 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 			}
 
 			items <- &pkg.Item{
-				Id:     strings.Join([]string{"naver", item.OriginEntryId}, ":"),
-				Hangul: hangulTerm,
-				Hanja:  hanjaTerm,
+				ExternalID: strings.Join([]string{"naver", item.OriginEntryId}, ":"),
+				Hangul:     hangulTerm,
+				Hanja:      hanjaTerm,
 				Def: pkg.Translation{
 					English: item.renderMeans()},
 				Examples: examples,

@@ -10,7 +10,7 @@ import (
 
 func TestBackfilEnglishDefinition(t *testing.T) {
 	item := &pkg.Item{
-		Id: "krdict:kor:15392:단어",
+		ExternalID: "krdict:kor:15392:단어",
 	}
 
 	err := BackfillEnglishDefinition(item, map[string]string{})

@@ -2,7 +2,6 @@ package parsers
 
 import (
 	"io"
-	"log"
 	"path"
 	"strings"
 
@@ -57,7 +56,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		}
 
 		item := &pkg.Item{
-			Id:            strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
+			ExternalID:    strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
 			Hangul:        get(entryNode, "Lemma/feat/@val"),
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),
@@ -139,8 +138,6 @@ func formatMediaTag(mediaURL string, format string, options map[string]string) (
 }
 
 func downloadMedia(mediaURL string, filename string) error {
-	log.Printf("download type=audio url=%q filename=%q", mediaURL, filename)
-
 	resp, err := http.Get(mediaURL)
 	if err != nil {
 		return err

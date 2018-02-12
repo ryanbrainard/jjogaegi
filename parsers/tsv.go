@@ -21,8 +21,8 @@ func ParseTSV(in io.Reader, items chan<- *pkg.Item, options map[string]string) e
 		}
 
 		item := &pkg.Item{
-			NoteId:        record[0],
-			Id:            record[1],
+			NoteID:        record[0],
+			ExternalID:    record[1],
 			Hangul:        record[2],
 			Hanja:         record[3],
 			Pronunciation: record[4],

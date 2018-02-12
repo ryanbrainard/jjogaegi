@@ -13,6 +13,6 @@ func TestParseMemriseList(t *testing.T) {
 	assert.Nil(t, err)
 	items := make(chan *pkg.Item, 100)
 	ParseMemriseList(in, items, map[string]string{})
-	assert.Equal(t, &pkg.Item{Id: "남성", Hangul: "남성", Def: pkg.Translation{English: "a man (not 남자)"}}, <-items)
-	assert.Equal(t, &pkg.Item{Id: "너희", Hangul: "너희", Def: pkg.Translation{English: "you, you guys"}}, <-items)
+	assert.Equal(t, &pkg.Item{ExternalID: "남성", Hangul: "남성", Def: pkg.Translation{English: "a man (not 남자)"}}, <-items)
+	assert.Equal(t, &pkg.Item{ExternalID: "너희", Hangul: "너희", Def: pkg.Translation{English: "you, you guys"}}, <-items)
 }

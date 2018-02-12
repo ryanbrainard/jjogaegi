@@ -5,8 +5,8 @@ import (
 )
 
 type Item struct {
-	NoteId        string
-	Id            string
+	NoteID        string
+	ExternalID    string
 	Hangul        string
 	Hanja         string
 	Pronunciation string

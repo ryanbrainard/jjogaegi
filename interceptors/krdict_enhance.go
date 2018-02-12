@@ -13,7 +13,7 @@ import (
 )
 
 func BackfillEnglishDefinition(item *pkg.Item, options map[string]string) error {
-	if !strings.HasPrefix(item.Id, "krdict") {
+	if !strings.HasPrefix(item.ExternalID, "krdict") {
 		return nil
 	}
 
@@ -22,7 +22,7 @@ func BackfillEnglishDefinition(item *pkg.Item, options map[string]string) error 
 	}
 
 	// format: strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":")
-	entryId := strings.Split(item.Id, ":")[2]
+	entryId := strings.Split(item.ExternalID, ":")[2]
 
 	item.Def.English = fetchEnglishDefinition(entryId)
 
