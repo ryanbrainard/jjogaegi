@@ -28,6 +28,10 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 		item.Def.English = getEnglishDefinition(entry)
 	}
 
+	if item.Grade == "" {
+		item.Grade = getWordGrade(entry)
+	}
+
 	return nil
 }
 
@@ -56,11 +60,15 @@ func getEnglishDefinition(node *xmlpath.Node) string {
 	return transWord + " := " + transDfn
 }
 
+func getWordGrade(node *xmlpath.Node) string {
+	return get(node, "/channel/item/word_info/word_grade")
+}
+
 func get(node *xmlpath.Node, xpath string) string {
 	path := xmlpath.MustCompile(xpath)
 
 	if value, ok := path.String(node); ok {
-		return value
+		return strings.TrimSpace(value)
 	}
 
 	return ""

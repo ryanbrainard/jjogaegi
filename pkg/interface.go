@@ -15,6 +15,7 @@ type Item struct {
 	Def           Translation
 	Antonym       string
 	Examples      []Translation
+	Grade         string
 }
 
 type Translation struct {

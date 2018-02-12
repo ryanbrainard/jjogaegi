@@ -11,6 +11,10 @@ import (
 )
 
 func TestKrDictEnhance(t *testing.T) {
+	if os.Getenv("KRDICT_API_KEY") == "" {
+		t.Skip("KRDICT_API_KEY not set")
+	}
+
 	item := &pkg.Item{
 		ExternalID: "krdict:kor:15392:단어",
 	}
@@ -18,12 +22,21 @@ func TestKrDictEnhance(t *testing.T) {
 	err := KrDictEnhance(item, map[string]string{})
 	assert.NoError(t, err)
 	assert.Equal(t, "join; sign up := To join a group or sign up for goods and services.", item.Def.English)
+	assert.Equal(t, "없음", item.Grade)
 }
-func TestExtractEnglishDefinition(t *testing.T) {
+func TestGetEnglishDefinition(t *testing.T) {
 	in, err := os.Open("../parsers/fixtures/kr_dict_en_15392.xml")
 	assert.Nil(t, err)
 	node, err := xmlpath.Parse(in)
 	assert.Nil(t, err)
 
 	assert.Equal(t, "join; sign up := To join a group or sign up for goods and services.", getEnglishDefinition(node))
+}
+func TestGetWordGrade(t *testing.T) {
+	in, err := os.Open("../parsers/fixtures/kr_dict_en_15392.xml")
+	assert.Nil(t, err)
+	node, err := xmlpath.Parse(in)
+	assert.Nil(t, err)
+
+	assert.Equal(t, "없음", getWordGrade(node))
 }

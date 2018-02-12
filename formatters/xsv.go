@@ -37,6 +37,7 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 			secondExample.Korean,
 			secondExample.English,
 			item.ImageTag,
+			item.Grade,
 		})
 	}
 	cw.Flush()

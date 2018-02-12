@@ -12,7 +12,7 @@ func TestFormatCSV(t *testing.T) {
 	items, out := setupTestFormat()
 	err := FormatCSV(items, out, map[string]string{})
 	assert.Nil(t, err)
-	assert.Equal(t, ",,처리,處理,,,,handling,,k,e,,,\n", out.String())
+	assert.Equal(t, ",,처리,處理,,,,handling,,k,e,,,,\n", out.String())
 }
 
 func TestFormatCSV_Header(t *testing.T) {
@@ -20,14 +20,14 @@ func TestFormatCSV_Header(t *testing.T) {
 	items, out := setupTestFormat()
 	err := FormatCSV(items, out, map[string]string{pkg.OPT_HEADER: header})
 	assert.Nil(t, err)
-	assert.Equal(t, header+"\n,,처리,處理,,,,handling,,k,e,,,\n", out.String())
+	assert.Equal(t, header+"\n,,처리,處理,,,,handling,,k,e,,,,\n", out.String())
 }
 
 func TestFormatCSV_HanjaMerge(t *testing.T) {
 	items, out := setupTestFormat()
 	err := FormatCSV(items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
 	assert.Nil(t, err)
-	assert.Equal(t, ",,처리 (處理),處理,,,,handling,,k,e,,,\n", out.String())
+	assert.Equal(t, ",,처리 (處理),處理,,,,handling,,k,e,,,,\n", out.String())
 }
 
 func setupTestFormat() (<-chan *pkg.Item, *bytes.Buffer) {
