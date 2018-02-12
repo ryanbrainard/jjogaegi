@@ -2,11 +2,6 @@ package formatters
 
 import (
 	"io"
-	"log"
-	"net/http"
-	"os"
-	"path"
-	"strings"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
@@ -28,66 +23,4 @@ func formatHangulHanja(item *pkg.Item, options map[string]string) string {
 	default:
 		return item.Hangul
 	}
-}
-
-func formatAudioTag(item *pkg.Item, options map[string]string) (string, error) {
-	if item.AudioTag != "" {
-		return item.AudioTag, nil
-	}
-
-	if item.AudioURL == "" {
-		return "", nil
-	}
-
-	filename := item.AudioURL
-	if strings.HasPrefix(item.AudioURL, "http") && options[pkg.OPT_MEDIADIR] != "" {
-		filename = path.Base(item.AudioURL)
-		err := downloadMedia(item.AudioURL, path.Join(options[pkg.OPT_MEDIADIR], filename))
-		if err != nil {
-			return "", err
-		}
-	}
-
-	return "[sound:" + filename + "]", nil
-}
-
-// TODO: de-dupe
-func formatImageTag(item *pkg.Item, options map[string]string) (string, error) {
-	if item.ImageTag != "" {
-		return item.ImageTag, nil
-	}
-
-	if item.ImageURL == "" {
-		return "", nil
-	}
-
-	filename := item.ImageURL
-	if strings.HasPrefix(item.ImageURL, "http") && options[pkg.OPT_MEDIADIR] != "" {
-		filename = path.Base(item.ImageURL)
-		err := downloadMedia(item.ImageURL, path.Join(options[pkg.OPT_MEDIADIR], filename))
-		if err != nil {
-			return "", err
-		}
-	}
-
-	return "<img src=\"" + filename + "\">", nil
-}
-
-func downloadMedia(url string, filename string) error {
-	log.Printf("download type=audio url=%q filename=%q", url, filename)
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	_, err = io.Copy(file, resp.Body)
-	return err
 }

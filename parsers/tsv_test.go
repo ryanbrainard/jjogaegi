@@ -22,9 +22,7 @@ func TestParseTSV(t *testing.T) {
 		Hangul:        "막상막하",
 		Hanja:         "莫上莫下",
 		Pronunciation: "막쌍마카",
-		AudioURL:      "",
 		AudioTag:      "[sound:makssangmaka.wav]",
-		ImageURL:      "",
 		ImageTag:      "<img src=\"paste-2512555868520.jpg\" />",
 		Def: pkg.Translation{
 			Korean:  "누가 더 나은지 가릴 수 없을 만큼 차이가 거의 없음.",

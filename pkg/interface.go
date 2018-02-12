@@ -10,9 +10,7 @@ type Item struct {
 	Hangul        string
 	Hanja         string
 	Pronunciation string
-	AudioURL      string // TODO: drop
-	AudioTag      string // TODO: drop
-	ImageURL      string
+	AudioTag      string
 	ImageTag      string
 	Def           Translation
 	Antonym       string
