@@ -3,6 +3,7 @@ package run
 import (
 	"fmt"
 	"io"
+	"runtime"
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -16,6 +17,11 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 
 	if format == nil {
 		return fmt.Errorf("Missing or invalid formatter specified")
+	}
+
+	parallelism := 1
+	if options[pkg.OPT_PARALLEL] == "true" {
+		parallelism = runtime.NumCPU()
 	}
 
 	var g errgroup.Group
@@ -32,18 +38,20 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		interceptors.KrDictEnhance,
 	}
 	intercepted := make(chan *pkg.Item)
-	g.Go(func() error {
-		for item := range parsed {
-			for _, interceptor := range interceptors {
-				if err := interceptor(item, options); err != nil {
-					return err
+	for p := 0; p < parallelism; p++ {
+		g.Go(func() error {
+			for item := range parsed {
+				for _, interceptor := range interceptors {
+					if err := interceptor(item, options); err != nil {
+						return err
+					}
 				}
+				intercepted <- item
 			}
-			intercepted <- item
-		}
-		close(intercepted)
-		return nil
-	})
+			close(intercepted)
+			return nil
+		})
+	}
 
 	if err := format(intercepted, out, options); err != nil {
 		return err

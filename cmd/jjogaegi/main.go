@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/ryanbrainard/jjogaegi/cmd"
@@ -15,6 +16,7 @@ var fFormatter = flag.String("formatter", "tsv", "type of formatter for output [
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
 var fMediadir = flag.String("mediadir", "", "dir to download media")
+var fParallel = flag.Bool("parallel", false, "process in parallel")
 
 func main() {
 	flag.Parse()
@@ -27,6 +29,7 @@ func main() {
 			pkg.OPT_HANJA:    cmd.ParseOptHanja(*fHanja),
 			pkg.OPT_HEADER:   *fHeader,
 			pkg.OPT_MEDIADIR: *fMediadir,
+			pkg.OPT_PARALLEL: strconv.FormatBool(*fParallel),
 		},
 	)
 	if err != nil {
