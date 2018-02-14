@@ -23,8 +23,7 @@ func ParseMemriseList(r io.Reader, items chan<- *pkg.Item, options map[string]st
 		def := line
 
 		items <- &pkg.Item{
-			ExternalID: sanitize(hangul),
-			Hangul:     sanitize(hangul),
+			Hangul: sanitize(hangul),
 			Def: pkg.Translation{
 				English: sanitize(def),
 			},

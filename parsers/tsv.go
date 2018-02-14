@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -20,29 +21,32 @@ func ParseTSV(in io.Reader, items chan<- *pkg.Item, options map[string]string) e
 			return err
 		}
 
+		if len(record) < 13 {
+			return fmt.Errorf("Missing required fields (%d): %+v", len(record), record)
+		}
+
 		item := &pkg.Item{
 			NoteID:        record[0],
-			ExternalID:    record[1],
-			Hangul:        record[2],
-			Hanja:         record[3],
-			Pronunciation: record[4],
-			AudioTag:      record[5],
+			Hangul:        record[1],
+			Hanja:         record[2],
+			Pronunciation: record[3],
+			AudioTag:      record[4],
 			Def: pkg.Translation{
-				Korean:  record[6],
-				English: record[7],
+				Korean:  record[5],
+				English: record[6],
 			},
-			Antonym: record[8],
+			Antonym: record[7],
 			Examples: []pkg.Translation{
 				{
-					Korean:  record[9],
-					English: record[10],
+					Korean:  record[8],
+					English: record[9],
 				},
 				{
-					Korean:  record[11],
-					English: record[12],
+					Korean:  record[10],
+					English: record[11],
 				},
 			},
-			ImageTag: record[13],
+			ImageTag: record[12],
 		}
 
 		items <- item

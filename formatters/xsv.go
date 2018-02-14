@@ -24,7 +24,6 @@ func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, d
 
 		cw.Write([]string{
 			item.NoteID,
-			item.ExternalID,
 			formatHangulHanja(item, options),
 			item.Hanja,
 			item.Pronunciation,

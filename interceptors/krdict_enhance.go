@@ -13,7 +13,7 @@ import (
 
 func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 	// format: strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":")
-	idSplit := strings.Split(item.ExternalID, ":")
+	idSplit := strings.Split(item.NoteID, ":")
 	if len(idSplit) != 4 || idSplit[0] != "krdict" {
 		return nil
 	}
