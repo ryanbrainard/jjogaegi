@@ -6,11 +6,9 @@ import (
 )
 
 func GenerateNoteId(item *pkg.Item, options map[string]string) error {
-	if item.NoteID != "" {
-		return nil
+	if item.NoteID == "" {
+		item.NoteID = uuid.New().String()
 	}
-
-	item.NoteID = uuid.New().String()
 
 	return nil
 }

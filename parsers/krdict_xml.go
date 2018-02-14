@@ -56,7 +56,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		}
 
 		item := &pkg.Item{
-			NoteID:        strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
+			ExternalID:    strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
 			Hangul:        get(entryNode, "Lemma/feat/@val"),
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),

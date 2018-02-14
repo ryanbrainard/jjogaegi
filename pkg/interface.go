@@ -6,6 +6,7 @@ import (
 
 type Item struct {
 	NoteID        string
+	ExternalID    string
 	Hangul        string
 	Hanja         string
 	Pronunciation string

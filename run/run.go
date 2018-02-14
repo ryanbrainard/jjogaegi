@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"runtime"
-	"sync"
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -18,11 +17,6 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 
 	if format == nil {
 		return fmt.Errorf("Missing or invalid formatter specified")
-	}
-
-	interceptors := []pkg.InterceptorFunc{
-		interceptors.GenerateNoteId,
-		interceptors.KrDictEnhance,
 	}
 
 	parallelism := 1
@@ -39,9 +33,10 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		return err
 	})
 
-	var iwg sync.WaitGroup
-	iwg.Add(parallelism)
-
+	interceptors := []pkg.InterceptorFunc{
+		interceptors.GenerateNoteId,
+		interceptors.KrDictEnhance,
+	}
 	intercepted := make(chan *pkg.Item)
 	for p := 0; p < parallelism; p++ {
 		g.Go(func() error {
@@ -53,15 +48,10 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 				}
 				intercepted <- item
 			}
-			iwg.Done()
+			close(intercepted)
 			return nil
 		})
 	}
-
-	go func() {
-		iwg.Wait()
-		close(intercepted)
-	}()
 
 	if err := format(intercepted, out, options); err != nil {
 		return err

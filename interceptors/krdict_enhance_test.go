@@ -16,7 +16,7 @@ func TestKrDictEnhance(t *testing.T) {
 	}
 
 	item := &pkg.Item{
-		NoteID: "krdict:kor:15392:단어",
+		ExternalID: "krdict:kor:15392:단어",
 	}
 
 	err := KrDictEnhance(item, map[string]string{})

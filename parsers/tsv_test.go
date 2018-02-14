@@ -17,7 +17,8 @@ func TestParseTSV(t *testing.T) {
 	assert.Nil(t, err)
 
 	expected := &pkg.Item{
-		NoteID:        "krdict:kor:50010:단어",
+		NoteID:        "1517799325880",
+		ExternalID:    "krdict:kor:50010:단어",
 		Hangul:        "막상막하",
 		Hanja:         "莫上莫下",
 		Pronunciation: "막쌍마카",
@@ -41,4 +42,5 @@ func TestParseTSV(t *testing.T) {
 	}
 
 	assert.Equal(t, expected, <-items)
+
 }
