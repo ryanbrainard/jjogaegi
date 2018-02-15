@@ -24,11 +24,51 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 		return err
 	}
 
-	if item.Def.English == "" || strings.TrimSpace(item.Def.English) == ":=" {
+	if item.Hangul == "" {
+		item.Hangul = get(entry, "/channel/item/word_info/word")
+	}
+
+	if item.Hanja == "" {
+		item.Hanja = get(entry, "/channel/item/word_info/original_language_info[language_type='한자']/original_language")
+	}
+
+	if item.Pronunciation == "" {
+		item.Pronunciation = get(entry, "/channel/item/word_info/pronunciation_info/pronunciation")
+	}
+
+	// TODO: broken because missing
+	// if item.AudioTag == "" {
+	// }
+
+	if item.Def.Korean == "" {
+		item.Def.Korean = get(entry, "/channel/item/word_info/sense_info/definition")
+	}
+
+	if item.Def.English == "" {
 		item.Def.English = getEnglishDefinition(entry)
 	}
 
-	if item.Grade == "" {
+	if item.Antonym == "" {
+		item.Antonym = get(entry, "/channel/item/word_info/sense_info/rel_info[type='반대말']/word")
+	}
+
+	if item.Examples == nil {
+		item.Examples = []pkg.Translation{}
+	}
+
+	if len(item.Examples) == 0 {
+		if example := getExample(entry, "구"); example != nil {
+			item.Examples = append(item.Examples, *example)
+		}
+	}
+
+	if len(item.Examples) == 1 {
+		if example := getExample(entry, "문장"); example != nil {
+			item.Examples = append(item.Examples, *example)
+		}
+	}
+
+	if item.Grade == "" || item.Grade == "없음" {
 		item.Grade = getWordGrade(entry)
 	}
 
@@ -61,7 +101,30 @@ func getEnglishDefinition(node *xmlpath.Node) string {
 }
 
 func getWordGrade(node *xmlpath.Node) string {
-	return get(node, "/channel/item/word_info/word_grade")
+	grade := get(node, "/channel/item/word_info/word_grade")
+	switch grade {
+	case "없음":
+		return ""
+	default:
+		// TODO: consider changing to numbers
+		return grade
+	}
+}
+
+func getExample(node *xmlpath.Node, exampleType string) *pkg.Translation {
+	examplesIter := xmlpath.MustCompile("/channel/item/word_info/sense_info/example_info").Iter(node)
+	for {
+		if !examplesIter.Next() {
+			break
+		}
+
+		exampleNode := examplesIter.Node()
+
+		if get(exampleNode, "type") == exampleType {
+			return &pkg.Translation{Korean: get(exampleNode, "example")}
+		}
+	}
+	return nil
 }
 
 func get(node *xmlpath.Node, xpath string) string {
