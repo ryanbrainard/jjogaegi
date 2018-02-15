@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"runtime"
+	"sync"
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -36,8 +37,11 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	interceptors := []pkg.InterceptorFunc{
 		interceptors.GenerateNoteId,
 		interceptors.KrDictEnhance,
+		interceptors.MediaFormatting,
 	}
 	intercepted := make(chan *pkg.Item)
+	var iwg sync.WaitGroup
+	iwg.Add(parallelism)
 	for p := 0; p < parallelism; p++ {
 		g.Go(func() error {
 			for item := range parsed {
@@ -48,10 +52,15 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 				}
 				intercepted <- item
 			}
-			close(intercepted)
+			iwg.Done()
 			return nil
 		})
 	}
+
+	go func() {
+		iwg.Wait()
+		close(intercepted)
+	}()
 
 	if err := format(intercepted, out, options); err != nil {
 		return err
