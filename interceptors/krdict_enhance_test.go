@@ -51,6 +51,25 @@ var xmlTestItems = []*pkg.Item{
 			},
 		},
 	},
+	{
+		ExternalID:    "krdict:kor:71793:단어",
+		Hangul:        "참기름",
+		Pronunciation: "참기름",
+		Def: pkg.Translation{
+			Korean:  "참깨로 짠 기름.",
+			English: "sesame oil := The oil extracted from sesame seeds.",
+		},
+		Examples: []pkg.Translation{
+			{
+				Korean: "고소한 참기름.",
+			},
+			{
+				Korean: "이 참기름은 방앗간에서 직접 참깨로 짠 것이라서 그런지 맛과 향이 다른 것보다 더 고소하다.",
+			},
+		},
+		Grade:    "중급",
+		ImageTag: "http://dicmedia.korean.go.kr:8899/multimedia/multimedia_files/convert/20150929/201390/PIC000197671_105X105.jpg",
+	},
 }
 
 func TestKrDictEnhance(t *testing.T) {

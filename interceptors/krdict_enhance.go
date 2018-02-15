@@ -68,6 +68,12 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 		}
 	}
 
+	if item.ImageTag == "" {
+		// TODO: why isn't filter working?
+		// get(entry, "/channel/item/word_info/sense_info/multimedia_info[type='사진']/link")
+		item.ImageTag = get(entry, "/channel/item/word_info/sense_info/multimedia_info/link")
+	}
+
 	if item.Grade == "" || item.Grade == "없음" {
 		item.Grade = getWordGrade(entry)
 	}
