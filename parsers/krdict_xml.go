@@ -2,7 +2,6 @@ package parsers
 
 import (
 	"io"
-	"strings"
 
 	"fmt"
 
@@ -39,7 +38,7 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 		entryId := get(entryNode, ".[@att='id']/@val")
 
 		item := &pkg.Item{
-			ExternalID:    strings.Join([]string{"krdict", lang, entryId, lexicalUnit}, ":"),
+			ExternalID:    pkg.KrDictID(lang, entryId, lexicalUnit),
 			Hangul:        get(entryNode, "Lemma/feat/@val"),
 			Hanja:         get(entryNode, "feat[@att='origin']/@val"),
 			Pronunciation: get(entryNode, "WordForm/feat[@att='pronunciation']/@val"),

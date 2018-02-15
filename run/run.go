@@ -36,6 +36,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 
 	interceptors := []pkg.InterceptorFunc{
 		interceptors.GenerateNoteId,
+		interceptors.KrDictLookup,
 		interceptors.KrDictEnhance,
 		interceptors.MediaFormatting,
 	}
@@ -44,6 +45,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	iwg.Add(parallelism)
 	for p := 0; p < parallelism; p++ {
 		g.Go(func() error {
+			defer iwg.Done()
 			for item := range parsed {
 				for _, interceptor := range interceptors {
 					if err := interceptor(item, options); err != nil {
@@ -52,7 +54,6 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 				}
 				intercepted <- item
 			}
-			iwg.Done()
 			return nil
 		})
 	}
