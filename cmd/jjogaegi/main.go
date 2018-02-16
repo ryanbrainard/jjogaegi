@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -11,6 +12,8 @@ import (
 	"github.com/ryanbrainard/jjogaegi/run"
 )
 
+var fIn = flag.String("in", "stdin", "filename to read as input")
+var fOut = flag.String("out", "stdout", "filename to write to as output")
 var fParser = flag.String("parser", "list", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
@@ -21,9 +24,35 @@ var fKrDictLookup = flag.Bool("lookup", false, "look up words in dictionary") //
 
 func main() {
 	flag.Parse()
-	err := run.Run(
-		os.Stdin,
-		os.Stdout,
+
+	var in io.ReadCloser
+	var err error
+	switch *fIn {
+	case "stdin":
+		in = os.Stdin
+	default:
+		if in, err = os.Open(*fIn); err != nil {
+			os.Stderr.WriteString(err.Error() + "\n")
+			os.Exit(2)
+		}
+		defer in.Close()
+	}
+
+	var out io.WriteCloser
+	switch *fOut {
+	case "stdout":
+		out = os.Stdout
+	default:
+		if out, err = os.Open(*fOut); err != nil {
+			os.Stderr.WriteString(err.Error() + "\n")
+			os.Exit(3)
+		}
+		defer out.Close()
+	}
+
+	err = run.Run(
+		in,
+		out,
 		cmd.ParseOptParser(*fParser),
 		cmd.ParseOptFormatter(*fFormatter),
 		map[string]string{
