@@ -30,8 +30,8 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 		return err
 	}
 
-	matchID := ""
 	resultsIntr := xmlpath.MustCompile("/channel/item").Iter(results)
+	choices := []*xmlpath.Node{}
 	for {
 		if !resultsIntr.Next() {
 			break
@@ -43,21 +43,18 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 			continue
 		}
 
-		if matchID != "" {
-			// TODO: interactive mode to choose
-			println("multiple results: ", item.Hangul)
-			return nil
-		}
-
-		matchID = pkg.KrDictID("kor", pkg.XpathString(result, "target_code"), "단어")
+		choices = append(choices, result)
 	}
 
-	if matchID == "" {
+	switch len(choices) {
+	case 0:
 		println("no results: ", item.Hangul)
-		return nil
+	case 1:
+		item.ExternalID = pkg.KrDictID("kor", pkg.XpathString(choices[0], "target_code"), "단어")
+	default:
+		println("multiple results: ", item.Hangul)
 	}
 
-	item.ExternalID = matchID
 	return nil
 }
 
