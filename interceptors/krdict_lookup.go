@@ -1,10 +1,12 @@
 package interceptors
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -12,7 +14,7 @@ import (
 )
 
 func KrDictLookup(item *pkg.Item, options map[string]string) error {
-	if options[pkg.OPT_KRDICT_LOOKUP] != "true" {
+	if options[pkg.OPT_LOOKUP] != "true" {
 		return nil
 	}
 
@@ -46,15 +48,26 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 		choices = append(choices, result)
 	}
 
+	var choiceIndex int
 	switch len(choices) {
 	case 0:
-		println("no results: ", item.Hangul)
+		lookupOut("No results found for %s. Skipping lookup.\n", item.Hangul)
+		return nil
 	case 1:
-		item.ExternalID = pkg.KrDictID("kor", pkg.XpathString(choices[0], "target_code"), "단어")
+		choiceIndex = 0
 	default:
-		println("multiple results: ", item.Hangul)
+		lookupOut("Multiple results found for %s:\n", item.Hangul)
+		for i, choice := range choices {
+			println("[lookup] ", i+1, ") ", pkg.XpathString(choice, "sense/translation/trans_word"))
+		}
+		if options[pkg.OPT_INTERACTIVE] == "true" {
+			choiceIndex = promptMultipleChoice(item, choices)
+		} else {
+			lookupOut("Skipping lookup. Set %s option to choose.\n\n", pkg.OPT_INTERACTIVE)
+		}
 	}
 
+	item.ExternalID = pkg.KrDictID("kor", pkg.XpathString(choices[choiceIndex], "target_code"), "단어")
 	return nil
 }
 
@@ -73,4 +86,28 @@ func search(q string) (*xmlpath.Node, error) {
 	defer resp.Body.Close()
 
 	return xmlpath.Parse(resp.Body)
+}
+
+func promptMultipleChoice(item *pkg.Item, choices []*xmlpath.Node) int {
+	for {
+		lookupOut("Enter number: ")
+		answerString, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil {
+			lookupOut("%s\n", err)
+			continue
+		}
+
+		answerNum, err := strconv.Atoi(strings.TrimSpace(answerString))
+		if err != nil || answerNum < 1 || answerNum > len(choices) {
+			lookupOut("Invalid number\n")
+			continue
+		}
+
+		lookupOut("\n")
+		return answerNum - 1
+	}
+}
+
+func lookupOut(format string, a ...interface{}) {
+	fmt.Fprintf(os.Stderr, "[lookup] "+format, a...)
 }
