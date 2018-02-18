@@ -18,10 +18,10 @@ var fParser = flag.String("parser", "list", "type of parser for input ["+strings
 var fFormatter = flag.String("formatter", "tsv", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
-var fMediadir = flag.String("mediadir", "", "dir to download media")
-var fParallel = flag.Bool("parallel", false, "process in parallel (records may be returned out of order)")
+var fMediadir = flag.String("mediadir", "", "dir to download media. alternatively set with ANKI_MEDIA_DIR env.")
+var fParallel = flag.Bool("parallel", false, "process in parallel. records may be returned out of order.")
 var fLookup = flag.Bool("lookup", false, "look up words in dictionary") // TODO: expand to allow custom lookup
-var fInteractive = flag.Bool("interactive", false, "allow interactive prompting")
+var fInteractive = flag.Bool("interactive", false, "interactive prompting. if used with stdin, automatically sets -parser and -lookup.")
 
 func main() {
 	flag.Parse()
@@ -31,8 +31,7 @@ func main() {
 	switch *fIn {
 	case "stdin":
 		if *fInteractive {
-			os.Stderr.WriteString("Cannot use interactive mode while reading from stdin. Set -in option for input from a file.\n")
-			os.Exit(4)
+			flag.Set("parser", "prompt")
 		}
 		in = os.Stdin
 	default:

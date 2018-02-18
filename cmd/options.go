@@ -40,6 +40,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 		return parsers.ParseTSV
 	case "list":
 		return parsers.ParseList
+	case "prompt": // hidden
+		return parsers.InteractivePrompt
 	case "naver-table":
 		return parsers.ParseNaverTable
 	case "naver-json":
