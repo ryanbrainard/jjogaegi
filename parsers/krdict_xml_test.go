@@ -49,7 +49,7 @@ var xmlTestItems = []*pkg.Item{
 }
 
 func TestParseKrDictOppositesXML(t *testing.T) {
-	in, err := os.Open("fixtures/kr_dict_opposites.xml")
+	in, err := os.Open("../testing/fixtures/kr_dict_opposites.xml")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)

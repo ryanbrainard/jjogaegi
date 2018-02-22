@@ -9,7 +9,7 @@ import (
 )
 
 func TestParseTSV(t *testing.T) {
-	in, err := os.Open("fixtures/anki.tsv")
+	in, err := os.Open("../testing/fixtures/anki.tsv")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)

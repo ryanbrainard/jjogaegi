@@ -28,7 +28,7 @@ func TestKrDictEnhance(t *testing.T) {
 	}
 }
 func TestGetEnglishDefinition(t *testing.T) {
-	in, err := os.Open("../parsers/fixtures/kr_dict_en_15392.xml")
+	in, err := os.Open("../testing/fixtures/kr_dict_en_15392.xml")
 	assert.Nil(t, err)
 	node, err := xmlpath.Parse(in)
 	assert.Nil(t, err)
@@ -36,7 +36,7 @@ func TestGetEnglishDefinition(t *testing.T) {
 	assert.Equal(t, "join; sign up := To join a group or sign up for goods and services.", getEnglishDefinition(node))
 }
 func TestGetWordGrade(t *testing.T) {
-	in, err := os.Open("../parsers/fixtures/kr_dict_en_15392-mod.xml")
+	in, err := os.Open("../testing/fixtures/kr_dict_en_15392-mod.xml")
 	assert.Nil(t, err)
 	node, err := xmlpath.Parse(in)
 	assert.Nil(t, err)

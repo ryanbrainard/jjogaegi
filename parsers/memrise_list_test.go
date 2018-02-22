@@ -9,7 +9,7 @@ import (
 )
 
 func TestParseMemriseList(t *testing.T) {
-	in, err := os.Open("fixtures/memrise_list.txt")
+	in, err := os.Open("../testing/fixtures/memrise_list.txt")
 	assert.Nil(t, err)
 	items := make(chan *pkg.Item, 100)
 	ParseMemriseList(in, items, map[string]string{})
