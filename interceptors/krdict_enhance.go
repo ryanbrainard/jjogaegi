@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -19,7 +18,7 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 	}
 	entryID := idSplit[2]
 
-	entry, err := fetchEntryNode(entryID)
+	entry, err := fetchEntryNode(entryID, options)
 	if err != nil {
 		return err
 	}
@@ -77,12 +76,21 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 	return nil
 }
 
-func fetchEntryNode(entryID string) (*xmlpath.Node, error) {
-	if os.Getenv("KRDICT_API_KEY") == "" {
-		panic("KRDICT_API_KEY not set.")
+func fetchEntryNode(entryID string, options map[string]string) (*xmlpath.Node, error) {
+	if options[pkg.OPT_KRDICT_API_URL] == "" {
+		panic("KRDICT_API_URL not set.") // TODO: require here?
 	}
 
-	url := fmt.Sprintf("https://krdict.korean.go.kr/api/view?key=%s&type_search=view&method=TARGET_CODE&part=word&q=%s&sort=dict&translated=y&trans_lang=1", os.Getenv("KRDICT_API_KEY"), entryID)
+	if options[pkg.OPT_KRDICT_API_KEY] == "" {
+		panic("KRDICT_API_KEY not set.") // TODO: require here?
+	}
+
+	url := fmt.Sprintf(
+		"%s/api/view?key=%s&type_search=view&method=TARGET_CODE&part=word&q=%s&sort=dict&translated=y&trans_lang=1",
+		options[pkg.OPT_KRDICT_API_URL],
+		options[pkg.OPT_KRDICT_API_KEY],
+		entryID,
+	)
 
 	resp, err := http.Get(url)
 	if err != nil {
