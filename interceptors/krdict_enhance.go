@@ -77,14 +77,6 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 }
 
 func fetchEntryNode(entryID string, options map[string]string) (*xmlpath.Node, error) {
-	if options[pkg.OPT_KRDICT_API_URL] == "" {
-		panic("KRDICT_API_URL not set.") // TODO: require here?
-	}
-
-	if options[pkg.OPT_KRDICT_API_KEY] == "" {
-		panic("KRDICT_API_KEY not set.") // TODO: require here?
-	}
-
 	url := fmt.Sprintf(
 		"%s/api/view?key=%s&type_search=view&method=TARGET_CODE&part=word&q=%s&sort=dict&translated=y&trans_lang=1",
 		options[pkg.OPT_KRDICT_API_URL],

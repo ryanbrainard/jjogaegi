@@ -26,9 +26,9 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		parallelism = runtime.NumCPU()
 	}
 
-	setEnvOpt(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY", "")
-	setEnvOpt(options, pkg.OPT_KRDICT_API_URL, "KRDICT_API_URL", "https://krdict.korean.go.kr")
-	setEnvOpt(options, pkg.OPT_MEDIADIR, "ANKI_MEDIA_DIR", "")
+	setEnvOptOrPanic(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY")
+	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_URL, "KRDICT_API_URL", "https://krdict.korean.go.kr")
+	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "ANKI_MEDIA_DIR", "")
 
 	var g errgroup.Group
 
@@ -75,7 +75,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	return g.Wait()
 }
 
-func setEnvOpt(options map[string]string, optKey, envKey, orDefault string) {
+func setEnvOptOrDefault(options map[string]string, optKey, envKey, orDefault string) {
 	if options[optKey] == "" {
 		if envValue := os.Getenv(envKey); envValue != "" {
 			options[optKey] = envValue
@@ -83,4 +83,12 @@ func setEnvOpt(options map[string]string, optKey, envKey, orDefault string) {
 			options[optKey] = orDefault
 		}
 	}
+}
+
+func setEnvOptOrPanic(options map[string]string, optKey, envKey string) {
+	if options[optKey] == "" && os.Getenv(envKey) == "" {
+		panic(fmt.Sprintf("%s env must be set", envKey))
+
+	}
+	setEnvOptOrDefault(options, optKey, envKey, "")
 }

@@ -17,7 +17,6 @@ func TestKrDictEnhance(t *testing.T) {
 	defer ts.Close()
 	options := map[string]string {
 		pkg.OPT_KRDICT_API_URL: ts.URL,
-		pkg.OPT_KRDICT_API_KEY: "dummy-key",
 	}
 
 	for i, expectedItem := range xmlTestItems {

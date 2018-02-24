@@ -15,7 +15,11 @@ func NewKrdictMockServer() *httptest.Server {
 		case "/api/view":
 			// TODO: test other query params
 			filename = "kr_dict_en_" + r.URL.Query().Get("q") + ".xml"
+		case "/api/search":
+			// TODO: test other query params
+			filename = "kr_dict_en_search_"  + r.URL.Query().Get("q") + ".xml"
 		case "/multimedia/multimedia_files/convert/20150929/201390/dummy.jpg":
+			// TODO: more generic?
 			filename = "dummy.jpg"
 		}
 
