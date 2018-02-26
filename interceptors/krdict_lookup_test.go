@@ -29,10 +29,15 @@ func TestKrDictLookup(t *testing.T) {
 		{
 			name:         "no results",
 			lookup:       true,
-			interactive:  false,
 			item:         &pkg.Item{Hangul: "라이언"},
 			expectedItem: &pkg.Item{Hangul: "라이언"},
 			expectedOut:  "No results found for 라이언. Skipping lookup.\n",
+		},
+		{
+			name:         "one result",
+			lookup:       true,
+			item:         &pkg.Item{Hangul: "안경"},
+			expectedItem: &pkg.Item{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
 		},
 		{
 			name:         "multiple results/lookup/non-interactive",
