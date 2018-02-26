@@ -74,7 +74,7 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 		if options[pkg.OPT_INTERACTIVE] == "true" {
 			choiceIndex = promptMultipleChoice(in, out, item, choices)
 		} else {
-			fmt.Fprintf(out, "Skipping lookup. Set %s option to choose.\n\n", pkg.OPT_INTERACTIVE)
+			fmt.Fprintf(out, "Skipping lookup. Set %s option to choose.\n", pkg.OPT_INTERACTIVE)
 			return nil
 		}
 	}
