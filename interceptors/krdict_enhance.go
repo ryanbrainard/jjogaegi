@@ -1,6 +1,7 @@
 package interceptors
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -90,6 +91,10 @@ func fetchEntryNode(entryID string, options map[string]string) (*xmlpath.Node, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Non-200 viewing KR DICT API")
+	}
 
 	return xmlpath.Parse(resp.Body)
 }

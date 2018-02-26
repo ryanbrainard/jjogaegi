@@ -2,9 +2,9 @@ package interceptors
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -88,10 +88,13 @@ func search(q string, options map[string]string) (*xmlpath.Node, error) {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Printf("search type=eng url=%q err=%q", url, err)
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Non-200 searching KR DICT API")
+	}
 
 	return xmlpath.Parse(resp.Body)
 }

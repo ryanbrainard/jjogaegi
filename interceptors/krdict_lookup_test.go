@@ -27,6 +27,14 @@ func TestKrDictLookup(t *testing.T) {
 
 	cases := []krDictLookupTestCase{
 		{
+			name:         "no results",
+			lookup:       true,
+			interactive:  false,
+			item:         &pkg.Item{Hangul: "라이언"},
+			expectedItem: &pkg.Item{Hangul: "라이언"},
+			expectedOut:  "No results found for 라이언. Skipping lookup.\n",
+		},
+		{
 			name:         "multiple results/lookup/non-interactive",
 			lookup:       true,
 			interactive:  false,
