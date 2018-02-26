@@ -12,7 +12,6 @@ import (
 )
 
 func TestMediaFormatting(t *testing.T) {
-	// TODO: consider making this also hit real server
 	ts := mocks.NewKrdictMockServer()
 	defer ts.Close()
 

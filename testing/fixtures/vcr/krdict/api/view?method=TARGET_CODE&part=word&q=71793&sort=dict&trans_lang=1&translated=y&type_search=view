@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<channel>
+	<title>한국어 기초사전 개발 지원(Open API) - 사전 내용 검색</title>
+	<link>https://krdict.korean.go.kr/dicSearch/SearchView?ParaWordNo=71793</link>
+	<description>한국어 기초사전 개발 지원(Open API) - 사전 내용 검색 결과</description>
+	<lastBuildDate>20180226211308</lastBuildDate> 
+	<total>1</total>
+	
+	<item>
+		<target_code>71793</target_code>
+		<word_info>
+			<word>참기름</word>
+			<sup_no>0</sup_no>
+			<word_unit>
+				
+				단어
+				
+				
+				
+			</word_unit>
+			<pos>명사</pos>
+			<word_type>
+				
+				고유어
+				
+				
+				
+				
+			</word_type>
+			
+			
+			
+			<pronunciation_info>
+				<pronunciation>참기름</pronunciation>
+			</pronunciation_info>
+			
+			
+			
+			<pos>명사</pos>
+			
+			
+			<word_grade>
+				
+				
+				
+				중급
+				
+				
+			</word_grade>
+			
+			
+			<category_info>
+				<type>의미 범주</type>
+				<written_form>식생활 &gt; 식재료</written_form>
+			</category_info>			
+			
+			
+			
+			
+			<category_info>
+				<type>주제 및 상황 범주</type>
+				<written_form>요리 설명하기</written_form>
+			</category_info>			
+			
+			
+			
+			
+			
+			
+			<sense_info>
+				<definition>참깨로 짠 기름.</definition>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<translation>
+					<trans_lang>
+					
+					
+					
+					
+					
+					
+					영어
+					
+					
+					
+					
+					
+					</trans_lang>
+					<trans_word>sesame oil</trans_word>
+					<trans_dfn>The oil extracted from sesame seeds.</trans_dfn>
+				</translation>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<reference></reference>
+				
+				
+				
+				
+				
+				<example_info>
+					<type>
+						
+						
+						문장
+						
+						
+					</type>
+					<example>이 참기름은 방앗간에서 직접 참깨로 짠 것이라서 그런지 맛과 향이 다른 것보다 더 고소하다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						
+						문장
+						
+						
+					</type>
+					<example>참기름이 다 떨어져서 어쩔 수 없이 나물을 그냥 무쳤더니 확실히 고소한 맛이 덜했다. </example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						
+						
+						대화
+						
+					</type>
+					<example>참기름을 좀 넣을까요?</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						
+						
+						대화
+						
+					</type>
+					<example>너무 많이 넣으면 느끼하니까 적당히 넣어.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>고소한 참기름.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름 냄새.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름을 넣다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름을 두르다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름을 바르다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름을 짜다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름을 치다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름에 볶다.</example>
+				</example_info>
+				
+				
+				
+				<example_info>
+					<type>
+						
+						구
+						
+						
+						
+					</type>
+					<example>참기름으로 양념하다.</example>
+				</example_info>
+				
+				
+				
+				
+				
+				
+				<rel_info>
+					<word>들기름</word>
+					<type>참고어</type>
+					<link_type>C</link_type>
+					
+					<link_target_code>50567</link_target_code>
+					<link>https://krdict.korean.go.kr/dicSearch/SearchView?ParaWordNo=50567</link>
+					
+				</rel_info>
+				
+				
+				
+				
+				
+				
+				<multimedia_info>
+					<label>참기름</label>
+					<type>
+						
+						
+						사진
+						
+						
+						
+						
+					</type>
+					<link>http://dicmedia.korean.go.kr:8899/multimedia/multimedia_files/convert/20150929/201390/PIC000197671_105X105.jpg</link>
+				</multimedia_info>
+				
+				
+				
+			</sense_info>
+			
+			
+			
+		</word_info>
+	</item>
+	
+</channel>    
+
+

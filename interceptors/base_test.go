@@ -62,6 +62,6 @@ var xmlTestItems = []*pkg.Item{
 			},
 		},
 		Grade:    "중급",
-		ImageTag: "http://dicmedia.korean.go.kr:8899/multimedia/multimedia_files/convert/20150929/201390/dummy.jpg",
+		ImageTag: "http://dicmedia.korean.go.kr:8899/multimedia/multimedia_files/convert/20150929/201390/PIC000197671_105X105.jpg",
 	},
 }

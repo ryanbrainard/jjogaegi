@@ -1,42 +1,71 @@
 package testing
 
 import (
-	"os"
+	"io"
 	"net/http"
 	"net/http/httptest"
-	"io"
+	"os"
+	"path"
 )
 
 func NewKrdictMockServer() *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var filename string
-
-		switch r.URL.Path {
-		case "/api/view":
-			// TODO: test other query params
-			filename = "kr_dict_en_" + r.URL.Query().Get("q") + ".xml"
-		case "/api/search":
-			// TODO: test other query params
-			filename = "kr_dict_en_search_"  + r.URL.Query().Get("q") + ".xml"
-		case "/multimedia/multimedia_files/convert/20150929/201390/dummy.jpg":
-			// TODO: more generic?
-			filename = "dummy.jpg"
-		}
-
-		if filename == "" {
-			w.WriteHeader(404)
-			w.Write([]byte("Unknown path " + r.URL.Path))
+		if r.Method != "GET" {
+			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
 
-		// TODO: make path more resilient
-		fixture, err := os.Open("../testing/fixtures/" + filename)
-		if err != nil {
-			panic(err)
+		vcrFilename := "../testing/fixtures/vcr/krdict/" + r.URL.Path
+		vcrQuerty := r.URL.Query()
+		vcrQuerty.Del("key")
+		vcrFilename += "?" + vcrQuerty.Encode()
+
+		if os.Getenv("VCR_RECORD") == "true" {
+			r.URL.Scheme = "https"
+			r.URL.Host = "krdict.korean.go.kr"
+			vcrResponse, err := http.Get(r.URL.String())
+			if err != nil {
+				panic(err)
+			}
+			defer vcrResponse.Body.Close()
+
+			if vcrResponse.StatusCode != http.StatusOK {
+				panic(vcrResponse.Status)
+			}
+
+			// TODO: copy headers?
+
+			err = os.MkdirAll(path.Dir(vcrFilename), os.ModePerm)
+			if err != nil {
+				panic(err)
+			}
+
+			vcrFile, err := os.Create(vcrFilename)
+			if err != nil {
+				panic(err)
+			}
+			defer vcrFile.Close()
+
+			_, err = io.Copy(vcrFile, vcrResponse.Body)
+			if err != nil {
+				panic(err)
+			}
+
+			vcrFile.Close()
 		}
 
-		if _, err = io.Copy(w, fixture); err != nil {
-			panic(err)
+		vcrFile, err := os.Open(vcrFilename)
+		if err == nil {
+			defer vcrFile.Close()
+			_, err = io.Copy(w, vcrFile)
+			if err != nil {
+				panic(err)
+			}
+			return
 		}
+
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Unknown path " + r.URL.Path + ". Run with VCR_RECORD=true to record real responses"))
+		return
 	}))
 }

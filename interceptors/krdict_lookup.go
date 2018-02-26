@@ -3,6 +3,7 @@ package interceptors
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +14,13 @@ import (
 	"launchpad.net/xmlpath"
 )
 
-func KrDictLookup(item *pkg.Item, options map[string]string) error {
+func NewKrDictLookup(interactiveIn io.Reader, interactiveOut io.Writer) pkg.InterceptorFunc {
+	return func(item *pkg.Item, options map[string]string) error {
+		return krDictLookup(interactiveIn, interactiveOut, item, options)
+	}
+}
+
+func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[string]string) error {
 	if options[pkg.OPT_LOOKUP] != "true" {
 		return nil
 	}
@@ -51,19 +58,19 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 	var choiceIndex int
 	switch len(choices) {
 	case 0:
-		lookupOut("No results found for %s. Skipping lookup.\n", item.Hangul)
+		fmt.Fprintf(out, "No results found for %s. Skipping lookup.\n", item.Hangul)
 		return nil
 	case 1:
 		choiceIndex = 0
 	default:
-		lookupOut("Multiple results found for %s:\n", item.Hangul)
+		fmt.Fprintf(out, "Multiple results found for %s:\n", item.Hangul)
 		for i, choice := range choices {
-			println("[lookup] ", i+1, ") ", pkg.XpathString(choice, "sense/translation/trans_word"))
+			fmt.Fprintf(out, " %d) %s\n", i+1, pkg.XpathString(choice, "sense/translation/trans_word"))
 		}
 		if options[pkg.OPT_INTERACTIVE] == "true" {
-			choiceIndex = promptMultipleChoice(item, choices)
+			choiceIndex = promptMultipleChoice(in, out, item, choices)
 		} else {
-			lookupOut("Skipping lookup. Set %s option to choose.\n\n", pkg.OPT_INTERACTIVE)
+			fmt.Fprintf(out, "Skipping lookup. Set %s option to choose.\n\n", pkg.OPT_INTERACTIVE)
 			return nil
 		}
 	}
@@ -90,26 +97,22 @@ func search(q string, options map[string]string) (*xmlpath.Node, error) {
 	return xmlpath.Parse(resp.Body)
 }
 
-func promptMultipleChoice(item *pkg.Item, choices []*xmlpath.Node) int {
+func promptMultipleChoice(in io.Reader, out io.Writer, item *pkg.Item, choices []*xmlpath.Node) int {
 	for {
-		lookupOut("Enter number: ")
+		fmt.Fprintf(out, "Enter number: ")
 		answerString, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
-			lookupOut("%s\n", err)
+			fmt.Fprintf(out, "%s\n", err)
 			continue
 		}
 
 		answerNum, err := strconv.Atoi(strings.TrimSpace(answerString))
 		if err != nil || answerNum < 1 || answerNum > len(choices) {
-			lookupOut("Invalid number\n")
+			fmt.Fprintf(out, "Invalid number\n")
 			continue
 		}
 
-		lookupOut("\n")
+		fmt.Fprintf(out, "\n")
 		return answerNum - 1
 	}
-}
-
-func lookupOut(format string, a ...interface{}) {
-	fmt.Fprintf(os.Stderr, "[lookup] "+format, a...)
 }

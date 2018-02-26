@@ -3,6 +3,7 @@ package parsers
 import (
 	"bufio"
 	"io"
+	"os"
 	"time"
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
@@ -22,7 +23,7 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 
 		// pre-run interceptor to not muck up stdin processing
 		options[pkg.OPT_LOOKUP] = "true"
-		err := interceptors.KrDictLookup(item, options)
+		err := interceptors.NewKrDictLookup(os.Stdin, os.Stderr)(item, options)
 		if err != nil {
 			return err
 		}
