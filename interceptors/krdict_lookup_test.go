@@ -3,6 +3,7 @@ package interceptors
 import (
 	"bytes"
 	"os"
+	"strconv"
 	"testing"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -10,23 +11,47 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type krDictLookupTestCase struct {
+	name         string
+	input        *pkg.Item
+	expectedItem *pkg.Item
+	expectedOut  string
+	lookup       bool
+	interactive  bool
+}
+
 func TestKrDictLookup(t *testing.T) {
-	// TODO: consider making this also hit real server
 	ts := mocks.NewKrdictMockServer()
 	defer ts.Close()
-	options := map[string]string{
-		pkg.OPT_KRDICT_API_URL: ts.URL,
-		pkg.OPT_KRDICT_API_KEY: os.Getenv("KRDICT_API_KEY"),
-		pkg.OPT_LOOKUP:         "true",
+
+	cases := []krDictLookupTestCase{
+		{
+			name:         "multiple results: lookup, non-interactive",
+			lookup:       true,
+			interactive:  false,
+			input:        &pkg.Item{Hangul: "안녕"},
+			expectedItem: &pkg.Item{Hangul: "안녕"},
+			expectedOut:  "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n\n",
+		},
 	}
 
-	in := &bytes.Buffer{}
-	out := &bytes.Buffer{}
-	actualItem := &pkg.Item{Hangul: "안녕"}
-	expectedItem := &pkg.Item{Hangul: "안녕"}
+	for _, c := range cases {
+		t.Run(c.name, func(rt *testing.T) {
+			options := map[string]string{
+				pkg.OPT_KRDICT_API_URL: ts.URL,
+				pkg.OPT_KRDICT_API_KEY: os.Getenv("KRDICT_API_KEY"),
+				pkg.OPT_LOOKUP:         strconv.FormatBool(c.lookup),
+				pkg.OPT_INTERACTIVE:    strconv.FormatBool(c.interactive),
+			}
 
-	err := NewKrDictLookup(in, out)(actualItem, options)
-	assert.NoError(t, err)
-	assert.Equal(t, expectedItem, actualItem)
-	assert.Equal(t, out.String(), "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n\n")
+			in := &bytes.Buffer{}
+			out := &bytes.Buffer{}
+
+			actual := c.input
+			err := NewKrDictLookup(in, out)(actual, options)
+			assert.NoError(t, err)
+			assert.Equal(t, c.expectedItem, actual)
+			assert.Equal(t, out.String(), c.expectedOut)
+		})
+	}
 }
