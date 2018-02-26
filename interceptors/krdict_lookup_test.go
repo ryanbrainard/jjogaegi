@@ -43,6 +43,15 @@ func TestKrDictLookup(t *testing.T) {
 			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
 			expectedOut:      "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: \n",
 		},
+		{
+			name:             "multiple results/lookup/interactive/bad response",
+			lookup:           true,
+			interactive:      true,
+			item:             &pkg.Item{Hangul: "안녕"},
+			interactiveInput: "X\n2\n",
+			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
+			expectedOut:      "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: Invalid number\nEnter number: \n",
+		},
 	}
 
 	for _, c := range cases {
