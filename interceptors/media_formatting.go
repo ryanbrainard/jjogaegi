@@ -42,14 +42,9 @@ func formatMediaTag(mediaTag string, format string, options map[string]string) (
 	}
 	mediaURL := mediaTag
 
-	mediaDirEnvKey := "ANKI_MEDIA_DIR"
 	mediaDir := options[pkg.OPT_MEDIADIR]
 	if mediaDir == "" {
-		mediaDir = os.Getenv(mediaDirEnvKey)
-	}
-	if mediaDir == "" {
-		panic("media dir fail safe...") // TODO: fix error bubbling and remove this
-		return "", fmt.Errorf("Cannot download media (%s) if %s option or %s env is not set", mediaURL, pkg.OPT_MEDIADIR, mediaDirEnvKey)
+		return "", fmt.Errorf("Cannot download media (%s) with media dir set", mediaURL)
 	}
 
 	filename := uuid.New().String() + path.Ext(mediaURL)

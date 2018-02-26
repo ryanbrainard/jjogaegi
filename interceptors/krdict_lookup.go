@@ -27,7 +27,7 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 		q = item.Hanja
 	}
 
-	results, err := search(q)
+	results, err := search(q, options)
 	if err != nil {
 		return err
 	}
@@ -64,6 +64,7 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 			choiceIndex = promptMultipleChoice(item, choices)
 		} else {
 			lookupOut("Skipping lookup. Set %s option to choose.\n\n", pkg.OPT_INTERACTIVE)
+			return nil
 		}
 	}
 
@@ -71,12 +72,13 @@ func KrDictLookup(item *pkg.Item, options map[string]string) error {
 	return nil
 }
 
-func search(q string) (*xmlpath.Node, error) {
-	if os.Getenv("KRDICT_API_KEY") == "" {
-		panic("KRDICT_API_KEY not set.")
-	}
-
-	url := fmt.Sprintf("https://krdict.korean.go.kr/api/search?key=%s&type_search=search&part=word&q=%s&sort=dict&translated=y&trans_lang=1", os.Getenv("KRDICT_API_KEY"), q)
+func search(q string, options map[string]string) (*xmlpath.Node, error) {
+	url := fmt.Sprintf(
+		"%s/api/search?key=%s&type_search=search&part=word&q=%s&sort=dict&translated=y&trans_lang=1",
+		options[pkg.OPT_KRDICT_API_URL],
+		options[pkg.OPT_KRDICT_API_KEY],
+		q,
+	)
 
 	resp, err := http.Get(url)
 	if err != nil {
