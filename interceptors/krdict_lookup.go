@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 
@@ -100,7 +99,7 @@ func search(q string, options map[string]string) (*xmlpath.Node, error) {
 func promptMultipleChoice(in io.Reader, out io.Writer, item *pkg.Item, choices []*xmlpath.Node) int {
 	for {
 		fmt.Fprintf(out, "Enter number: ")
-		answerString, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		answerString, err := bufio.NewReader(in).ReadString('\n')
 		if err != nil {
 			fmt.Fprintf(out, "%s\n", err)
 			continue
