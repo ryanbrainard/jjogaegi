@@ -11,6 +11,9 @@ import (
 )
 
 func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	options[pkg.OPT_LOOKUP] = "true"
+	options[pkg.OPT_INTERACTIVE] = "true"
+
 	println("Enter a Korean word on each line: (press Ctrl+C to quit)")
 	prompt := ">>> "
 	print(prompt)
@@ -29,7 +32,6 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 		}
 
 		// pre-run interceptor to not muck up stdin processing
-		options[pkg.OPT_LOOKUP] = "true"
 		err := interceptors.NewKrDictLookup(os.Stdin, os.Stderr)(item, options)
 		if err != nil {
 			return err
