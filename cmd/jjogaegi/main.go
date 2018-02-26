@@ -20,8 +20,8 @@ var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
 var fMediadir = flag.String("mediadir", "", "dir to download media. alternatively set with ANKI_MEDIA_DIR env.")
 var fParallel = flag.Bool("parallel", false, "parallel processing. records may be returned out of order.")
-var fLookup = flag.Bool("lookup", false, "look up words in dictionary to enhance item details")
-var fInteractive = flag.Bool("interactive", false, "interactive mode")
+var fLookup = flag.Bool("lookup", false, "look up words in dictionary to enhance item details. always true with prompt parser.")
+var fInteractive = flag.Bool("interactive", false, "interactive mode. always true with prompt parser.")
 
 func main() {
 	flag.Parse()
@@ -30,12 +30,11 @@ func main() {
 	var err error
 	switch *fIn {
 	case "stdin":
-		if *fParser == "prompt" {
-			// TODO: does this work? do we want this?
-			flag.Set("lookup", "true")
-			flag.Set("interactive", "true")
-		}
 		in = os.Stdin
+		if *fInteractive && *fParser != "prompt" {
+			os.Stderr.WriteString("Interactive mode cannot be used with " + *fParser + " parser on stdin. Set -in to a file or do not set parser.\n")
+			os.Exit(4)
+		}
 	default:
 		if in, err = os.Open(*fIn); err != nil {
 			os.Stderr.WriteString(err.Error() + "\n")
