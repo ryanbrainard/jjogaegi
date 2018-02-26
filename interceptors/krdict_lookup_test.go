@@ -48,6 +48,14 @@ func TestKrDictLookup(t *testing.T) {
 			expectedOut:  "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n\n",
 		},
 		{
+			name:         "multiple results/lookup/non-interactive/with eng def",
+			lookup:       true,
+			interactive:  false,
+			item:         &pkg.Item{Hangul: "안녕", Def: pkg.Translation{English: "peace"}},
+			expectedItem: &pkg.Item{Hangul: "안녕", Def: pkg.Translation{English: "peace"}},
+			expectedOut:  "Multiple results found for 안녕 (peace):\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n\n",
+		},
+		{
 			name:             "multiple results/lookup/interactive",
 			lookup:           true,
 			interactive:      true,

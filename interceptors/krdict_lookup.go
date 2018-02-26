@@ -54,15 +54,20 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 		choices = append(choices, result)
 	}
 
+	itemLabel := item.Hangul
+	if item.Def.English != "" {
+		itemLabel += " (" + item.Def.English + ")"
+	}
+
 	var choiceIndex int
 	switch len(choices) {
 	case 0:
-		fmt.Fprintf(out, "No results found for %s. Skipping lookup.\n", item.Hangul)
+		fmt.Fprintf(out, "No results found for %s. Skipping lookup.\n", itemLabel)
 		return nil
 	case 1:
 		choiceIndex = 0
 	default:
-		fmt.Fprintf(out, "Multiple results found for %s:\n", item.Hangul)
+		fmt.Fprintf(out, "Multiple results found for %s:\n", itemLabel)
 		for i, choice := range choices {
 			fmt.Fprintf(out, " %d) %s\n", i+1, pkg.XpathString(choice, "sense/translation/trans_word"))
 		}
