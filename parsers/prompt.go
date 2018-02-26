@@ -11,12 +11,19 @@ import (
 )
 
 func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
-	println("Enter a Korean word on each line:")
-	print(">>> ")
+	println("Enter a Korean word on each line: (press Ctrl+C to quit)")
+	prompt := ">>> "
+	print(prompt)
 
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		line := scanner.Text()
+		line := sanitize(scanner.Text())
+
+		if line == "" {
+			print("\n" + prompt)
+			continue
+		}
+
 		item := &pkg.Item{
 			Hangul: sanitize(line),
 		}
@@ -30,9 +37,8 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 
 		items <- item
 
-		time.Sleep(1 * time.Second)
-		println()
-		print(">>> ")
+		time.Sleep(200 * time.Millisecond) // TODO: sync to remove this?
+		print("\n" + prompt)
 	}
 
 	return nil

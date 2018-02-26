@@ -31,7 +31,6 @@ func TestKrDictLookup(t *testing.T) {
 			lookup:       true,
 			item:         &pkg.Item{Hangul: "라이언"},
 			expectedItem: &pkg.Item{Hangul: "라이언"},
-			expectedOut:  "No results found for 라이언. Skipping lookup.\n",
 		},
 		{
 			name:         "one result",

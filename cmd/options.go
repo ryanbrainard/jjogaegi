@@ -57,6 +57,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 
 func ParseOptFormatter(s string) pkg.FormatFunc {
 	switch s {
+	case "raw":
+		return formatters.FormatRaw
 	case "tsv":
 		return formatters.FormatTSV
 	case "csv":

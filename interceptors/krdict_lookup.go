@@ -62,7 +62,6 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 	var choiceIndex int
 	switch len(choices) {
 	case 0:
-		fmt.Fprintf(out, "No results found for %s. Skipping lookup.\n", itemLabel)
 		return nil
 	case 1:
 		choiceIndex = 0

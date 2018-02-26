@@ -14,14 +14,14 @@ import (
 
 var fIn = flag.String("in", "stdin", "filename to read as input")
 var fOut = flag.String("out", "stdout", "filename to write to as output")
-var fParser = flag.String("parser", "list", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
-var fFormatter = flag.String("formatter", "tsv", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
+var fParser = flag.String("parser", "prompt", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
+var fFormatter = flag.String("formatter", "raw", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
 var fMediadir = flag.String("mediadir", "", "dir to download media. alternatively set with ANKI_MEDIA_DIR env.")
-var fParallel = flag.Bool("parallel", false, "process in parallel. records may be returned out of order.")
-var fLookup = flag.Bool("lookup", false, "look up words in dictionary") // TODO: expand to allow custom lookup
-var fInteractive = flag.Bool("interactive", false, "interactive prompting. if used with stdin, automatically sets -parser and -lookup.")
+var fParallel = flag.Bool("parallel", false, "parallel processing. records may be returned out of order.")
+var fLookup = flag.Bool("lookup", false, "look up words in dictionary to enhance item details")
+var fInteractive = flag.Bool("interactive", false, "interactive mode")
 
 func main() {
 	flag.Parse()
@@ -30,8 +30,10 @@ func main() {
 	var err error
 	switch *fIn {
 	case "stdin":
-		if *fInteractive {
-			flag.Set("parser", "prompt")
+		if *fParser == "prompt" {
+			// TODO: does this work? do we want this?
+			flag.Set("lookup", "true")
+			flag.Set("interactive", "true")
 		}
 		in = os.Stdin
 	default:
