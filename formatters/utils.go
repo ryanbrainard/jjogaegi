@@ -1,16 +1,8 @@
 package formatters
 
 import (
-	"io"
-
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
-
-func writeHeader(out io.Writer, options map[string]string) {
-	if s, ok := options[pkg.OPT_HEADER]; ok && s != "" {
-		out.Write([]byte(s + "\n"))
-	}
-}
 
 func formatHangulHanja(item *pkg.Item, options map[string]string) string {
 	switch options[pkg.OPT_HANJA] {

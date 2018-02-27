@@ -14,7 +14,7 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 	options[pkg.OPT_LOOKUP] = "true"
 	options[pkg.OPT_INTERACTIVE] = "true"
 
-	println("Enter a Korean word on each line: (press Ctrl+C to quit)")
+	println("Enter a Korean word on each line: (press Ctrl+D to quit)")
 	prompt := ">>> "
 	print(prompt)
 

@@ -29,7 +29,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 
 	setEnvOptOrPanic(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY")
 	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_URL, "KRDICT_API_URL", "https://krdict.korean.go.kr")
-	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "ANKI_MEDIA_DIR", "")
+	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "MEDIA_DIR", "")
 
 	var g errgroup.Group
 
@@ -68,6 +68,10 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		iwg.Wait()
 		close(intercepted)
 	}()
+
+	if h, ok := options[pkg.OPT_HEADER]; ok && h != "" {
+		out.Write([]byte(h + "\n"))
+	}
 
 	if err := format(intercepted, out, options); err != nil {
 		return err

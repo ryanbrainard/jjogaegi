@@ -8,7 +8,6 @@ import (
 )
 
 func formatXSV(items <-chan *pkg.Item, w io.Writer, options map[string]string, delim rune) error {
-	writeHeader(w, options)
 	cw := csv.NewWriter(w)
 	cw.Comma = delim
 	for item := range items {

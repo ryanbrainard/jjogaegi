@@ -22,9 +22,9 @@ var AppCapabilities = Capabilities{
 		"memrise-list": "Memrise List",
 	},
 	Formatters: map[string]string{
-		"raw": "Raw Internal Structure",
-		"tsv": "TSV: Tab-Separated Values",
-		"csv": "CSV: Comma-Separated Values",
+		"json": "JSON",
+		"tsv":  "TSV: Tab-Separated Values",
+		"csv":  "CSV: Comma-Separated Values",
 	},
 }
 
@@ -59,8 +59,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 
 func ParseOptFormatter(s string) pkg.FormatFunc {
 	switch s {
-	case "raw":
-		return formatters.FormatRaw
+	case "json":
+		return formatters.FormatJSON
 	case "tsv":
 		return formatters.FormatTSV
 	case "csv":

@@ -1,6 +1,6 @@
 # jjogaegi (쪼개기)
 
-Parses Korean vocabulary and formats items for easy importing from lists or dictionaries into [Quizlet](https://quizlet.com/), [Anki](http://ankisrs.net/), and other flashcard apps.
+Parses and formats lists of Korean vocabulary for easy importing from lists or dictionaries into [Quizlet](https://quizlet.com/), [Anki](http://ankisrs.net/), and other flashcard apps.
 
 ![jjogaegi flow](assets/jjogaegi-flow.png)
 

@@ -23,11 +23,13 @@ func TestRun(t *testing.T) {
 		}
 		return nil
 	}
-	options := map[string]string{}
+	options := map[string]string{
+		pkg.OPT_HEADER: "HDR",
+	}
 
 	err := Run(in, out, parser, formatter, options)
 	assert.Nil(t, err)
-	assert.Equal(t, "시험", out.String())
+	assert.Equal(t, "HDR\n시험", out.String())
 }
 
 func TestRun_ParserError(t *testing.T) {
