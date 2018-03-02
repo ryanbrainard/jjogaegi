@@ -1,6 +1,7 @@
 package run
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"runtime"
@@ -31,11 +32,12 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_URL, "KRDICT_API_URL", "https://krdict.korean.go.kr")
 	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "MEDIA_DIR", "")
 
-	var g errgroup.Group
+	g, ctx := errgroup.WithContext(context.Background())
+	// TODO: pass in ctx to formatters, too!
 
 	parsed := make(chan *pkg.Item)
 	g.Go(func() error {
-		err := parse(in, parsed, options)
+		err := parse(ctx, in, parsed, options)
 		close(parsed)
 		return err
 	})
@@ -54,6 +56,12 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 			defer iwg.Done()
 			for item := range parsed {
 				for _, interceptor := range interceptors {
+					select {
+					case <-ctx.Done():
+						return ctx.Err()
+					default:
+					}
+
 					if err := interceptor(item, options); err != nil {
 						return err
 					}
@@ -73,7 +81,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		out.Write([]byte(h + "\n"))
 	}
 
-	if err := format(intercepted, out, options); err != nil {
+	if err := format(ctx, intercepted, out, options); err != nil {
 		return err
 	}
 

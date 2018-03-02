@@ -2,6 +2,7 @@ package formatters
 
 import (
 	"bytes"
+	"context"
 	"testing"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -10,14 +11,14 @@ import (
 
 func TestFormatCSV(t *testing.T) {
 	items, out := setupTestFormat()
-	err := FormatCSV(items, out, map[string]string{})
+	err := FormatCSV(context.Background(), items, out, map[string]string{})
 	assert.Nil(t, err)
 	assert.Equal(t, ",,처리,處理,,,,handling,,k,e,,,,\n", out.String())
 }
 
 func TestFormatCSV_HanjaMerge(t *testing.T) {
 	items, out := setupTestFormat()
-	err := FormatCSV(items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
+	err := FormatCSV(context.Background(), items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
 	assert.Nil(t, err)
 	assert.Equal(t, ",,처리 (處理),處理,,,,handling,,k,e,,,,\n", out.String())
 }

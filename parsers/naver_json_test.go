@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"context"
 	"os"
 	"testing"
 
@@ -40,7 +41,7 @@ func TestParseNaverJSON(t *testing.T) {
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
-	ParseNaverJSON(in, items, map[string]string{})
+	ParseNaverJSON(context.Background(), in, items, map[string]string{})
 	assert.Equal(t, testItem, <-items)
 }
 
@@ -49,6 +50,6 @@ func TestParseNaverJSONCallback(t *testing.T) {
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
-	ParseNaverJSON(in, items, map[string]string{})
+	ParseNaverJSON(context.Background(), in, items, map[string]string{})
 	assert.Equal(t, testItem, <-items)
 }

@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"context"
 	"os"
 	"testing"
 
@@ -13,7 +14,7 @@ func TestParseTSV(t *testing.T) {
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
-	err = ParseTSV(in, items, map[string]string{})
+	err = ParseTSV(context.Background(), in, items, map[string]string{})
 	assert.Nil(t, err)
 
 	expected := &pkg.Item{

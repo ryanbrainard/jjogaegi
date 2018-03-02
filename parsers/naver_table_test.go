@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"context"
 	"strings"
 	"testing"
 
@@ -14,7 +15,7 @@ func TestParseNaverTable(t *testing.T) {
 1 arrow
 `)
 	items := make(chan *pkg.Item, 100)
-	ParseNaverTable(in, items, map[string]string{})
+	ParseNaverTable(context.Background(), in, items, map[string]string{})
 	assert.Equal(t, &pkg.Item{Hangul: "처리", Hanja: "處理", Def: pkg.Translation{English: "(일·사건 등의) handling"}}, <-items)
 	assert.Equal(t, &pkg.Item{Hangul: "나열", Hanja: "羅列", Def: pkg.Translation{English: "[동사] list"}}, <-items)
 	assert.Equal(t, &pkg.Item{Hangul: "화살표", Hanja: "", Def: pkg.Translation{English: "arrow"}}, <-items)

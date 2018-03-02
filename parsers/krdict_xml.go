@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"context"
 	"io"
 
 	"fmt"
@@ -12,7 +13,7 @@ import (
 const supportedLanguage = "kor"
 const supportedLexicalUnit = "단어"
 
-func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseKrDictXML(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	rootNode, err := xmlpath.Parse(r)
 	if err != nil {
 		return err
@@ -25,6 +26,12 @@ func ParseKrDictXML(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 
 	entriesIter := xmlpath.MustCompile("/LexicalResource/Lexicon/LexicalEntry").Iter(rootNode)
 	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		if !entriesIter.Next() {
 			break
 		}

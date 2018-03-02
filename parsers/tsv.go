@@ -1,17 +1,24 @@
 package parsers
 
 import (
+	"context"
 	"encoding/csv"
 	"io"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func ParseTSV(in io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseTSV(ctx context.Context, in io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	r := csv.NewReader(in)
 	r.Comma = '\t'
 
 	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		record, err := r.Read()
 		if err == io.EOF {
 			break

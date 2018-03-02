@@ -2,9 +2,11 @@ package run
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"testing"
+	"time"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/stretchr/testify/assert"
@@ -13,11 +15,11 @@ import (
 func TestRun(t *testing.T) {
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
-	parser := func(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 		items <- &pkg.Item{Hangul: "시험"}
 		return nil
 	}
-	formatter := func(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+	formatter := func(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
 		for item := range items {
 			w.Write([]byte(item.Hangul))
 		}
@@ -35,10 +37,10 @@ func TestRun(t *testing.T) {
 func TestRun_ParserError(t *testing.T) {
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
-	parser := func(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 		return fmt.Errorf("boom: parser")
 	}
-	formatter := func(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+	formatter := func(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
 		for item := range items {
 			w.Write([]byte(item.Hangul))
 		}
@@ -51,14 +53,47 @@ func TestRun_ParserError(t *testing.T) {
 	assert.Equal(t, "", out.String())
 }
 
+func TestRun_InterceptorError(t *testing.T) {
+	in := &bytes.Buffer{}
+	out := &bytes.Buffer{}
+	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+		inputItems := []*pkg.Item{
+			{Hangul: "시험1", ImageTag: "http://example.com/image1.jpg"},
+			{Hangul: "시험2", ImageTag: "http://example.com/image2.jpg"},
+		}
+
+		for _, ii := range inputItems {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+				items <- ii
+			}
+			time.Sleep(100 * time.Millisecond) // TODO: yuck!
+		}
+
+		return nil
+	}
+	formatter := func(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+		for item := range items {
+			w.Write([]byte(item.Hangul))
+		}
+		return nil
+	}
+	options := map[string]string{}
+
+	err := Run(in, out, parser, formatter, options)
+	assert.EqualError(t, err, "Cannot download media (http://example.com/image1.jpg) unless media dir is set")
+}
+
 func TestRun_FormatterError(t *testing.T) {
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
-	parser := func(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 		items <- &pkg.Item{Hangul: "시험"}
 		return nil
 	}
-	formatter := func(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+	formatter := func(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
 		return fmt.Errorf("boom: formatter")
 	}
 	options := map[string]string{}
@@ -71,7 +106,7 @@ func TestRun_FormatterError(t *testing.T) {
 func TestRun_NilParser(t *testing.T) {
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
-	formatter := func(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+	formatter := func(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
 		return nil
 	}
 	options := map[string]string{}
@@ -84,7 +119,7 @@ func TestRun_NilParser(t *testing.T) {
 func TestRun_NilFormatter(t *testing.T) {
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
-	parser := func(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 		items <- &pkg.Item{Hangul: "시험"}
 		close(items)
 		return nil

@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"os"
 	"time"
@@ -10,7 +11,7 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func InteractivePrompt(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	options[pkg.OPT_LOOKUP] = "true"
 	options[pkg.OPT_INTERACTIVE] = "true"
 
@@ -20,6 +21,12 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		line := sanitize(scanner.Text())
 
 		if line == "" {
@@ -39,8 +46,14 @@ func InteractivePrompt(r io.Reader, items chan<- *pkg.Item, options map[string]s
 
 		items <- item
 
-		time.Sleep(200 * time.Millisecond) // TODO: sync to remove this?
-		print("\n" + prompt)
+		// give time to allow interceptors to error and cancel before re-prompting
+		time.Sleep(200 * time.Millisecond) // TODO: can we do this without sleeping
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			print("\n" + prompt)
+		}
 	}
 
 	return nil

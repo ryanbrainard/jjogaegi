@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"context"
 	"io"
 )
 
@@ -23,9 +24,9 @@ type Translation struct {
 	English string
 }
 
-type ParseFunc func(reader io.Reader, items chan<- *Item, options map[string]string) error
+type ParseFunc func(ctx context.Context, reader io.Reader, items chan<- *Item, options map[string]string) error
 
-type FormatFunc func(items <-chan *Item, writer io.Writer, options map[string]string) error
+type FormatFunc func(ctx context.Context, items <-chan *Item, writer io.Writer, options map[string]string) error
 
 type InterceptorFunc func(item *Item, options map[string]string) error
 

@@ -44,7 +44,7 @@ func formatMediaTag(mediaTag string, format string, options map[string]string) (
 
 	mediaDir := options[pkg.OPT_MEDIADIR]
 	if mediaDir == "" {
-		return "", fmt.Errorf("Cannot download media (%s) with media dir set", mediaURL)
+		return "", fmt.Errorf("Cannot download media (%s) unless media dir is set", mediaURL)
 	}
 
 	filename := uuid.New().String() + path.Ext(mediaURL)

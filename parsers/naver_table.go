@@ -2,19 +2,26 @@ package parsers
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"strings"
 
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func ParseNaverTable(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseNaverTable(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	i := 0
 	rawTerms := []string{}
 	scanner := bufio.NewScanner(r)
 	scanner.Split(SplitDefs)
 
 	for scanner.Scan() {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		line := scanner.Text()
 
 		if line == "" {

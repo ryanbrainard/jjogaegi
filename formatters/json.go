@@ -1,6 +1,7 @@
 package formatters
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,7 +9,7 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func FormatJSON(items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
+func FormatJSON(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")
 

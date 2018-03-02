@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,7 +15,7 @@ import (
 var callbackStartBytes = []byte("window.__jindo2_callback")
 var callbackEndByte = byte('(')
 
-func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseNaverJSON(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	buf := bufio.NewReader(r)
 	header, err := buf.Peek(len(callbackStartBytes))
 	if err != nil {
@@ -34,6 +35,12 @@ func ParseNaverJSON(r io.Reader, items chan<- *pkg.Item, options map[string]stri
 	}
 
 	for dec.More() {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		var page NaverPage
 		// decode an array value (Message)
 		err := dec.Decode(&page)

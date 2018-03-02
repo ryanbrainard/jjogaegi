@@ -23,3 +23,10 @@ func TestMediaFormatting(t *testing.T) {
 	assert.Equal(t, "", item.AudioTag) // TODO: fill in
 	assert.Regexp(t, "<img src=\"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.jpg\">", item.ImageTag)
 }
+
+func TestMediaFormattingWithoutMediaDir(t *testing.T) {
+	item := &pkg.Item{ImageTag: "http://example.com/image.jpg"}
+
+	err := MediaFormatting(item, map[string]string{})
+	assert.EqualError(t, err, "Cannot download media (http://example.com/image.jpg) unless media dir is set")
+}

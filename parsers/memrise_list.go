@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"context"
 	"io"
 
 	"bufio"
@@ -8,11 +9,17 @@ import (
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func ParseMemriseList(r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseMemriseList(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	scanner := bufio.NewScanner(r)
 
 	hangul := ""
 	for scanner.Scan() {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		// hangul is on first line; def is on second line,
 		// but we scan one line at a time.
 		line := scanner.Text()
