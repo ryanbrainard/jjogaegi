@@ -27,16 +27,32 @@ func TestKrDictLookup(t *testing.T) {
 
 	cases := []krDictLookupTestCase{
 		{
-			name:         "no results",
+			name:         "no results/non-interactive",
 			lookup:       true,
 			item:         &pkg.Item{Hangul: "라이언"},
 			expectedItem: &pkg.Item{Hangul: "라이언"},
+		},
+		{
+			name:         "no results/interactive",
+			lookup:       true,
+			interactive:  true,
+			item:         &pkg.Item{Hangul: "라이언"},
+			expectedItem: &pkg.Item{Hangul: "라이언"},
+			expectedOut:  "<not found>\n",
 		},
 		{
 			name:         "one result",
 			lookup:       true,
 			item:         &pkg.Item{Hangul: "안경"},
 			expectedItem: &pkg.Item{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
+		},
+		{
+			name:         "one result",
+			lookup:       true,
+			interactive:  true,
+			item:         &pkg.Item{Hangul: "안경"},
+			expectedItem: &pkg.Item{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
+			expectedOut:  "glasses; spectacles\n",
 		},
 		{
 			name:         "multiple results/lookup/non-interactive",
@@ -91,7 +107,7 @@ func TestKrDictLookup(t *testing.T) {
 
 			assert.NoError(t, err)
 			assert.Equal(t, c.expectedItem, actual)
-			assert.Equal(t, out.String(), c.expectedOut)
+			assert.Equal(t, c.expectedOut, out.String())
 		})
 	}
 }

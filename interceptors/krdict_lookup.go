@@ -24,6 +24,8 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 		return nil
 	}
 
+	interactive := options[pkg.OPT_INTERACTIVE] == "true"
+
 	if strings.HasPrefix(item.ExternalID, "krdict") {
 		return nil
 	}
@@ -62,15 +64,21 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 	var choiceIndex int
 	switch len(choices) {
 	case 0:
+		if interactive {
+			fmt.Fprintf(out, "<not found>\n")
+		}
 		return nil
 	case 1:
 		choiceIndex = 0
+		if interactive {
+			fmt.Fprintf(out, "%s\n", pkg.XpathString(choices[choiceIndex], "sense/translation/trans_word"))
+		}
 	default:
 		fmt.Fprintf(out, "Multiple results found for %s:\n", itemLabel)
 		for i, choice := range choices {
 			fmt.Fprintf(out, " %d) %s\n", i+1, pkg.XpathString(choice, "sense/translation/trans_word"))
 		}
-		if options[pkg.OPT_INTERACTIVE] == "true" {
+		if interactive {
 			choiceIndex = promptMultipleChoice(in, out, item, choices)
 		} else {
 			fmt.Fprintf(out, "Skipping lookup. Set %s option to choose.\n", pkg.OPT_INTERACTIVE)
