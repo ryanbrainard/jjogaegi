@@ -49,7 +49,7 @@ func extractAudioURL(r io.Reader) string {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		line := scanner.Text()
-		if m := regexp.MustCompile("javascript:fnSoundPlay\\('(.*)'\\)").FindStringSubmatch(line); m != nil {
+		if m := regexp.MustCompile("javascript:fnSoundPlay\\('(.*?mp3)'\\)").FindStringSubmatch(line); m != nil {
 			return m[1]
 		}
 	}
