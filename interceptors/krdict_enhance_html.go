@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"io"
 	"net/http"
+	"os"
+	"path"
 	"regexp"
 	"strings"
 
@@ -19,7 +21,7 @@ func KrDictEnhanceHTML(item *pkg.Item, options map[string]string) error {
 	}
 	entryID := idSplit[2]
 
-	if item.AudioTag == "" || strings.HasPrefix(item.AudioTag, "[sound:say-") {
+	if item.AudioTag == "" || strings.HasPrefix(item.AudioTag, "[sound:say-") || hasSoundProblem(item, options) {
 		pageReader, err := fetchHTML(entryID)
 		if err != nil {
 			return nil
@@ -45,13 +47,49 @@ func fetchHTML(entryId string) (io.ReadCloser, error) {
 	return resp.Body, nil
 }
 
+var regexpAudioURL = regexp.MustCompile("javascript:fnSoundPlay\\('(.*?mp3)'\\)")
+
 func extractAudioURL(r io.Reader) string {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		line := scanner.Text()
-		if m := regexp.MustCompile("javascript:fnSoundPlay\\('(.*?mp3)'\\)").FindStringSubmatch(line); m != nil {
+		if m := regexpAudioURL.FindStringSubmatch(line); m != nil {
 			return m[1]
 		}
 	}
 	return ""
+}
+
+var regexpAudioTag = regexp.MustCompile("\\[sound:(.*)\\]")
+
+func hasSoundProblem(item *pkg.Item, options map[string]string) bool {
+	m := regexpAudioTag.FindStringSubmatch(item.AudioTag)
+	if m == nil {
+		return false
+	}
+
+	filename := path.Join(options[pkg.OPT_MEDIADIR], m[1])
+
+	file, err := os.Open(filename)
+	if err != nil {
+		return true
+	}
+	defer file.Close()
+
+	// Only the first 512 bytes are used to sniff the content type.
+	buffer := make([]byte, 512)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return false
+	}
+
+	// Reset the read pointer if necessary.
+	file.Seek(0, 0)
+
+	contentType := http.DetectContentType(buffer)
+	if strings.Contains(contentType, "text/html") {
+		return true
+	}
+
+	return false
 }
