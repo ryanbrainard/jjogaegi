@@ -18,15 +18,18 @@ func ParseList(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options
 		default:
 		}
 
-		line := scanner.Text()
-		hangul, def := splitHangul(line)
-		items <- &pkg.Item{
-			Hangul: sanitize(hangul),
-			Def: pkg.Translation{
-				English: sanitize(def),
-			},
-		}
+		items <- parseLineItem(scanner.Text())
 	}
 
 	return nil
+}
+
+func parseLineItem(line string) *pkg.Item {
+	hangul, def := splitHangul(line)
+	return &pkg.Item{
+		Hangul: sanitize(hangul),
+		Def: pkg.Translation{
+			English: sanitize(def),
+		},
+	}
 }

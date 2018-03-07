@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"os"
+
 	"github.com/ryanbrainard/jjogaegi/formatters"
 	"github.com/ryanbrainard/jjogaegi/parsers"
 	"github.com/ryanbrainard/jjogaegi/pkg"
@@ -39,7 +41,7 @@ func Keys(m map[string]string) []string {
 func ParseOptParser(s string) pkg.ParseFunc {
 	switch s {
 	case "prompt":
-		return parsers.InteractivePrompt
+		return parsers.NewInteractivePrompt(os.Stderr)
 	case "tsv":
 		return parsers.ParseTSV
 	case "list":

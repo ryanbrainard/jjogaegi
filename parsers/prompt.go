@@ -3,21 +3,28 @@ package parsers
 import (
 	"bufio"
 	"context"
+	"fmt"
 	"io"
-	"os"
+	"strconv"
 	"time"
 
 	"github.com/ryanbrainard/jjogaegi/interceptors"
 	"github.com/ryanbrainard/jjogaegi/pkg"
 )
 
-func InteractivePrompt(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
-	options[pkg.OPT_LOOKUP] = "true"
-	options[pkg.OPT_INTERACTIVE] = "true"
+func NewInteractivePrompt(interactiveOut io.Writer) pkg.ParseFunc {
+	return func(ctx context.Context, reader io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+		return interactivePrompt(interactiveOut, ctx, reader, items, options)
+	}
+}
 
-	println("Enter a Korean word on each line: (press Ctrl+D to quit)")
+func interactivePrompt(interactiveOut io.Writer, ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	options[pkg.OPT_LOOKUP] = strconv.FormatBool(true)
+	options[pkg.OPT_INTERACTIVE] = strconv.FormatBool(true)
+
+	fmt.Fprintf(interactiveOut, "Enter a Korean word on each line: (press Ctrl+D to quit)\n")
 	prompt := ">>> "
-	print(prompt)
+	fmt.Fprintf(interactiveOut, prompt)
 
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
@@ -30,16 +37,14 @@ func InteractivePrompt(ctx context.Context, r io.Reader, items chan<- *pkg.Item,
 		line := sanitize(scanner.Text())
 
 		if line == "" {
-			print("\n" + prompt)
+			fmt.Fprintf(interactiveOut, "\n"+prompt)
 			continue
 		}
 
-		item := &pkg.Item{
-			Hangul: sanitize(line),
-		}
+		item := parseLineItem(line)
 
 		// pre-run interceptor to not muck up stdin processing
-		err := interceptors.NewKrDictLookup(os.Stdin, os.Stderr)(item, options)
+		err := interceptors.NewKrDictLookup(r, interactiveOut)(item, options)
 		if err != nil {
 			return err
 		}
@@ -47,12 +52,12 @@ func InteractivePrompt(ctx context.Context, r io.Reader, items chan<- *pkg.Item,
 		items <- item
 
 		// give time to allow interceptors to error and cancel before re-prompting
-		time.Sleep(200 * time.Millisecond) // TODO: can we do this without sleeping
+		time.Sleep(500 * time.Millisecond) // TODO: can we do this without sleeping
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 		default:
-			print("\n" + prompt)
+			fmt.Fprintf(interactiveOut, "\n"+prompt)
 		}
 	}
 

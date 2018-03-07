@@ -20,11 +20,11 @@ func NewKrDictLookup(interactiveIn io.Reader, interactiveOut io.Writer) pkg.Inte
 }
 
 func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[string]string) error {
-	if options[pkg.OPT_LOOKUP] != "true" {
+	if options[pkg.OPT_LOOKUP] != strconv.FormatBool(true) {
 		return nil
 	}
 
-	interactive := options[pkg.OPT_INTERACTIVE] == "true"
+	interactive := options[pkg.OPT_INTERACTIVE] == strconv.FormatBool(true)
 
 	if strings.HasPrefix(item.ExternalID, "krdict") {
 		return nil

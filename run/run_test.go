@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 	"testing"
 	"time"
 
@@ -54,6 +55,7 @@ func TestRun_ParserError(t *testing.T) {
 }
 
 func TestRun_InterceptorError(t *testing.T) {
+	os.Setenv("MEDIA_DIR", "")
 	in := &bytes.Buffer{}
 	out := &bytes.Buffer{}
 	parser := func(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {

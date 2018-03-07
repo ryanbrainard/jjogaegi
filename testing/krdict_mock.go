@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path"
+	"strconv"
 )
 
 func NewKrdictMockServer() *httptest.Server {
@@ -20,7 +21,7 @@ func NewKrdictMockServer() *httptest.Server {
 		vcrQuerty.Del("key")
 		vcrFilename += "?" + vcrQuerty.Encode()
 
-		if os.Getenv("VCR_RECORD") == "true" {
+		if os.Getenv("VCR_RECORD") == strconv.FormatBool(true) {
 			r.URL.Scheme = "https"
 			r.URL.Host = "krdict.korean.go.kr"
 			vcrResponse, err := http.Get(r.URL.String())
