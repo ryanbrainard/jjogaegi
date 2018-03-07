@@ -10,12 +10,14 @@ import (
 	"github.com/ryanbrainard/jjogaegi/cmd"
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/ryanbrainard/jjogaegi/run"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var fIn = flag.String("in", "stdin", "filename to read as input")
-var fOut = flag.String("out", "stdout", "filename to write to as output")
+var fOut = flag.String("out", "stdout", "filename to write to output")
 var fParser = flag.String("parser", "prompt", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
-var fFormatter = flag.String("formatter", "json", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
+var fFormatter = flag.String("formatter", "tsv", "type of formatter for output ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Formatters), "|")+"]")
 var fHanja = flag.String("hanja", "none", "include hanja [none|parens]")
 var fHeader = flag.String("header", "", "header to prepend to output")
 var fMediadir = flag.String("mediadir", "", "dir to download media. alternatively set with MEDIA_DIR env.")
@@ -32,7 +34,7 @@ func main() {
 	case "stdin":
 		in = os.Stdin
 		if *fInteractive && *fParser != "prompt" {
-			os.Stderr.WriteString("Interactive mode cannot be used with " + *fParser + " parser on stdin. Set -in to a file or do not set parser.\n")
+			os.Stderr.WriteString("Interactive mode cannot be used with " + *fParser + " parser on stdin. Set -in option or do not set parser. Run `jjogaegi -help` for details.\n")
 			os.Exit(4)
 		}
 	default:
@@ -46,6 +48,10 @@ func main() {
 	var out io.WriteCloser
 	switch *fOut {
 	case "stdout":
+		if (*fParser == "prompt" || *fInteractive) && terminal.IsTerminal(int(os.Stdout.Fd())) {
+			os.Stderr.WriteString("Set -out option or redirect outout when using interactive mode.  Run `jjogaegi -help` for details.\n")
+			os.Exit(10)
+		}
 		out = os.Stdout
 	default:
 		if out, err = os.Create(*fOut); err != nil {
