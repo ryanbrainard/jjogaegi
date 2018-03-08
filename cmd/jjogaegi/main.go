@@ -14,6 +14,7 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+var fVersion = flag.Bool("version", false, "print version information")
 var fIn = flag.String("in", "stdin", "filename to read as input")
 var fOut = flag.String("out", "stdout", "filename to write to output")
 var fParser = flag.String("parser", "prompt", "type of parser for input ["+strings.Join(cmd.Keys(cmd.AppCapabilities.Parsers), "|")+"]")
@@ -27,6 +28,11 @@ var fInteractive = flag.Bool("interactive", false, "interactive mode. always tru
 
 func main() {
 	flag.Parse()
+
+	if *fVersion {
+		os.Stderr.WriteString("v" + pkg.VERSION + "\n")
+		os.Exit(0)
+	}
 
 	var in io.ReadCloser
 	var err error
