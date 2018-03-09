@@ -50,8 +50,13 @@ func TestPrompt(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(rt *testing.T) {
 			options := map[string]string{
+				pkg.OPT_MEDIADIR:       "DUMMY",
 				pkg.OPT_KRDICT_API_URL: ts.URL,
 				pkg.OPT_KRDICT_API_KEY: os.Getenv("KRDICT_API_KEY"),
+			}
+
+			if options[pkg.OPT_KRDICT_API_KEY] == "" {
+				options[pkg.OPT_KRDICT_API_KEY] = "DUMMY"
 			}
 
 			in := bytes.NewBufferString(c.interactiveInput)
@@ -62,9 +67,9 @@ func TestPrompt(t *testing.T) {
 
 			assert.NoError(t, err)
 			assert.Equal(t, c.expectedOut, out.String())
-			// for _, expectedItem := range c.expectedItems {
-			// assert.Equal(t, expectedItem, <-items)
-			// }
+			for _, expectedItem := range c.expectedItems {
+				assert.Equal(t, expectedItem, <-items)
+			}
 		})
 	}
 }

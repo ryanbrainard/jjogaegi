@@ -19,6 +19,10 @@ func NewInteractivePrompt(interactiveOut io.Writer) pkg.ParseFunc {
 }
 
 func interactivePrompt(interactiveOut io.Writer, ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+	if options[pkg.OPT_KRDICT_API_KEY] == "" || options[pkg.OPT_MEDIADIR] == "" {
+		return fmt.Errorf("KRDICT_API_KEY and MEDIA_DIR must be set in environment. Run `jjogaegi -help` for details.")
+	}
+
 	options[pkg.OPT_LOOKUP] = strconv.FormatBool(true)
 	options[pkg.OPT_INTERACTIVE] = strconv.FormatBool(true)
 
