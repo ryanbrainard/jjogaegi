@@ -71,13 +71,6 @@ Options for `--formatter` flag:
 
  - `tsv`: (default) tab-separated values
  - `csv`: comma-separated values
- 
-## Hanja
-
-Options for `--hanja` flag:
-
- - `none`: (default) do not include 漢字 with 한글
- - `parens`: output 漢字 in parenthesis next to 한글
 
 ## Header
 
@@ -85,11 +78,11 @@ Options for `--header` flag:
 
 If set, string will be prepended to output
 
-## Audio Dir
+## Media Dir
 
-Options for `--audiodir` flag:
+Options for `--mediadir` flag:
 
-If set, audio will be downloaded into the directory specified
+If set, media (i.e. images and audio) will be downloaded into the directory specified.
 
 # Web Interface
 

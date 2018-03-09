@@ -33,7 +33,6 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "MEDIA_DIR", "")
 
 	g, ctx := errgroup.WithContext(context.Background())
-	// TODO: pass in ctx to formatters, too!
 
 	parsed := make(chan *pkg.Item)
 	g.Go(func() error {

@@ -71,12 +71,3 @@ func ParseOptFormatter(s string) pkg.FormatFunc {
 		return nil
 	}
 }
-
-func ParseOptHanja(s string) string {
-	switch s {
-	case pkg.OPT_HANJA_NONE, pkg.OPT_HANJA_PARENTHESIS:
-		return s
-	default:
-		return ""
-	}
-}

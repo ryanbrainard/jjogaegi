@@ -16,13 +16,6 @@ func TestFormatCSV(t *testing.T) {
 	assert.Equal(t, ",,처리,處理,,,,handling,,k,e,,,,\n", out.String())
 }
 
-func TestFormatCSV_HanjaMerge(t *testing.T) {
-	items, out := setupTestFormat()
-	err := FormatCSV(context.Background(), items, out, map[string]string{pkg.OPT_HANJA: pkg.OPT_HANJA_PARENTHESIS})
-	assert.Nil(t, err)
-	assert.Equal(t, ",,처리 (處理),處理,,,,handling,,k,e,,,,\n", out.String())
-}
-
 func setupTestFormat() (<-chan *pkg.Item, *bytes.Buffer) {
 	items := make(chan *pkg.Item, 1)
 	item := &pkg.Item{Hangul: "처리", Hanja: "處理", Def: pkg.Translation{English: "handling"}, Examples: []pkg.Translation{{English: "e", Korean: "k"}}}
