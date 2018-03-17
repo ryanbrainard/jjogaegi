@@ -30,15 +30,15 @@ func TestKrDictLookup(t *testing.T) {
 			name:         "no results/non-interactive",
 			lookup:       true,
 			item:         &pkg.Item{Hangul: "라이언"},
-			expectedItem: &pkg.Item{Hangul: "라이언"},
+			expectedItem: &pkg.Item{Hangul: "라이언", ExternalID: "-"},
 		},
 		{
 			name:         "no results/interactive",
 			lookup:       true,
 			interactive:  true,
 			item:         &pkg.Item{Hangul: "라이언"},
-			expectedItem: &pkg.Item{Hangul: "라이언"},
-			expectedOut:  "<not found>\n",
+			expectedItem: &pkg.Item{Hangul: "라이언", ExternalID: "-"},
+			expectedOut:  "라이언 -> <not found>\n",
 		},
 		{
 			name:         "one result",
@@ -52,7 +52,7 @@ func TestKrDictLookup(t *testing.T) {
 			interactive:  true,
 			item:         &pkg.Item{Hangul: "안경"},
 			expectedItem: &pkg.Item{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
-			expectedOut:  "glasses; spectacles\n",
+			expectedOut:  "안경 -> glasses; spectacles\n",
 		},
 		{
 			name:         "multiple results/lookup/non-interactive",
@@ -60,7 +60,7 @@ func TestKrDictLookup(t *testing.T) {
 			interactive:  false,
 			item:         &pkg.Item{Hangul: "안녕"},
 			expectedItem: &pkg.Item{Hangul: "안녕"},
-			expectedOut:  "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n",
+			expectedOut:  "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n",
 		},
 		{
 			name:         "multiple results/lookup/non-interactive/with eng def",
@@ -68,7 +68,7 @@ func TestKrDictLookup(t *testing.T) {
 			interactive:  false,
 			item:         &pkg.Item{Hangul: "안녕", Def: pkg.Translation{English: "peace"}},
 			expectedItem: &pkg.Item{Hangul: "안녕", Def: pkg.Translation{English: "peace"}},
-			expectedOut:  "Multiple results found for 안녕 (peace):\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n",
+			expectedOut:  "안녕 (peace) -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nSkipping lookup. Set interactive option to choose.\n",
 		},
 		{
 			name:             "multiple results/lookup/interactive",
@@ -77,7 +77,7 @@ func TestKrDictLookup(t *testing.T) {
 			item:             &pkg.Item{Hangul: "안녕"},
 			interactiveInput: "2\n",
 			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
-			expectedOut:      "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: \n",
+			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: \n",
 		},
 		{
 			name:             "multiple results/lookup/interactive/bad response",
@@ -86,7 +86,7 @@ func TestKrDictLookup(t *testing.T) {
 			item:             &pkg.Item{Hangul: "안녕"},
 			interactiveInput: "X\n2\n",
 			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
-			expectedOut:      "Multiple results found for 안녕:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: Invalid number\nEnter number: \n",
+			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: Invalid number\nEnter number: \n",
 		},
 	}
 

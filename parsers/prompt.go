@@ -30,6 +30,7 @@ func interactivePrompt(interactiveOut io.Writer, ctx context.Context, r io.Reade
 	prompt := ">>> "
 	fmt.Fprintf(interactiveOut, prompt)
 
+	lookup := interceptors.NewKrDictLookup(r, interactiveOut)
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		select {
@@ -39,16 +40,19 @@ func interactivePrompt(interactiveOut io.Writer, ctx context.Context, r io.Reade
 		}
 
 		line := sanitize(scanner.Text())
+		hangul, _ := splitHangul(line)
 
-		if line == "" {
-			fmt.Fprintf(interactiveOut, "\n"+prompt)
+		if hangul == "" {
+			fmt.Fprintf(interactiveOut, "<invalid input>\n%s", prompt)
 			continue
 		}
 
-		item := parseLineItem(line)
+		item := &pkg.Item{
+			Hangul: sanitize(hangul),
+		}
 
 		// pre-run interceptor to not muck up stdin processing
-		err := interceptors.NewKrDictLookup(r, interactiveOut)(item, options)
+		err := lookup(item, options)
 		if err != nil {
 			return err
 		}

@@ -27,24 +27,14 @@ func TestPrompt(t *testing.T) {
 			name:             "korean only",
 			interactiveInput: "안경\n",
 			expectedItems:    []*pkg.Item{{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"}},
-			expectedOut:      "Enter a Korean word on each line: (press Ctrl+D to quit)\n>>> glasses; spectacles\n\n>>> ",
+			expectedOut:      "Enter a Korean word on each line: (press Ctrl+D to quit)\n>>> 안경 -> glasses; spectacles\n\n>>> ",
 		},
 		{
 			name:             "korean and english",
 			interactiveInput: "안경 specs\n",
-			expectedItems:    []*pkg.Item{{Hangul: "안경", Def: pkg.Translation{English: "specs"}, ExternalID: "krdict:kor:31484:단어"}},
-
-			expectedOut: "Enter a Korean word on each line: (press Ctrl+D to quit)\n>>> glasses; spectacles\n\n>>> ",
+			expectedItems:    []*pkg.Item{{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"}},
+			expectedOut:      "Enter a Korean word on each line: (press Ctrl+D to quit)\n>>> 안경 -> glasses; spectacles\n\n>>> ",
 		},
-		// {
-		// 	name:             "multiple",
-		// 	interactiveInput: "안경\n안녕\n\n2\n",
-		// 	expectedItems: []*pkg.Item{
-		// 		{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
-		// 		{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
-		// 	},
-		// 	expectedOut: "Enter a Korean word on each line: (press Ctrl+D to quit)\n>>> glasses; spectacles\n\n>>> glasses; spectacles\n\n>>> ",
-		// },
 	}
 
 	for _, c := range cases {

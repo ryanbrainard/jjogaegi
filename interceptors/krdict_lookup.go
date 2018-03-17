@@ -26,7 +26,7 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 
 	interactive := options[pkg.OPT_INTERACTIVE] == strconv.FormatBool(true)
 
-	if strings.HasPrefix(item.ExternalID, "krdict") {
+	if item.ExternalID != "" {
 		return nil
 	}
 
@@ -61,9 +61,14 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 		itemLabel += " (" + item.Def.English + ")"
 	}
 
+	if interactive || len(choices) > 1 {
+		fmt.Fprintf(out, "%s -> ", itemLabel)
+	}
+
 	var choiceIndex int
 	switch len(choices) {
 	case 0:
+		item.ExternalID = "-"
 		if interactive {
 			fmt.Fprintf(out, "<not found>\n")
 		}
@@ -74,7 +79,7 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 			fmt.Fprintf(out, "%s\n", pkg.XpathString(choices[choiceIndex], "sense/translation/trans_word"))
 		}
 	default:
-		fmt.Fprintf(out, "Multiple results found for %s:\n", itemLabel)
+		fmt.Fprintf(out, "Multiple results found:\n")
 		for i, choice := range choices {
 			fmt.Fprintf(out, " %d) %s\n", i+1, pkg.XpathString(choice, "sense/translation/trans_word"))
 		}
