@@ -10,7 +10,7 @@ import (
 )
 
 func TestParseTSV(t *testing.T) {
-	in, err := os.Open("../testing/fixtures/anki.tsv")
+	in, err := os.Open("../testing/fixtures/sample-1.tsv")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
@@ -27,7 +27,7 @@ func TestParseTSV(t *testing.T) {
 		ImageTag:      "<img src=\"paste-2512555868520.jpg\" />",
 		Def: pkg.Translation{
 			Korean:  "누가 더 나은지 가릴 수 없을 만큼 차이가 거의 없음.",
-			English: ":=",
+			English: "almost equal := The state of things having hardly any difference between them so that it is difficult to tell which of something is better.",
 		},
 		Antonym: "",
 		Examples: []pkg.Translation{
@@ -40,6 +40,7 @@ func TestParseTSV(t *testing.T) {
 				English: "",
 			},
 		},
+		Grade: "고급",
 	}
 
 	assert.Equal(t, expected, <-items)

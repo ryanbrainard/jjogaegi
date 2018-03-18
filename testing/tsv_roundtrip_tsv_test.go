@@ -14,7 +14,7 @@ import (
 )
 
 func TestRoundtripTSV(t *testing.T) {
-	file, err := os.Open("../testing/fixtures/anki.1.tsv")
+	file, err := os.Open("../testing/fixtures/sample-1.tsv")
 	assert.Nil(t, err)
 
 	inBytes, err := ioutil.ReadAll(file)

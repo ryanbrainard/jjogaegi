@@ -13,7 +13,7 @@ func TestFormatCSV(t *testing.T) {
 	items, out := setupTestFormat()
 	err := FormatCSV(context.Background(), items, out, map[string]string{})
 	assert.Nil(t, err)
-	assert.Equal(t, ",,처리,處理,,,,handling,,k,e,,,,\n", out.String())
+	assert.Equal(t, ",,처리,處理,,handling,,,,,,k,e,,\n", out.String())
 }
 
 func setupTestFormat() (<-chan *pkg.Item, *bytes.Buffer) {

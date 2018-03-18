@@ -28,28 +28,29 @@ func ParseTSV(ctx context.Context, in io.Reader, items chan<- *pkg.Item, options
 		}
 
 		item := &pkg.Item{
-			NoteID:        record[0],
-			ExternalID:    record[1],
-			Hangul:        record[2],
-			Hanja:         record[3],
-			Pronunciation: record[4],
-			AudioTag:      record[5],
+			NoteID:     record[0],
+			ExternalID: record[1],
+			Hangul:     record[2],
+			Hanja:      record[3],
 			Def: pkg.Translation{
-				Korean:  record[6],
-				English: record[7],
+				Korean:  record[4],
+				English: record[5],
 			},
-			Antonym: record[8],
+			Pronunciation: record[6],
+			AudioTag:      record[7],
+			ImageTag:      record[8],
+			Grade:         record[9],
+			Antonym:       record[10],
 			Examples: []pkg.Translation{
-				{
-					Korean:  record[9],
-					English: record[10],
-				},
 				{
 					Korean:  record[11],
 					English: record[12],
 				},
+				{
+					Korean:  record[13],
+					English: record[14],
+				},
 			},
-			ImageTag: record[13],
 		}
 
 		items <- item
