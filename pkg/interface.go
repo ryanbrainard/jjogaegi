@@ -10,13 +10,13 @@ type Item struct {
 	ExternalID    string
 	Hangul        string
 	Hanja         string
+	Def           Translation
 	Pronunciation string
 	AudioTag      string
 	ImageTag      string
-	Def           Translation
+	Grade         string
 	Antonym       string
 	Examples      []Translation
-	Grade         string
 }
 
 type Translation struct {
