@@ -70,7 +70,13 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 	case 0:
 		item.ExternalID = "-"
 		if interactive {
-			fmt.Fprintf(out, "<not found>\n")
+			inBuf := bufio.NewReader(in)
+			fmt.Fprintf(out, "Not found. Enter custom English definition: ")
+			engDef, err := inBuf.ReadString('\n')
+			if err != nil {
+				return err
+			}
+			item.Def.English = strings.TrimSpace(engDef)
 		}
 		return nil
 	case 1:
