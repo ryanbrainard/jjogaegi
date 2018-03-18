@@ -15,6 +15,9 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+// Version set by linker
+var Version string
+
 var fVersion = flag.Bool("version", false, "print version information")
 var fIn = flag.String("in", "stdin", "filename to read as input")
 var fOut = flag.String("out", "stdout", "filename to write to output")
@@ -27,7 +30,7 @@ var fInteractive = flag.Bool("interactive", false, "interactive mode. always tru
 
 func main() {
 	flag.Usage = func() {
-		scriptName := os.Args[0]
+		scriptName := "jjogaegi"
 
 		fmt.Fprintf(os.Stderr, "%s - Korean vocabulary parser-formatter\n\n", scriptName)
 		fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS]\n", scriptName)
@@ -41,14 +44,14 @@ func main() {
 		fmt.Fprintf(os.Stderr, "                  For use with Anki, see https://apps.ankiweb.net/docs/manual.html#files\n")
 		fmt.Fprintf(os.Stderr, "\nOptions:\n")
 		flag.PrintDefaults()
-		fmt.Fprintf(os.Stderr, "\n%s/%s\thttps://github.com/ryanbrainard/jjogaegi\n", scriptName, pkg.VERSION)
+		fmt.Fprintf(os.Stderr, "\n%s/%s\thttps://github.com/ryanbrainard/jjogaegi\n", scriptName, Version)
 
 	}
 
 	flag.Parse()
 
 	if *fVersion {
-		fmt.Printf("v%s\n", pkg.VERSION)
+		fmt.Printf("%s\n", Version)
 		os.Exit(0)
 	}
 
