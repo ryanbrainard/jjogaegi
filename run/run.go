@@ -28,8 +28,8 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		parallelism = runtime.NumCPU()
 	}
 
-	setEnvOptOrPanic(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY")
 	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_URL, "KRDICT_API_URL", "https://krdict.korean.go.kr")
+	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY", "")
 	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "MEDIA_DIR", "")
 
 	g, ctx := errgroup.WithContext(context.Background())
@@ -98,10 +98,11 @@ func setEnvOptOrDefault(options map[string]string, optKey, envKey, orDefault str
 	}
 }
 
-func setEnvOptOrPanic(options map[string]string, optKey, envKey string) {
+func setEnvOptRequired(options map[string]string, optKey, envKey string) error {
 	if options[optKey] == "" && os.Getenv(envKey) == "" {
-		panic(fmt.Sprintf("%s env must be set", envKey))
+		return fmt.Errorf("%s env must be set", envKey)
 
 	}
 	setEnvOptOrDefault(options, optKey, envKey, "")
+	return nil
 }

@@ -19,25 +19,25 @@ ARCHITECTURES=386 amd64
 OUTPUT_DIR=dist
 
 # Setup linker flags option for build that interoperate with variable names in src code
-LDFLAGS=-ldflags "-X main.Version=${VERSION}"
+LDFLAGS=-ldflags "-X main.Version=$(VERSION)"
 
 default: build
 
-all: clean build_all install
+all: clean test build_all install
 
 build:
-	go build ${LDFLAGS} -o ${OUTPUT_DIR}/${BINARY} ./cmd/${BINARY}
+	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)
 
 build_all:
 	$(foreach GOOS, $(PLATFORMS),\
-	$(foreach GOARCH, $(ARCHITECTURES),\
-	$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); go build ${LDFLAGS} -o ${OUTPUT_DIR}/$(BINARY)-$(GOOS)-$(GOARCH) ./cmd/${BINARY})))
+		$(foreach GOARCH, $(ARCHITECTURES),\
+			$(shell env GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(LDFLAGS) -o $(OUTPUT_DIR)/$(GOOS)-$(GOARCH)/$(BINARY) ./cmd/$(BINARY) && zip -r -q $(OUTPUT_DIR)/$(GOOS)-$(GOARCH).zip $(OUTPUT_DIR)/$(GOOS)-$(GOARCH))))
 
 install: build
-	cp ${OUTPUT_DIR}/${BINARY} ${GOPATH}/bin
+	cp $(OUTPUT_DIR)/$(BINARY) $(GOPATH)/bin
 
 test:
 	go test ./...
 
 clean:
-	rm -rf ${OUTPUT_DIR}
+	rm -rf $(OUTPUT_DIR)
