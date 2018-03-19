@@ -1,27 +1,81 @@
 # jjogaegi (쪼개기)
 
-Utility to input, f
+Utility to create, parse, and format Korean vocabulary to import into [Anki](http://ankisrs.net/), [Quizlet](https://quizlet.com/), and other flashcard apps. 
 
-
-Parses and formats Korean vocabulary for easy importing from lists or dictionaries into [Quizlet](https://quizlet.com/), [Anki](http://ankisrs.net/), and other flashcard apps.
-
-![jjogaegi flow](assets/jjogaegi-flow.png)
+ - Accepts parsing from various import sources, including plain-text lists, TSV (i.e. Anki notes), Memrise lists, various dictionary sources, and even an interactive mode to create flashcards on the fly. 
+- Output formats include TSV, CSV, and JSON. 
+- Interacts with the National Institute of Korean Basic Dictionary (국립국어원 한국어기초사전) to lookup words and enhance flashcards with definitions, example sentences, pronunciation audio, and more.
 
 ## Installation
 
-First install [Go](https://golang.org/doc/install) and then install `jjogaegi`:
+Go to the [release page](https://github.com/ryanbrainard/jjogaegi/releases) and download the latest release for your platform. The file can be placed anywhere on your computer.
 
-    $ go get github.com/ryanbrainard/jjogaegi/cmd/jjogaegi
+It is highly recommended to set the following [environment variables](https://www.schrodinger.com/kb/1842): 
+
+- `KRDICT_API_KEY`: Dictionary API key to enable word lookups
+- `MEDIA_DIR`: Directory to download images and audio. For use with Anki, see its manual entry on [File Locations](https://apps.ankiweb.net/docs/manual.html#files).
+		
 
 ## Usage
 
-`jjogaegi` is a small, sharp UNIX-like tool. As such, it only reads from stdin and writes to stdout, so it can be used in a pipeline. Use a command like `cat` or `pbpaste` to input a file or the clipboard, and then use redirection (i.e. `>`) or `pbpaste` to output back to a file or the clipboard.
+`jjogaegi` is a small, sharp UNIX-like tool. As such, by default it reads from stdin and writes to stdout, so it can be used in a pipeline; however, it can be configured with the `-in` and `-out` options to read and write to and from files. The input and output formats can be configured with the `-parser` and `-formatter` options, respectively. If no parser is configured, the user is prompted to input words interactively and the definitions are looked up automatically. With the other parsers, the same lookup functionality can be enabled with the `-lookup` option, and interative mode can be enabled with the `-interactive` option to interactively choose one of multiple defitions in the case of homophones. 
+
+The column order for parsing and formatting TSV and CSV files is fixed as follows:
+
+- Note ID: unique id 
+- External ID: id from external system (e.g. dictionary id)
+- Hangul
+- Hanja
+- Korean Definition
+- English Definition
+- Pronunciation
+- Audio
+- Image
+- Grade: difficulty of word
+- Antonym
+- Example 1 Korean
+- Example 1 English
+- Example 2 Korean
+- Example 2 English
+
+To configure Anki to support these columns, import the [sample Anki card](https://github.com/ryanbrainard/jjogaegi/raw/master/assets/anki-sample-card.apkg) to create the `Korean++` note type.
 
 This application also includes a [web interface](#web-interface) with a simplified set of options.
 
-#### File Based
+### Prompt Mode
 
-For example, if there is a file named `input.txt` that looks like this:
+If no input file is provided, the user is prompted for words interactively. The definitions, example sentenses, etc. are automatically looked up in the National Institute of Korean Basic Dictionary (국립국어원 한국어기초사전). If there are multiple definitions or one cannot be found, the user is prompted.  For example:
+
+```
+$ jjogaegi -out /tmp/test.tsv -formatter tsv
+Enter a Korean word on each line: (press Ctrl+D to quit)
+>>> 안경
+안경 -> glasses; spectacles
+
+>>> 안녕
+안녕 -> Multiple results found:
+ 1) hello; hi; good-bye; bye
+ 2) peace; good health
+Enter number: 1
+
+
+>>> 아이폰
+아이폰 -> Not found. Enter custom English definition: iPhone
+
+<Ctrl+D>
+```
+
+The output file (`/tmp/test.tsv`) looks likes like this:
+
+```
+608a6497-1915-4d90-9d65-6f48d6add48c	krdict:kor:31484:단어	안경	眼鏡	눈을 보호하거나 시력이 좋지 않은 사람이 잘 볼 수 있도록 눈에 쓰는 물건.	glasses; spectacles := An instrument that one wears over the eyes to proctect them or to supplement his/her eyesight for better vision.	안ː경	[sound:6db1c685-37b7-40a2-b7f2-62df68c422f8.mp3]	"<img src=""65c2ce63-b68c-455f-8cbb-189f4307b36e.jpg"">"	초급		검은 테 안경.		그는 피곤한지 안경을 벗고 눈을 비볐다.
+4a9dc630-a51d-49df-b687-5c715151d376	krdict:kor:17298:단어	안녕	安寧	친구 또는 아랫사람과 서로 만나거나 헤어질 때 하는 인사말.	hello; hi; good-bye; bye := A salutation uttered when the speaker meets or parts from his/her friend or junior.	안녕	[sound:0d65ec77-fc92-4807-916a-b10722f80632.mp3]		초급
+5f34ffa0-652e-4969-9197-7b092f9e808b	-	아니폰			iPhone
+```
+
+### File Based
+
+If there is a file named `input.txt` that looks like this:
 
 ```
 •컴퓨터를 켜다 to turn on the computer
@@ -29,31 +83,13 @@ For example, if there is a file named `input.txt` that looks like this:
 •검색어를 입력하다 to type in the search word
 ```
 
-It can be processed and written to `output.tsv` like this:
+It can be processed and written to `output.tsv` like this (UNIX pipes and redirects can also be used, but not showing for brevity):
 
 ```sh
-$ cat input.txt | jjogaegi > output.tsv
-```
-
-The resulting file will be in tab-separated format:
-
-```tsv
-컴퓨터를 켜다	to turn on the computer
-브라우저를 열다	to open the web browser
-검색어를 입력하다	to type in the search word
+$ jjogaegi -in input.txt -out output.tsv
 ```
 
 The output can then be imported into your favorite flashcard app.
-
-#### Clipboard Based
-
-Alternatively, if you'd rather work with just data from/to the clipboard, use `pbpaste` and `pbcopy` on MacOS:
-
-```sh
-$ pbpaste | jjogaegi | pbcopy
-```
-
-The examples above shows processing without any options. This processes a simple list and outputs a TSV by default; however, the parser for the input and formatter for the output can be customized. See examples and options below for details.
 
 # Options
 
@@ -63,7 +99,8 @@ The parser and formatter can be set for different inputs and outputs.
 
 Options for `--parser` flag:
 
- - `list`: (default) list of Korean terms followed by English definitions. Splits the line after the last 한글 character. Does not support 漢字.
+ - `prompt`: interatively prompt user for words. 
+ - `list`: list of Korean terms followed by English definitions. Splits the line after the last 한글 character. Does not support 漢字.
  - `krdict-xml`: [한국어기초사전](https://krdict.korean.go.kr) Korean wordbook XML. Supports Id, 漢字, pronunciations, antonyms, and English definition fetching.
  - `naver-json`: [Naver Korean-English Dictionary](http://endic.naver.com/) wordbook JSON. Supports Id, 漢字. (experimental)
  - `naver-table`: [Naver Korean-English Dictionary](http://endic.naver.com/) wordbook printed PDF table. Supports 漢字. (experimental)
@@ -74,6 +111,16 @@ Options for `--formatter` flag:
 
  - `tsv`: (default) tab-separated values
  - `csv`: comma-separated values
+ - `json`: JSON
+
+
+## Lookup
+
+Set `-lookup` to lookup words in dictionary and enhance details. Automatically set for prompt parser.
+
+## Interactive
+
+Set `-interactive` to enable interative mode to resolve homophone conflicts. Automatically set for prompt parser.
 
 ## Header
 
@@ -81,11 +128,6 @@ Options for `--header` flag:
 
 If set, string will be prepended to output
 
-## Media Dir
-
-Options for `--mediadir` flag:
-
-If set, media (i.e. images and audio) will be downloaded into the directory specified.
 
 # Web Interface
 
