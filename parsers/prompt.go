@@ -65,7 +65,7 @@ func interactivePrompt(interactiveOut io.Writer, ctx context.Context, r io.Reade
 		case <-ctx.Done():
 			return ctx.Err()
 		default:
-			fmt.Fprintf(interactiveOut, "\n"+prompt)
+			fmt.Fprint(interactiveOut, prompt)
 		}
 	}
 

@@ -1,16 +1,18 @@
 # jjogaegi (쪼개기)
 
-Utility to create, parse, and format Korean vocabulary to import into [Anki](http://ankisrs.net/), [Quizlet](https://quizlet.com/), and other flashcard apps. 
+Command line utility to create, parse, and format Korean vocabulary to import into [Anki](http://ankisrs.net/), [Quizlet](https://quizlet.com/), and other flashcard apps. 
 
- - Accepts parsing from various import sources, including plain-text lists, TSV (i.e. Anki notes), Memrise lists, various dictionary sources, and even an interactive mode to create flashcards on the fly. 
+ - Accepts parsing from various import sources, including plain-text lists, TSV (e.g. Anki notes), Memrise lists, various dictionary sources, and even an interactive mode to create flashcards on the fly. 
 - Output formats include TSV, CSV, and JSON. 
 - Interacts with the National Institute of Korean Basic Dictionary (국립국어원 한국어기초사전) to lookup words and enhance flashcards with definitions, example sentences, pronunciation audio, and more.
 
 ## Installation
 
-Go to the [release page](https://github.com/ryanbrainard/jjogaegi/releases) and download the latest release for your platform. The file can be placed anywhere on your computer.
+This is a command-line application and requires basic knowledge of using command line. If you are unfamiliar with the command line, see a tutorial like [this one](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything) for your platform. 
 
-It is highly recommended to set the following [environment variables](https://www.schrodinger.com/kb/1842): 
+Go to the [release page](https://github.com/ryanbrainard/jjogaegi/releases) and download the latest release for your platform. Unzip the release and contained the `jjogaegi` binary can be placed anywhere on your computer.
+
+Before use, it is highly recommended to set the following [environment variables](https://www.schrodinger.com/kb/1842): 
 
 - `KRDICT_API_KEY`: Dictionary API key to enable word lookups
 - `MEDIA_DIR`: Directory to download images and audio. For use with Anki, see its manual entry on [File Locations](https://apps.ankiweb.net/docs/manual.html#files).
@@ -18,33 +20,31 @@ It is highly recommended to set the following [environment variables](https://ww
 
 ## Usage
 
-`jjogaegi` is a small, sharp UNIX-like tool. As such, by default it reads from stdin and writes to stdout, so it can be used in a pipeline; however, it can be configured with the `-in` and `-out` options to read and write to and from files. The input and output formats can be configured with the `-parser` and `-formatter` options, respectively. If no parser is configured, the user is prompted to input words interactively and the definitions are looked up automatically. With the other parsers, the same lookup functionality can be enabled with the `-lookup` option, and interative mode can be enabled with the `-interactive` option to interactively choose one of multiple defitions in the case of homophones. 
+`jjogaegi` is a small, sharp UNIX-like tool. As such, by default it reads from `stdin` and writes to `stdout`, so it can be used in a pipeline; however, it can be configured with the `-in` and `-out` options to read and write to and from files as well. The input and output formats can be configured with the `-parser` and `-formatter` options, respectively. If no parser is configured, you are prompted to input words interactively and the definitions are looked up automatically. With the other parsers, the same lookup functionality can be enabled with the `-lookup` option, and interactive mode can be enabled with the `-interactive` option to choose one of multiple definitions when a word is a homophone. 
 
 The column order for parsing and formatting TSV and CSV files is fixed as follows:
 
-- Note ID: unique id 
-- External ID: id from external system (e.g. dictionary id)
-- Hangul
-- Hanja
-- Korean Definition
-- English Definition
-- Pronunciation
-- Audio
-- Image
-- Grade: difficulty of word
-- Antonym
-- Example 1 Korean
-- Example 1 English
-- Example 2 Korean
-- Example 2 English
+- **Note ID**: unique id 
+- **External ID**: id from external system (e.g. dictionary id)
+- **Hangul**
+- **Hanja**
+- **Korean Definition**
+- **English Definition**
+- **Pronunciation**
+- **Audio**: file name of an audio file in `MEDIA_DIR`. If formatted as a URL, the file will automatically be downloaded and the file name reformatted.
+- **Image**: file name of an image file in `MEDIA_DIR`. If formatted as a URL, the file will automatically be downloaded and the file name reformatted.
+- **Grade**: difficulty of word
+- **Antonym**
+- **Example 1 Korean**
+- **Example 1 English**
+- **Example 2 Korean**
+- **Example 2 English**
 
 To configure Anki to support these columns, import the [sample Anki card](https://github.com/ryanbrainard/jjogaegi/raw/master/assets/anki-sample-card.apkg) to create the `Korean++` note type.
 
-This application also includes a [web interface](#web-interface) with a simplified set of options.
-
 ### Prompt Mode
 
-If no input file is provided, the user is prompted for words interactively. The definitions, example sentenses, etc. are automatically looked up in the National Institute of Korean Basic Dictionary (국립국어원 한국어기초사전). If there are multiple definitions or one cannot be found, the user is prompted.  For example:
+If no input file is provided, you are prompted for words interactively. The definitions, example sentences, etc. are automatically looked up in the National Institute of Korean Basic Dictionary (국립국어원 한국어기초사전). If there are multiple definitions or one cannot be found, you will be prompted. For example, entering 안경 (one definition), 안녕 (two definitions), and 아이폰 (no definition):
 
 ```
 $ jjogaegi -out /tmp/test.tsv -formatter tsv
@@ -65,13 +65,15 @@ Enter number: 1
 <Ctrl+D>
 ```
 
-The output file (`/tmp/test.tsv`) looks likes like this:
+The output file (`/tmp/test.tsv`) looks then likes like this:
 
-```
+```tsv
 608a6497-1915-4d90-9d65-6f48d6add48c	krdict:kor:31484:단어	안경	眼鏡	눈을 보호하거나 시력이 좋지 않은 사람이 잘 볼 수 있도록 눈에 쓰는 물건.	glasses; spectacles := An instrument that one wears over the eyes to proctect them or to supplement his/her eyesight for better vision.	안ː경	[sound:6db1c685-37b7-40a2-b7f2-62df68c422f8.mp3]	"<img src=""65c2ce63-b68c-455f-8cbb-189f4307b36e.jpg"">"	초급		검은 테 안경.		그는 피곤한지 안경을 벗고 눈을 비볐다.
 4a9dc630-a51d-49df-b687-5c715151d376	krdict:kor:17298:단어	안녕	安寧	친구 또는 아랫사람과 서로 만나거나 헤어질 때 하는 인사말.	hello; hi; good-bye; bye := A salutation uttered when the speaker meets or parts from his/her friend or junior.	안녕	[sound:0d65ec77-fc92-4807-916a-b10722f80632.mp3]		초급
 5f34ffa0-652e-4969-9197-7b092f9e808b	-	아니폰			iPhone
 ```
+
+This output file can then be imported into your favorite flashcard app.
 
 ### File Based
 
@@ -86,10 +88,18 @@ If there is a file named `input.txt` that looks like this:
 It can be processed and written to `output.tsv` like this (UNIX pipes and redirects can also be used, but not showing for brevity):
 
 ```sh
-$ jjogaegi -in input.txt -out output.tsv
+$ jjogaegi -in input.txt -out output.tsv -parser list -formatter tsv
 ```
 
-The output can then be imported into your favorite flashcard app.
+The output file (`output.tsv`) looks then likes like this:
+
+```tsv
+e1dd2d1d-eb85-4805-b9c8-536dad3b11e9		컴퓨터를 켜다			to turn on the computer
+167187f9-51cb-4c0d-b5b7-538915f096e3		브라우저를 열다			to open the web browser
+a66ca59c-c413-4b79-b902-e3b32bb6bd08		검색어를 입력하다			to type in the search word
+```
+
+This output file can then be imported into your favorite flashcard app.
 
 # Options
 

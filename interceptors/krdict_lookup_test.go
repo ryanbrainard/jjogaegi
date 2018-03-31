@@ -38,7 +38,7 @@ func TestKrDictLookup(t *testing.T) {
 			interactive:      true,
 			item:             &pkg.Item{Hangul: "라이언"},
 			expectedItem:     &pkg.Item{Hangul: "라이언", ExternalID: "-", Def: pkg.Translation{English: "Ryan"}},
-			expectedOut:      "라이언 -> Not found. Enter custom English definition: ",
+			expectedOut:      "라이언 -> Not found.\nEnter custom English definition: ",
 			interactiveInput: "Ryan\n",
 		},
 		{
@@ -53,7 +53,7 @@ func TestKrDictLookup(t *testing.T) {
 			interactive:  true,
 			item:         &pkg.Item{Hangul: "안경"},
 			expectedItem: &pkg.Item{Hangul: "안경", ExternalID: "krdict:kor:31484:단어"},
-			expectedOut:  "안경 -> glasses; spectacles\n",
+			expectedOut:  "안경 -> glasses; spectacles",
 		},
 		{
 			name:         "multiple results/lookup/non-interactive",
@@ -78,7 +78,7 @@ func TestKrDictLookup(t *testing.T) {
 			item:             &pkg.Item{Hangul: "안녕"},
 			interactiveInput: "2\n",
 			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
-			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: \n",
+			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: ",
 		},
 		{
 			name:             "multiple results/lookup/interactive/bad response",
@@ -87,7 +87,7 @@ func TestKrDictLookup(t *testing.T) {
 			item:             &pkg.Item{Hangul: "안녕"},
 			interactiveInput: "X\n2\n",
 			expectedItem:     &pkg.Item{Hangul: "안녕", ExternalID: "krdict:kor:17296:단어"},
-			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: Invalid number\nEnter number: \n",
+			expectedOut:      "안녕 -> Multiple results found:\n 1) hello; hi; good-bye; bye\n 2) peace; good health\nEnter number: Invalid number\nEnter number: ",
 		},
 	}
 
@@ -108,7 +108,7 @@ func TestKrDictLookup(t *testing.T) {
 
 			assert.NoError(t, err)
 			assert.Equal(t, c.expectedItem, actual)
-			assert.Equal(t, c.expectedOut, out.String())
+			assert.Equal(t, c.expectedOut + "\n\n", out.String())
 		})
 	}
 }

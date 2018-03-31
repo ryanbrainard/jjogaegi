@@ -18,7 +18,11 @@ func ParseList(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options
 		default:
 		}
 
-		items <- parseLineItem(scanner.Text())
+		item := parseLineItem(scanner.Text())
+		if item.Hangul == "" {
+			continue
+		}
+		items <- item
 	}
 
 	return nil

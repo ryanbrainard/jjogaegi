@@ -15,8 +15,14 @@ import (
 
 func NewKrDictLookup(interactiveIn io.Reader, interactiveOut io.Writer) pkg.InterceptorFunc {
 	return func(item *pkg.Item, options map[string]string) error {
-		return krDictLookup(interactiveIn, interactiveOut, item, options)
+		return krDictLookupDoubleSpaced(interactiveIn, interactiveOut, item, options)
 	}
+}
+
+func krDictLookupDoubleSpaced(in io.Reader, out io.Writer, item *pkg.Item, options map[string]string) error {
+	err := krDictLookup(in, out, item, options)
+	fmt.Fprintf(out, "\n\n")
+	return err
 }
 
 func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[string]string) error {
@@ -57,7 +63,7 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 	}
 
 	itemLabel := item.Hangul
-	if item.Def.English != "" {
+	if item.Def.English != "" && len(choices) > 0 {
 		itemLabel += " (" + item.Def.English + ")"
 	}
 
@@ -70,19 +76,23 @@ func krDictLookup(in io.Reader, out io.Writer, item *pkg.Item, options map[strin
 	case 0:
 		item.ExternalID = "-"
 		if interactive {
-			inBuf := bufio.NewReader(in)
-			fmt.Fprintf(out, "Not found. Enter custom English definition: ")
-			engDef, err := inBuf.ReadString('\n')
-			if err != nil {
-				return err
+			if item.Def.English == "" {
+				inBuf := bufio.NewReader(in)
+				fmt.Fprintf(out, "Not found.\nEnter custom English definition: ")
+				engDef, err := inBuf.ReadString('\n')
+				if err != nil {
+					return err
+				}
+				item.Def.English = strings.TrimSpace(engDef)
+			} else {
+				fmt.Fprintf(out, "%s", item.Def.English)
 			}
-			item.Def.English = strings.TrimSpace(engDef)
 		}
 		return nil
 	case 1:
 		choiceIndex = 0
 		if interactive {
-			fmt.Fprintf(out, "%s\n", pkg.XpathString(choices[choiceIndex], "sense/translation/trans_word"))
+			fmt.Fprintf(out, "%s", pkg.XpathString(choices[choiceIndex], "sense/translation/trans_word"))
 		}
 	default:
 		fmt.Fprintf(out, "Multiple results found:\n")
@@ -138,7 +148,6 @@ func promptMultipleChoice(in io.Reader, out io.Writer, item *pkg.Item, choices [
 			continue
 		}
 
-		fmt.Fprintf(out, "\n")
 		return answerNum - 1
 	}
 }
