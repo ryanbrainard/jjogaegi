@@ -52,10 +52,13 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 		item.Antonym = pkg.XpathString(entry, "/channel/item/word_info/sense_info/rel_info[type='반대말']/word")
 	}
 
-	if item.Examples == nil {
+	switch len(item.Examples) {
+	case 0:
 		item.Examples = make([]pkg.Translation, 2, 2)
+	case 1:
+		item.Examples = append(item.Examples, pkg.Translation{})
 	}
-
+	
 	if item.Examples[0].Korean == "" {
 		item.Examples[0] = getExample(entry, "구")
 	}
