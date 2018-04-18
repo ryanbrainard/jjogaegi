@@ -32,7 +32,7 @@ func main() {
 	flag.Usage = func() {
 		scriptName := "jjogaegi"
 
-		fmt.Fprintf(os.Stderr, "%s - Korean vocabulary parser-formatter\n\n", scriptName)
+		fmt.Fprintf(os.Stderr, "%s - Korean vocabulary parser-formatter [%s]\n\n", scriptName, Version)
 		fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS]\n", scriptName)
 		fmt.Fprintf(os.Stderr, "       Parses input interactively, from stdin, or from a file specificed with the -in option.\n")
 		fmt.Fprintf(os.Stderr, "       Formats output to stdout or to a file specificed with the -out option.\n")
@@ -44,8 +44,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "                  For use with Anki, see https://apps.ankiweb.net/docs/manual.html#files\n")
 		fmt.Fprintf(os.Stderr, "\nOptions:\n")
 		flag.PrintDefaults()
-		fmt.Fprintf(os.Stderr, "\n%s/%s\thttps://github.com/ryanbrainard/jjogaegi\n", scriptName, Version)
-
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintf(os.Stderr, "See project readme for additional information:\n")
+		fmt.Fprintf(os.Stderr, "  https://github.com/ryanbrainard/jjogaegi\n")
 	}
 
 	flag.Parse()
