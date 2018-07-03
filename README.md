@@ -209,3 +209,9 @@ Now, open Anki, go to **File**, **Import**, choose the TSV file and follow the w
 # Disclaimer
 
 For personal use only. Do not use this tool for publishing copyrighted content. Respect copyright holders' rights of their content. Logos shown above are copyrighted by their respective owners.
+
+# Thanks to JetBrains
+
+Special thanks to [JetBrains](http://www.jetbrains.com) for supporting open source software and providing a license for developing this application.
+
+[![jetbrains logo](assets/jetbrains.svg)](http://www.jetbrains.com)
