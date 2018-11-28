@@ -7,6 +7,9 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"io/ioutil"
+	"net/url"
+	"bytes"
 )
 
 func NewKrdictMockServer() *httptest.Server {
@@ -19,11 +22,16 @@ func NewKrdictMockServer() *httptest.Server {
 		vcrFilename := "../testing/fixtures/vcr/krdict/" + r.URL.Path
 		vcrQuerty := r.URL.Query()
 		vcrQuerty.Del("key")
+		baseUrl := "https://krdict.korean.go.kr"
+		if customBaseUrl := vcrQuerty.Get("_baseUrl"); customBaseUrl != "" {
+			baseUrl = customBaseUrl
+		}
 		vcrFilename += "?" + vcrQuerty.Encode()
 
 		if os.Getenv("VCR_RECORD") == strconv.FormatBool(true) {
-			r.URL.Scheme = "https"
-			r.URL.Host = "krdict.korean.go.kr"
+			baseUrl, _ := url.Parse(baseUrl)
+			r.URL.Scheme = baseUrl.Scheme
+			r.URL.Host = baseUrl.Host
 			vcrResponse, err := http.Get(r.URL.String())
 			if err != nil {
 				panic(err)
@@ -58,7 +66,13 @@ func NewKrdictMockServer() *httptest.Server {
 		vcrFile, err := os.Open(vcrFilename)
 		if err == nil {
 			defer vcrFile.Close()
-			_, err = io.Copy(w, vcrFile)
+			vcrData, err := ioutil.ReadAll(vcrFile)
+			if err != nil {
+				panic(err)
+			}
+
+			w.Header().Set("Content-Type", http.DetectContentType(vcrData))
+			_, err = io.Copy(w, bytes.NewBuffer(vcrData))
 			if err != nil {
 				panic(err)
 			}

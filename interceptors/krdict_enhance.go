@@ -71,6 +71,7 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 		// TODO: why isn't filter working?
 		// get(entry, "/channel/item/word_info/sense_info/multimedia_info[type='사진']/link")
 		item.ImageTag = pkg.XpathString(entry, "/channel/item/word_info/sense_info/multimedia_info/link")
+		pkg.Debug(options, "at=enhance.image tag=%q", item.ImageTag)
 	}
 
 	if item.Grade == "" || item.Grade == "없음" {

@@ -85,7 +85,7 @@ func TestRun_InterceptorError(t *testing.T) {
 	options := map[string]string{}
 
 	err := Run(in, out, parser, formatter, options)
-	assert.EqualError(t, err, "Cannot download media (http://example.com/image1.jpg) unless media dir is set")
+	assert.EqualError(t, err, "cannot download media (http://example.com/image1.jpg) unless media dir is set")
 }
 
 func TestRun_FormatterError(t *testing.T) {

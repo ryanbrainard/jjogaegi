@@ -27,6 +27,7 @@ var fHeader = flag.String("header", "", "header to prepend to output")
 var fParallel = flag.Bool("parallel", false, "parallel processing. records may be returned out of order.")
 var fLookup = flag.Bool("lookup", false, "look up words in dictionary to enhance item details. always true with prompt parser.")
 var fInteractive = flag.Bool("interactive", false, "interactive mode. always true with prompt parser.")
+var fDebug = flag.Bool("debug", false, "debug output. primarily for development use only.")
 
 func main() {
 	flag.Usage = func() {
@@ -99,6 +100,7 @@ func main() {
 			pkg.OPT_PARALLEL:    strconv.FormatBool(*fParallel),
 			pkg.OPT_LOOKUP:      strconv.FormatBool(*fLookup),
 			pkg.OPT_INTERACTIVE: strconv.FormatBool(*fInteractive),
+			pkg.OPT_DEBUG:       strconv.FormatBool(*fDebug),
 		},
 	)
 	if err != nil {
