@@ -29,7 +29,7 @@ func KrDictEnhance(item *pkg.Item, options map[string]string) error {
 	}
 
 	if item.Hanja == "" {
-		item.Hanja = pkg.XpathString(entry, "/channel/item/word_info/original_language_info[language_type='한자']/original_language")
+		item.Hanja = removeDuplicateCharacters(pkg.XpathString(entry, "/channel/item/word_info/original_language_info[language_type='한자']/original_language"))
 	}
 
 	if item.Pronunciation == "" {
@@ -136,4 +136,21 @@ func getExample(node *xmlpath.Node, exampleType string) pkg.Translation {
 		}
 	}
 	return pkg.Translation{}
+}
+
+func removeDuplicateCharacters(text string) string {
+	var lastRune rune
+	var parts []rune
+	runes := []rune(text)
+
+	for i := 0; i < len(runes); i++ {
+		c := runes[i]
+		if lastRune != c {
+			parts = append(parts, c)
+		}
+
+		lastRune = c
+	}
+
+	return string(parts)
 }

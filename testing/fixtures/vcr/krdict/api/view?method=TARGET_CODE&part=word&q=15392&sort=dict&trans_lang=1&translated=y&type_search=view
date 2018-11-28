@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
+
+
+
+
 <channel>
 	<title>한국어 기초사전 개발 지원(Open API) - 사전 내용 검색</title>
 	<link>https://krdict.korean.go.kr/dicSearch/SearchView?ParaWordNo=15392</link>
 	<description>한국어 기초사전 개발 지원(Open API) - 사전 내용 검색 결과</description>
-	<lastBuildDate>20180226214904</lastBuildDate> 
+	<lastBuildDate>20181128173828</lastBuildDate> 
 	<total>1</total>
 	
 	<item>
@@ -13,22 +17,9 @@
 		<word_info>
 			<word>가입하다</word>
 			<sup_no>0</sup_no>
-			<word_unit>
-				
-				단어
-				
-				
-				
-			</word_unit>
+			<word_unit>단어</word_unit>
 			<pos>동사</pos>
-			<word_type>
-				
-				
-				
-				
-				혼종어
-				
-			</word_type>
+			<word_type>혼종어</word_type>
 			
 			
 			<original_language_info>
@@ -64,14 +55,7 @@
 			</der_info>
 			
 			
-			<word_grade>
-				
-				없음
-				
-				
-				
-				
-			</word_grade>
+			<word_grade>없음</word_grade>
 			
 			
 			
@@ -148,143 +132,77 @@
 				
 				
 				<example_info>
-					<type>
-						
-						
-						문장
-						
-						
-					</type>
+					<type>문장</type>
 					<example>국제 연합에 가입한 회원국은 총 백구십이 개국이다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						
-						문장
-						
-						
-					</type>
+					<type>문장</type>
 					<example>그는 차를 새로 산 뒤에 바로 자동차 보험에 가입했다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						
-						
-						대화
-						
-					</type>
+					<type>대화</type>
 					<example>매주 등산을 가려고 해도 같이 갈 사람이 없어서 고민이야.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						
-						
-						대화
-						
-					</type>
+					<type>대화</type>
 					<example>그래? 그럼, 등산 동호회에 가입해 봐.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						
-						문장
-						
-						
-					</type>
+					<type>문장</type>
 					<example>헬스클럽에서는 회원으로 가입한 고객에게 운동복을 선물로 주었다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>동아리에 가입하다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>보험에 가입하다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>상품에 가입하다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>연맹에 가입하다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>정당에 가입하다.</example>
 				</example_info>
 				
 				
 				
 				<example_info>
-					<type>
-						
-						구
-						
-						
-						
-					</type>
+					<type>구</type>
 					<example>회원으로 가입하다.</example>
 				</example_info>
 				
