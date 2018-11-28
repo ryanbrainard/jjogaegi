@@ -55,16 +55,20 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 		g.Go(func() error {
 			defer iwg.Done()
 			for item := range parsed {
-				for _, interceptor := range interceptors {
+				for i, interceptor := range interceptors {
 					select {
 					case <-ctx.Done():
 						return ctx.Err()
 					default:
 					}
 
+					pkg.Debug(options, "fn=Run at=interceptor[%d].start hangul=%s", i, item.Hangul)
 					if err := interceptor(item, options); err != nil {
+						pkg.Debug(options, "fn=Run at=interceptor[%d].error hangul=%s error=%s", i, item.Hangul, err.Error())
 						return err
 					}
+					pkg.Debug(options, "fn=Run at=interceptor[%d].done hangul=%s", i, item.Hangul)
+
 				}
 				intercepted <- item
 			}
