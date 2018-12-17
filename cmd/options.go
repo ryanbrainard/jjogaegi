@@ -19,7 +19,6 @@ var AppCapabilities = Capabilities{
 		"tsv":          "TSV: Tab-Separated Values",
 		"list":         "Hangul-English Space-Separated List",
 		"naver-table":  "Naver Table",
-		"naver-json":   "Naver JSON",
 		"krdict-xml":   "KR Dict XML",
 		"memrise-list": "Memrise List",
 	},
@@ -48,8 +47,6 @@ func ParseOptParser(s string) pkg.ParseFunc {
 		return parsers.ParseList
 	case "naver-table":
 		return parsers.ParseNaverTable
-	case "naver-json":
-		return parsers.ParseNaverJSON
 	case "krdict-xml":
 		return parsers.ParseKrDictXML
 	case "memrise-list":

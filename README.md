@@ -112,7 +112,6 @@ Options for `--parser` flag:
  - `prompt`: interatively prompt user for words. 
  - `list`: list of Korean terms followed by English definitions. Splits the line after the last 한글 character. Does not support 漢字.
  - `krdict-xml`: [한국어기초사전](https://krdict.korean.go.kr) Korean wordbook XML. Supports Id, 漢字, pronunciations, antonyms, and English definition fetching.
- - `naver-json`: [Naver Korean-English Dictionary](http://endic.naver.com/) wordbook JSON. Supports Id, 漢字. (experimental)
  - `naver-table`: [Naver Korean-English Dictionary](http://endic.naver.com/) wordbook printed PDF table. Supports 漢字. (experimental)
 
 ## Formatters
