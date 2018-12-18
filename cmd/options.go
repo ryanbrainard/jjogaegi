@@ -15,12 +15,12 @@ type Capabilities struct {
 
 var AppCapabilities = Capabilities{
 	Parsers: map[string]string{
-		"prompt":       "Interactive Prompt",
-		"tsv":          "TSV: Tab-Separated Values",
-		"list":         "Hangul-English Space-Separated List",
-		"naver-table":  "Naver Table",
-		"krdict-xml":   "KR Dict XML",
-		"memrise-list": "Memrise List",
+		"prompt":         "Interactive Prompt",
+		"tsv":            "TSV: Tab-Separated Values",
+		"list":           "Hangul-English Space-Separated List",
+		"naver-wordbook": "Naver Wordbook Print Out HTML",
+		"krdict-xml":     "KR Dict XML",
+		"memrise-list":   "Memrise List",
 	},
 	Formatters: map[string]string{
 		"json": "JSON",
@@ -45,8 +45,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 		return parsers.ParseTSV
 	case "list":
 		return parsers.ParseList
-	case "naver-table":
-		return parsers.ParseNaverTable
+	case "naver-wordbook":
+		return parsers.ParseNaverWordbook
 	case "krdict-xml":
 		return parsers.ParseKrDictXML
 	case "memrise-list":

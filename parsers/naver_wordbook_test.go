@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseNaverTable(t *testing.T) {
-	in, err := os.Open("../testing/fixtures/naver_table.html")
+func TestParseNaverWordbook(t *testing.T) {
+	in, err := os.Open("../testing/fixtures/naver_wordbook.html")
 	assert.Nil(t, err)
 
 	items := make(chan *pkg.Item, 100)
-	err = ParseNaverTable(context.Background(), in, items, map[string]string{})
+	err = ParseNaverWordbook(context.Background(), in, items, map[string]string{})
 	assert.Nil(t, err)
 
 	assert.Equal(t, &pkg.Item{
