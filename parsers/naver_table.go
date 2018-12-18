@@ -33,9 +33,9 @@ func ParseNaverTable(ctx context.Context, r io.Reader, items chan<- *pkg.Item, o
 		item := &pkg.Item{
 			Hangul: strings.TrimSpace(hangul),
 			Hanja:  strings.TrimSpace(hanja),
-			//Def: pkg.Translation{
-			//	English: pkg.XpathString(entryNode, "//p[@class='speech']"),
-			//},
+			Def: pkg.Translation{
+				English: pkg.XpathString(entryNode, "ol[@class='mean']/li[@class='row']/p[@class='speech']"),
+			},
 		}
 
 		items <- item
