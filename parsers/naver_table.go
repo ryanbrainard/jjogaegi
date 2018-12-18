@@ -30,12 +30,33 @@ func ParseNaverTable(ctx context.Context, r io.Reader, items chan<- *pkg.Item, o
 		hangulHanja := pkg.XpathString(entryNode, "h2[@class='entry']/em[@class='word']")
 		hangul, hanja := splitHangul(hangulHanja)
 
+		meaningIter := xmlpath.MustCompile("ol[@class='mean']/li[@class='row']").Iter(entryNode)
+		if !meaningIter.Next() {
+			continue
+		}
+		meaningNode := meaningIter.Node() // only get first meaning, if it exists
+
 		item := &pkg.Item{
 			Hangul: strings.TrimSpace(hangul),
 			Hanja:  strings.TrimSpace(hanja),
 			Def: pkg.Translation{
-				English: pkg.XpathString(entryNode, "ol[@class='mean']/li[@class='row']/p[@class='speech']"),
+				English: pkg.XpathString(meaningNode, "p[@class='speech']"),
 			},
+		}
+
+		examplesIter := xmlpath.MustCompile("p[@class='ex']").Iter(meaningNode)
+		for {
+			if !examplesIter.Next() {
+				break
+			}
+			exampleNode := examplesIter.Node()
+
+			english, korean := splitHangulReverse(exampleNode.String())
+
+			item.Examples = append(item.Examples, pkg.Translation{
+				English: english,
+				Korean:  korean,
+			})
 		}
 
 		items <- item
