@@ -7,13 +7,12 @@ import (
 	"os"
 	"strings"
 
+	"bufio"
 	"github.com/google/uuid"
 	"github.com/ryanbrainard/jjogaegi/pkg"
-	"regexp"
-	"bufio"
-	"errors"
 	"mime"
 	"path"
+	"regexp"
 )
 
 func MediaFormatting(item *pkg.Item, options map[string]string) error {
@@ -52,7 +51,7 @@ func formatMediaTag(mediaTag string, format string, options map[string]string) (
 		return "", fmt.Errorf("cannot download media (%s) unless media dir is set", mediaURL)
 	}
 
-	filename, err := downloadMedia(mediaURL, mediaDir)
+	filename, err := downloadMedia(mediaURL, mediaDir, options)
 	if err != nil {
 		return "", err
 	}
@@ -61,7 +60,7 @@ func formatMediaTag(mediaTag string, format string, options map[string]string) (
 	return fmt.Sprintf(format, filename), nil
 }
 
-func downloadMedia(mediaURL, mediaDir string) (string, error) {
+func downloadMedia(mediaURL, mediaDir string, options map[string]string) (string, error) {
 	resp, err := http.Get(mediaURL)
 	if err != nil {
 		return "", err
@@ -72,9 +71,10 @@ func downloadMedia(mediaURL, mediaDir string) (string, error) {
 	case "text/html; charset=utf-8":
 		newMediaURL := extractImageURL(resp.Body)
 		if newMediaURL != "" {
-			return downloadMedia(newMediaURL, mediaDir)
+			return downloadMedia(newMediaURL, mediaDir, options)
 		}
-		return "", errors.New("media is unknown HTML format: " + mediaURL)
+		pkg.Debug(options, "media is unknown HTML format: " + mediaURL)
+		return "", nil
 	default:
 		exts, err := mime.ExtensionsByType(contentType)
 		if err != nil {
