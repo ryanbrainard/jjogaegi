@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"github.com/ryanbrainard/jjogaegi/cmd"
 	"github.com/ryanbrainard/jjogaegi/proto"
+	"github.com/ryanbrainard/jjogaegi/run"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"strings"
 )
 
 func main() {
@@ -29,5 +33,16 @@ func newServer() proto.JjogaegiServer {
 }
 
 func (s *server) Run(_ context.Context, req *proto.RunRequest) (*proto.RunResponse, error) {
-	return &proto.RunResponse{Pong: req.Ping + " world"}, nil
+
+	output := &bytes.Buffer{}
+
+	err := run.Run(
+		strings.NewReader(req.Input),
+		output,
+		cmd.ParseOptParser(req.Parser),
+		cmd.ParseOptFormatter(req.Formatter),
+		map[string]string{},
+	)
+
+	return &proto.RunResponse{Output: output.String()}, err
 }

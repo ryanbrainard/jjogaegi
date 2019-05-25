@@ -15,11 +15,15 @@ func main() {
 
 	c := proto.NewJjogaegiClient(conn)
 
-	response, err := c.Run(context.TODO(), &proto.RunRequest{Ping: "hello"})
+	response, err := c.Run(context.TODO(), &proto.RunRequest{
+		Input:     "안녕 hello\n고양이 cat",
+		Parser:    "list",
+		Formatter: "json",
+	})
 	if err != nil {
 		panic(err)
 	}
-	log.Println("response", response.Pong)
+	log.Printf("output \n%+v", response.Output)
 }
 
 type client struct {
