@@ -3,7 +3,7 @@
 # Includes cross-compiling, installation, cleanup
 # ########################################################## #
 
-.PHONY: check clean install build_all all
+.PHONY: check clean install generate grpc build_all all
 
 # Check for required command tools to build or stop immediately
 EXECUTABLES = git go find pwd
@@ -25,8 +25,15 @@ default: build
 
 all: clean test build_all install
 
-build:
+grpc:
+	protoc -I grpc/ grpc/service.proto --go_out=plugins=grpc:grpc
+
+generate: grpc
+
+build: generate
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)
+	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-server ./cmd/$(BINARY)-grpc-server
+	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-client ./cmd/$(BINARY)-grpc-client
 
 build_all:
 	$(foreach GOOS, $(PLATFORMS),\

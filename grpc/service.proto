@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package grpc;
+
+service Jjogaegi {
+    rpc Run(RunRequest) returns (RunResponse) {}
+}
+
+message RunRequest {
+    string ping = 1;
+}
+
+message RunResponse {
+    string pong = 1;
+}
