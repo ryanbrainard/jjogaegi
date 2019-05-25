@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	jgrpc "github.com/ryanbrainard/jjogaegi/grpc"
+	"github.com/ryanbrainard/jjogaegi/proto"
 	"google.golang.org/grpc"
 	"log"
 )
@@ -13,9 +13,9 @@ func main() {
 		panic(err)
 	}
 
-	c := jgrpc.NewJjogaegiClient(conn)
+	c := proto.NewJjogaegiClient(conn)
 
-	response, err := c.Run(context.TODO(), &jgrpc.RunRequest{Ping: "hello"})
+	response, err := c.Run(context.TODO(), &proto.RunRequest{Ping: "hello"})
 	if err != nil {
 		panic(err)
 	}
@@ -25,10 +25,10 @@ func main() {
 type client struct {
 }
 
-func newClient() jgrpc.JjogaegiClient {
+func newClient() proto.JjogaegiClient {
 	return &client{}
 }
 
-func (c *client) Run(ctx context.Context, in *jgrpc.RunRequest, opts ...grpc.CallOption) (*jgrpc.RunResponse, error) {
-	return &jgrpc.RunResponse{}, nil
+func (c *client) Run(ctx context.Context, in *proto.RunRequest, opts ...grpc.CallOption) (*proto.RunResponse, error) {
+	return &proto.RunResponse{}, nil
 }

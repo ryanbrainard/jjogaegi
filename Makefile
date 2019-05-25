@@ -25,10 +25,10 @@ default: build
 
 all: clean test build_all install
 
-grpc:
-	protoc -I grpc/ grpc/service.proto --go_out=plugins=grpc:grpc
+proto:
+	protoc -I proto/ proto/grpc.proto --go_out=plugins=grpc:proto
 
-generate: grpc
+generate: proto
 
 build: generate
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	jgrpc "github.com/ryanbrainard/jjogaegi/grpc"
+	"github.com/ryanbrainard/jjogaegi/proto"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -17,17 +17,17 @@ func main() {
 	log.Printf("listening network=%v string=%v", listener.Addr().Network(), listener.Addr().String())
 
 	s := grpc.NewServer()
-	jgrpc.RegisterJjogaegiServer(s, newServer())
+	proto.RegisterJjogaegiServer(s, newServer())
 	s.Serve(listener)
 }
 
 type server struct {
 }
 
-func newServer() jgrpc.JjogaegiServer {
+func newServer() proto.JjogaegiServer {
 	return &server{}
 }
 
-func (s *server) Run(_ context.Context, req *jgrpc.RunRequest) (*jgrpc.RunResponse, error) {
-	return &jgrpc.RunResponse{Pong: req.Ping + " world"}, nil
+func (s *server) Run(_ context.Context, req *proto.RunRequest) (*proto.RunResponse, error) {
+	return &proto.RunResponse{Pong: req.Ping + " world"}, nil
 }
