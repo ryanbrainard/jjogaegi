@@ -1,10 +1,11 @@
 package server_test
 
 import (
+	"bytes"
 	"context"
-	"fmt"
 	"github.com/ryanbrainard/jjogaegi/grpc/proto"
 	"github.com/ryanbrainard/jjogaegi/grpc/server"
+	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 	"io"
@@ -47,17 +48,19 @@ func TestRun(t *testing.T) {
 	c, teardown := newClient()
 	defer teardown()
 
-	response, err := c.Run(context.TODO(), &proto.RunRequest{
+	response, err := c.Run(context.Background(), &proto.RunRequest{
 		Options: &proto.RunOptions{
 			Parser:    "list",
-			Formatter: "json",
+			Formatter: "csv",
 		},
 		Input: []byte("안녕 hello\n고양이 cat"),
 	})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	t.Logf("output \n%+v", string(response.Output))
+
+	assert.Contains(t, string(response.Output), ",,안녕,,,hello,,,,,,,,,")
+	assert.Contains(t, string(response.Output), ",,고양이,,,cat,,,,,,,,,")
 }
 
 func TestRunStream(t *testing.T) {
@@ -69,49 +72,48 @@ func TestRunStream(t *testing.T) {
 		panic(err)
 	}
 	waitc := make(chan struct{})
+	out := &bytes.Buffer{}
 
 	go func() {
 		for {
-			t.Log("waiting for response")
 			response, err := stream.Recv()
 			if err != nil {
 				if err == io.EOF {
-					t.Log("waitc.close")
 					close(waitc)
 					return
 				}
-				panic(fmt.Sprintf("-> %+v", err))
+				t.Fatal(err)
 			}
-			t.Logf("output (%d) \n%+v", len(response.Output), string(response.Output))
+			if _, err := out.Write(response.Output); err != nil {
+				t.Fatal(err)
+			}
 		}
 	}()
 
-	t.Log("stream.Send[0]")
-	err = stream.Send(&proto.RunRequest{
+	req0 := &proto.RunRequest{
 		Options: &proto.RunOptions{
 			Parser:    "list",
-			Formatter: "json",
+			Formatter: "csv",
 		},
 		Input: []byte("안녕 hello\n"),
-	})
-	if err != nil {
-		panic(err)
+	}
+	if err := stream.Send(req0); err != nil {
+		t.Fatal(err)
 	}
 
-	t.Log("stream.Send[1]")
-	err = stream.Send(&proto.RunRequest{
+	req1 := &proto.RunRequest{
 		Input: []byte("고양이 cat\n"),
-	})
-	if err != nil {
-		panic(err)
+	}
+	if err := stream.Send(req1); err != nil {
+		t.Fatal(err)
 	}
 
-	t.Log("stream.CloseSend")
-	err = stream.CloseSend()
-	if err != nil {
-		panic(err)
+	if err := stream.CloseSend(); err != nil {
+		t.Fatal(err)
 	}
 
-	t.Log("waitc.block")
 	<-waitc
+
+	assert.Contains(t, out.String(), ",,안녕,,,hello,,,,,,,,,")
+	assert.Contains(t, out.String(), ",,고양이,,,cat,,,,,,,,,")
 }
