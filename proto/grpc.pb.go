@@ -24,20 +24,66 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type RunRequest struct {
-	Input                string   `protobuf:"bytes,1,opt,name=input,proto3" json:"input,omitempty"`
-	Parser               string   `protobuf:"bytes,2,opt,name=parser,proto3" json:"parser,omitempty"`
-	Formatter            string   `protobuf:"bytes,3,opt,name=formatter,proto3" json:"formatter,omitempty"`
+type RunOptions struct {
+	Parser               string   `protobuf:"bytes,1,opt,name=parser,proto3" json:"parser,omitempty"`
+	Formatter            string   `protobuf:"bytes,2,opt,name=formatter,proto3" json:"formatter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RunOptions) Reset()         { *m = RunOptions{} }
+func (m *RunOptions) String() string { return proto.CompactTextString(m) }
+func (*RunOptions) ProtoMessage()    {}
+func (*RunOptions) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bedfbfc9b54e5600, []int{0}
+}
+
+func (m *RunOptions) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RunOptions.Unmarshal(m, b)
+}
+func (m *RunOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RunOptions.Marshal(b, m, deterministic)
+}
+func (m *RunOptions) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RunOptions.Merge(m, src)
+}
+func (m *RunOptions) XXX_Size() int {
+	return xxx_messageInfo_RunOptions.Size(m)
+}
+func (m *RunOptions) XXX_DiscardUnknown() {
+	xxx_messageInfo_RunOptions.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RunOptions proto.InternalMessageInfo
+
+func (m *RunOptions) GetParser() string {
+	if m != nil {
+		return m.Parser
+	}
+	return ""
+}
+
+func (m *RunOptions) GetFormatter() string {
+	if m != nil {
+		return m.Formatter
+	}
+	return ""
+}
+
+type RunRequest struct {
+	Options              *RunOptions `protobuf:"bytes,1,opt,name=options,proto3" json:"options,omitempty"`
+	Input                []byte      `protobuf:"bytes,2,opt,name=input,proto3" json:"input,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *RunRequest) Reset()         { *m = RunRequest{} }
 func (m *RunRequest) String() string { return proto.CompactTextString(m) }
 func (*RunRequest) ProtoMessage()    {}
 func (*RunRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bedfbfc9b54e5600, []int{0}
+	return fileDescriptor_bedfbfc9b54e5600, []int{1}
 }
 
 func (m *RunRequest) XXX_Unmarshal(b []byte) error {
@@ -58,29 +104,22 @@ func (m *RunRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RunRequest proto.InternalMessageInfo
 
-func (m *RunRequest) GetInput() string {
+func (m *RunRequest) GetOptions() *RunOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
+func (m *RunRequest) GetInput() []byte {
 	if m != nil {
 		return m.Input
 	}
-	return ""
-}
-
-func (m *RunRequest) GetParser() string {
-	if m != nil {
-		return m.Parser
-	}
-	return ""
-}
-
-func (m *RunRequest) GetFormatter() string {
-	if m != nil {
-		return m.Formatter
-	}
-	return ""
+	return nil
 }
 
 type RunResponse struct {
-	Output               string   `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
+	Output               []byte   `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -90,7 +129,7 @@ func (m *RunResponse) Reset()         { *m = RunResponse{} }
 func (m *RunResponse) String() string { return proto.CompactTextString(m) }
 func (*RunResponse) ProtoMessage()    {}
 func (*RunResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bedfbfc9b54e5600, []int{1}
+	return fileDescriptor_bedfbfc9b54e5600, []int{2}
 }
 
 func (m *RunResponse) XXX_Unmarshal(b []byte) error {
@@ -111,14 +150,15 @@ func (m *RunResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RunResponse proto.InternalMessageInfo
 
-func (m *RunResponse) GetOutput() string {
+func (m *RunResponse) GetOutput() []byte {
 	if m != nil {
 		return m.Output
 	}
-	return ""
+	return nil
 }
 
 func init() {
+	proto.RegisterType((*RunOptions)(nil), "proto.RunOptions")
 	proto.RegisterType((*RunRequest)(nil), "proto.RunRequest")
 	proto.RegisterType((*RunResponse)(nil), "proto.RunResponse")
 }
@@ -126,18 +166,21 @@ func init() {
 func init() { proto.RegisterFile("grpc.proto", fileDescriptor_bedfbfc9b54e5600) }
 
 var fileDescriptor_bedfbfc9b54e5600 = []byte{
-	// 165 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8e, 0x31, 0x0b, 0xc2, 0x40,
-	0x0c, 0x46, 0xad, 0xa5, 0xc5, 0xc6, 0xc9, 0x20, 0x52, 0xc4, 0x41, 0x0a, 0x82, 0x53, 0x07, 0xdd,
-	0xfc, 0x09, 0x8e, 0x37, 0xb9, 0x56, 0x89, 0xa5, 0x82, 0x97, 0x33, 0x97, 0xfb, 0xff, 0xe2, 0xb5,
-	0x70, 0x4e, 0xe1, 0xbd, 0xc0, 0xe3, 0x03, 0xe8, 0xc5, 0x3d, 0x5a, 0x27, 0xac, 0x8c, 0x45, 0x3c,
-	0xcd, 0x0d, 0xc0, 0x04, 0x6b, 0xe8, 0x13, 0xc8, 0x2b, 0xae, 0xa1, 0x18, 0xac, 0x0b, 0x5a, 0x67,
-	0xfb, 0xec, 0x58, 0x99, 0x11, 0x70, 0x03, 0xa5, 0xeb, 0xc4, 0x93, 0xd4, 0xf3, 0xa8, 0x27, 0xc2,
-	0x1d, 0x54, 0x4f, 0x96, 0x77, 0xa7, 0x4a, 0x52, 0xe7, 0xf1, 0x95, 0x44, 0x73, 0x80, 0x65, 0x2c,
-	0x7b, 0xc7, 0xd6, 0xd3, 0x2f, 0xc2, 0x41, 0x53, 0x7b, 0xa2, 0xd3, 0x05, 0x16, 0xd7, 0x17, 0xf7,
-	0x1d, 0xf5, 0x03, 0xb6, 0x90, 0x9b, 0x60, 0x71, 0x35, 0x4e, 0x6c, 0xd3, 0xb0, 0x2d, 0xfe, 0xab,
-	0xb1, 0xd8, 0xcc, 0xee, 0x65, 0x94, 0xe7, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xaf, 0xb8, 0xb4,
-	0xbb, 0xd8, 0x00, 0x00, 0x00,
+	// 210 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x8e, 0xc1, 0x4a, 0xc6, 0x30,
+	0x10, 0x84, 0x8d, 0xf2, 0xff, 0xda, 0xad, 0x17, 0x17, 0x91, 0x22, 0x1e, 0x24, 0x20, 0x14, 0x84,
+	0x22, 0xf5, 0xe2, 0xd9, 0xa3, 0x97, 0x42, 0x7c, 0x82, 0x28, 0xb1, 0x54, 0x68, 0x36, 0x26, 0x9b,
+	0xf7, 0x97, 0x6e, 0x2a, 0xed, 0xd1, 0x53, 0x98, 0x9d, 0xc9, 0x37, 0x03, 0x30, 0xc6, 0xf0, 0xd9,
+	0x85, 0x48, 0x4c, 0x78, 0x90, 0x47, 0xbf, 0x02, 0x98, 0xec, 0x87, 0xc0, 0x13, 0xf9, 0x84, 0x37,
+	0x70, 0x0c, 0x36, 0x26, 0x17, 0x1b, 0x75, 0xaf, 0xda, 0xca, 0xac, 0x0a, 0xef, 0xa0, 0xfa, 0xa2,
+	0x38, 0x5b, 0x66, 0x17, 0x9b, 0x53, 0xb1, 0xb6, 0x83, 0x1e, 0x84, 0x61, 0xdc, 0x4f, 0x76, 0x89,
+	0xf1, 0x11, 0xce, 0xa9, 0xe0, 0x04, 0x52, 0xf7, 0x57, 0xa5, 0xb1, 0xdb, 0x7a, 0xcc, 0x5f, 0x02,
+	0xaf, 0xe1, 0x30, 0xf9, 0x90, 0x59, 0xa0, 0x97, 0xa6, 0x08, 0xfd, 0x00, 0xb5, 0x00, 0x53, 0x20,
+	0x9f, 0xdc, 0xb2, 0x8a, 0x32, 0x2f, 0x29, 0x25, 0xa9, 0x55, 0xf5, 0x0c, 0x17, 0x6f, 0xdf, 0x34,
+	0x5a, 0x37, 0x4e, 0xd8, 0xc1, 0x99, 0xc9, 0x1e, 0x77, 0x5d, 0xeb, 0x9e, 0x5b, 0xdc, 0x9f, 0x0a,
+	0x51, 0x9f, 0xe0, 0x0b, 0x54, 0x26, 0xfb, 0x77, 0x8e, 0xce, 0xce, 0xff, 0xfe, 0xd5, 0xaa, 0x27,
+	0xf5, 0x71, 0x14, 0xe3, 0xf9, 0x37, 0x00, 0x00, 0xff, 0xff, 0xf1, 0x59, 0x00, 0x67, 0x4d, 0x01,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -153,6 +196,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type JjogaegiClient interface {
 	Run(ctx context.Context, in *RunRequest, opts ...grpc.CallOption) (*RunResponse, error)
+	RunStream(ctx context.Context, opts ...grpc.CallOption) (Jjogaegi_RunStreamClient, error)
 }
 
 type jjogaegiClient struct {
@@ -172,9 +216,41 @@ func (c *jjogaegiClient) Run(ctx context.Context, in *RunRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *jjogaegiClient) RunStream(ctx context.Context, opts ...grpc.CallOption) (Jjogaegi_RunStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Jjogaegi_serviceDesc.Streams[0], "/proto.Jjogaegi/RunStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &jjogaegiRunStreamClient{stream}
+	return x, nil
+}
+
+type Jjogaegi_RunStreamClient interface {
+	Send(*RunRequest) error
+	Recv() (*RunResponse, error)
+	grpc.ClientStream
+}
+
+type jjogaegiRunStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *jjogaegiRunStreamClient) Send(m *RunRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *jjogaegiRunStreamClient) Recv() (*RunResponse, error) {
+	m := new(RunResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // JjogaegiServer is the server API for Jjogaegi service.
 type JjogaegiServer interface {
 	Run(context.Context, *RunRequest) (*RunResponse, error)
+	RunStream(Jjogaegi_RunStreamServer) error
 }
 
 // UnimplementedJjogaegiServer can be embedded to have forward compatible implementations.
@@ -183,6 +259,9 @@ type UnimplementedJjogaegiServer struct {
 
 func (*UnimplementedJjogaegiServer) Run(ctx context.Context, req *RunRequest) (*RunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Run not implemented")
+}
+func (*UnimplementedJjogaegiServer) RunStream(srv Jjogaegi_RunStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method RunStream not implemented")
 }
 
 func RegisterJjogaegiServer(s *grpc.Server, srv JjogaegiServer) {
@@ -207,6 +286,32 @@ func _Jjogaegi_Run_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Jjogaegi_RunStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(JjogaegiServer).RunStream(&jjogaegiRunStreamServer{stream})
+}
+
+type Jjogaegi_RunStreamServer interface {
+	Send(*RunResponse) error
+	Recv() (*RunRequest, error)
+	grpc.ServerStream
+}
+
+type jjogaegiRunStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *jjogaegiRunStreamServer) Send(m *RunResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *jjogaegiRunStreamServer) Recv() (*RunRequest, error) {
+	m := new(RunRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _Jjogaegi_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Jjogaegi",
 	HandlerType: (*JjogaegiServer)(nil),
@@ -216,6 +321,13 @@ var _Jjogaegi_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Jjogaegi_Run_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "RunStream",
+			Handler:       _Jjogaegi_RunStream_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "grpc.proto",
 }
