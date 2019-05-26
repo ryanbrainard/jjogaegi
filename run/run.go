@@ -32,12 +32,14 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 	setEnvOptOrDefault(options, pkg.OPT_KRDICT_API_KEY, "KRDICT_API_KEY", "")
 	setEnvOptOrDefault(options, pkg.OPT_MEDIADIR, "MEDIA_DIR", "")
 
+	pkg.Debug(options, "fn=Run at=group.create")
 	g, ctx := errgroup.WithContext(context.Background())
 
 	parsed := make(chan *pkg.Item)
 	g.Go(func() error {
 		err := parse(ctx, in, parsed, options)
 		close(parsed)
+		pkg.Debug(options, "fn=Run at=parse.closed err=%v", err)
 		return err
 	})
 
@@ -58,6 +60,7 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 				for i, interceptor := range interceptors {
 					select {
 					case <-ctx.Done():
+						pkg.Debug(options, "fn=Run at=ctx.done err=%v", ctx.Err())
 						return ctx.Err()
 					default:
 					}
@@ -72,23 +75,29 @@ func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc
 				}
 				intercepted <- item
 			}
+			pkg.Debug(options, "fn=Run at=interceptor.done err=%v", ctx.Err())
 			return nil
 		})
 	}
 
 	go func() {
+		pkg.Debug(options, "fn=Run at=intercepted.waiting")
 		iwg.Wait()
 		close(intercepted)
+		pkg.Debug(options, "fn=Run at=intercepted.close")
 	}()
 
 	if h, ok := options[pkg.OPT_HEADER]; ok && h != "" {
 		out.Write([]byte(h + "\n"))
 	}
 
+	pkg.Debug(options, "fn=Run at=format.start")
 	if err := format(ctx, intercepted, out, options); err != nil {
 		return err
 	}
+	pkg.Debug(options, "fn=Run at=format.done")
 
+	pkg.Debug(options, "fn=Run at=group.wait")
 	return g.Wait()
 }
 
