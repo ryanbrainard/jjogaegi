@@ -49,12 +49,11 @@ func (s *server) RunStream(stream RunService_RunStreamServer) error {
 			return err
 		}
 
-		log.Printf("fn=RunStream stream.receive.write.start")
+		log.Printf("fn=RunStream stream.receive.write [%v]", string(req.Input))
 		if _, err := inputBuf.Write(req.Input); err != nil {
 			log.Printf("fn=RunStream stream.receive.write.err %v", err)
 			return err
 		}
-		log.Printf("fn=RunStream stream.receive.write.done")
 
 		runOnce.Do(func() {
 			go func() {
@@ -87,6 +86,7 @@ type streamWriter struct {
 }
 
 func (sw *streamWriter) Write(p []byte) (int, error) {
+	log.Printf("fn=RunStream streamWriter.send [%v]", string(p))
 	err := sw.stream.Send(&RunResponse{Output: p})
 	if err != nil {
 		return 0, err
