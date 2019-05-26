@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/ryanbrainard/jjogaegi/grpc/proto"
-	"github.com/ryanbrainard/jjogaegi/grpc/server"
+	"github.com/ryanbrainard/jjogaegi/grpc/go/jjogaegigprc"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -28,6 +27,6 @@ func main() {
 	log.Printf("listening network=%v string=%v", listener.Addr().Network(), listener.Addr().String())
 
 	s := grpc.NewServer()
-	proto.RegisterJjogaegiServer(s, server.NewServer())
+	jjogaegigprc.RegisterRunServiceServer(s, jjogaegigprc.NewServer())
 	s.Serve(listener)
 }

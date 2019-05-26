@@ -1,8 +1,10 @@
 syntax = "proto3";
 
-package proto;
+package jjogaegi;
 
-service Jjogaegi {
+option go_package = "jjogaegigprc";
+
+service RunService {
     // Runs a single input
     rpc Run(RunRequest) returns (RunResponse) {}
 

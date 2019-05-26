@@ -1,24 +1,22 @@
-package server
+package jjogaegigprc
 
 import (
 	"bytes"
 	"context"
 	"github.com/ryanbrainard/jjogaegi/cmd"
-	"github.com/ryanbrainard/jjogaegi/grpc/proto"
 	"github.com/ryanbrainard/jjogaegi/run"
 	"io"
 	"log"
 	"sync"
 )
 
-type server struct {
-}
+type server struct{}
 
-func NewServer() proto.JjogaegiServer {
+func NewServer() RunServiceServer {
 	return &server{}
 }
 
-func (s *server) Run(ctx context.Context, req *proto.RunRequest) (*proto.RunResponse, error) {
+func (s *server) Run(ctx context.Context, req *RunRequest) (*RunResponse, error) {
 	output := &bytes.Buffer{}
 
 	err := run.Run(
@@ -29,10 +27,10 @@ func (s *server) Run(ctx context.Context, req *proto.RunRequest) (*proto.RunResp
 		req.Config.Options,
 	)
 
-	return &proto.RunResponse{Output: output.Bytes()}, err
+	return &RunResponse{Output: output.Bytes()}, err
 }
 
-func (s *server) RunStream(stream proto.Jjogaegi_RunStreamServer) error {
+func (s *server) RunStream(stream RunService_RunStreamServer) error {
 	log.Println("fn=RunStream run_stream.start")
 
 	inputBuf := &bytes.Buffer{}
@@ -85,11 +83,11 @@ func (s *server) RunStream(stream proto.Jjogaegi_RunStreamServer) error {
 }
 
 type streamWriter struct {
-	stream proto.Jjogaegi_RunStreamServer
+	stream RunService_RunStreamServer
 }
 
 func (sw *streamWriter) Write(p []byte) (int, error) {
-	err := sw.stream.Send(&proto.RunResponse{Output: p})
+	err := sw.stream.Send(&RunResponse{Output: p})
 	if err != nil {
 		return 0, err
 	}

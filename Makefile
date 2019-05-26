@@ -25,11 +25,9 @@ default: build
 
 all: clean test build_all install
 
-proto:
-	protoc -I grpc/proto/ grpc/proto/services.proto --go_out=plugins=grpc:grpc/proto
-	grpc_tools_ruby_protoc -I grpc/proto/ --ruby_out=cmd/jjogaegi-grpc-client-rb --grpc_out=cmd/jjogaegi-grpc-client-rb grpc/proto/services.proto
-
-generate: proto
+generate:
+	protoc -I grpc/proto/ grpc/proto/services.proto --go_out=plugins=grpc:grpc/go/jjogaegigprc
+	grpc_tools_ruby_protoc -I grpc/proto/ --ruby_out=grpc/ruby/lib --grpc_out=grpc/ruby/lib grpc/proto/services.proto
 
 build: generate
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)

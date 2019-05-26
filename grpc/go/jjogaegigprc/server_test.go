@@ -1,10 +1,9 @@
-package server_test
+package jjogaegigprc_test
 
 import (
 	"bytes"
 	"context"
-	"github.com/ryanbrainard/jjogaegi/grpc/proto"
-	"github.com/ryanbrainard/jjogaegi/grpc/server"
+	"github.com/ryanbrainard/jjogaegi/grpc/go/jjogaegigprc"
 	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
@@ -21,14 +20,14 @@ func init() {
 
 	go func() {
 		s := grpc.NewServer()
-		proto.RegisterJjogaegiServer(s, server.NewServer())
+		jjogaegigprc.RegisterRunServiceServer(s, jjogaegigprc.NewServer())
 		if err := s.Serve(lis); err != nil {
 			panic(err)
 		}
 	}()
 }
 
-func newClient() (proto.JjogaegiClient, func()) {
+func newClient() (jjogaegigprc.RunServiceClient, func()) {
 	dialer := grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
 		return lis.Dial()
 	})
@@ -38,7 +37,7 @@ func newClient() (proto.JjogaegiClient, func()) {
 		panic(err)
 	}
 
-	return proto.NewJjogaegiClient(conn), func() {
+	return jjogaegigprc.NewRunServiceClient(conn), func() {
 		if err := conn.Close(); err != nil {
 			panic(err)
 		}
@@ -49,8 +48,8 @@ func TestRun(t *testing.T) {
 	c, teardown := newClient()
 	defer teardown()
 
-	response, err := c.Run(context.Background(), &proto.RunRequest{
-		Config: &proto.RunConfig{
+	response, err := c.Run(context.Background(), &jjogaegigprc.RunRequest{
+		Config: &jjogaegigprc.RunConfig{
 			Parser:    "list",
 			Formatter: "csv",
 		},
@@ -68,8 +67,8 @@ func TestRunWithOptions(t *testing.T) {
 	c, teardown := newClient()
 	defer teardown()
 
-	response, err := c.Run(context.Background(), &proto.RunRequest{
-		Config: &proto.RunConfig{
+	response, err := c.Run(context.Background(), &jjogaegigprc.RunRequest{
+		Config: &jjogaegigprc.RunConfig{
 			Parser:    "list",
 			Formatter: "csv",
 			Options: map[string]string{
@@ -114,8 +113,8 @@ func TestRunStream(t *testing.T) {
 		}
 	}()
 
-	req0 := &proto.RunRequest{
-		Config: &proto.RunConfig{
+	req0 := &jjogaegigprc.RunRequest{
+		Config: &jjogaegigprc.RunConfig{
 			Parser:    "list",
 			Formatter: "csv",
 		},
@@ -125,7 +124,7 @@ func TestRunStream(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	req1 := &proto.RunRequest{
+	req1 := &jjogaegigprc.RunRequest{
 		Input: []byte("고양이 cat\n"),
 	}
 	if err := stream.Send(req1); err != nil {
