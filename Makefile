@@ -26,7 +26,7 @@ default: build
 all: clean test build_all install
 
 proto:
-	protoc -I proto/ proto/grpc.proto --go_out=plugins=grpc:proto
+	protoc -I grpc/proto/ grpc/proto/services.proto --go_out=plugins=grpc:grpc/proto
 
 generate: proto
 
