@@ -3,17 +3,21 @@ syntax = "proto3";
 package proto;
 
 service Jjogaegi {
+    // Runs a single input
     rpc Run(RunRequest) returns (RunResponse) {}
+
+    // Runs a stream of inputs. Only the first config is considered; thereafter, only the input accepted.
     rpc RunStream(stream RunRequest) returns (stream RunResponse) {}
 }
 
-message RunOptions {
+message RunConfig {
     string parser = 1;
     string formatter = 2;
+    map<string, string> options = 3;
 }
 
 message RunRequest {
-    RunOptions options = 1;
+    RunConfig config = 1;
     bytes input = 2;
 }
 

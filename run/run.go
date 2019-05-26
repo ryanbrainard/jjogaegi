@@ -15,6 +15,10 @@ import (
 )
 
 func Run(in io.Reader, out io.Writer, parse pkg.ParseFunc, format pkg.FormatFunc, options map[string]string) error {
+	if options == nil {
+		options = map[string]string{}
+	}
+
 	if parse == nil {
 		return fmt.Errorf("Missing or invalid parser specified")
 	}

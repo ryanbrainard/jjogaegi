@@ -5,7 +5,6 @@ import (
 	"context"
 	"github.com/ryanbrainard/jjogaegi/cmd"
 	"github.com/ryanbrainard/jjogaegi/grpc/proto"
-	"github.com/ryanbrainard/jjogaegi/pkg"
 	"github.com/ryanbrainard/jjogaegi/run"
 	"io"
 	"log"
@@ -25,63 +24,63 @@ func (s *server) Run(ctx context.Context, req *proto.RunRequest) (*proto.RunResp
 	err := run.Run(
 		bytes.NewReader(req.Input),
 		output,
-		cmd.ParseOptParser(req.Options.Parser),
-		cmd.ParseOptFormatter(req.Options.Formatter),
-		map[string]string{},
+		cmd.ParseOptParser(req.Config.Parser),
+		cmd.ParseOptFormatter(req.Config.Formatter),
+		req.Config.Options,
 	)
 
 	return &proto.RunResponse{Output: output.Bytes()}, err
 }
 
 func (s *server) RunStream(stream proto.Jjogaegi_RunStreamServer) error {
-	log.Println("run_stream.start")
+	log.Println("fn=RunStream run_stream.start")
 
 	inputBuf := &bytes.Buffer{}
-	runOne := sync.Once{}
+	runOnce := sync.Once{}
 	waitc := make(chan struct{})
 
 	for {
 		req, err := stream.Recv()
 		if err != nil {
 			if err == io.EOF {
-				log.Println("stream.receive.eof")
+				log.Println("fn=RunStream stream.receive.eof")
 				break
 			}
 
-			log.Printf("stream.receive.err %v", err)
+			log.Printf("fn=RunStream stream.receive.err %v", err)
 			return err
 		}
 
-		log.Printf("stream.receive.write.start")
+		log.Printf("fn=RunStream stream.receive.write.start")
 		if _, err := inputBuf.Write(req.Input); err != nil {
-			log.Printf("stream.receive.write.err %v", err)
+			log.Printf("fn=RunStream stream.receive.write.err %v", err)
 			return err
 		}
-		log.Printf("stream.receive.write.done")
+		log.Printf("fn=RunStream stream.receive.write.done")
 
-		runOne.Do(func() {
+		runOnce.Do(func() {
 			go func() {
-				log.Println("run.start")
+				log.Println("fn=RunStream run.start")
+
 				if err := run.Run(
 					inputBuf,
 					&streamWriter{stream},
-					cmd.ParseOptParser(req.Options.Parser),
-					cmd.ParseOptFormatter(req.Options.Formatter),
-					map[string]string{
-						pkg.OPT_DEBUG: "true",
-					},
+					cmd.ParseOptParser(req.Config.Parser),
+					cmd.ParseOptFormatter(req.Config.Formatter),
+					req.Config.Options,
 				); err != nil {
 					panic(err)
 				}
-				log.Println("run.done")
+
+				log.Println("fn=RunStream run.done")
 				close(waitc)
 			}()
 		})
 	}
 
-	log.Println("run_stream.wait")
+	log.Println("fn=RunStream run_stream.wait")
 	<-waitc
-	log.Println("run_stream.done")
+	log.Println("fn=RunStream run_stream.done")
 	return nil
 }
 
@@ -90,8 +89,6 @@ type streamWriter struct {
 }
 
 func (sw *streamWriter) Write(p []byte) (int, error) {
-	//log.Printf("streamWriter.Write %v", string(p))
-
 	err := sw.stream.Send(&proto.RunResponse{Output: p})
 	if err != nil {
 		return 0, err
