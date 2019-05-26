@@ -6,10 +6,21 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"os"
+	"strconv"
 )
 
 func main() {
-	listener, err := net.ListenTCP("tcp", &net.TCPAddr{Port: 5000})
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	portInt, err := strconv.Atoi(port)
+	if err != nil {
+		panic(err)
+	}
+
+	listener, err := net.ListenTCP("tcp", &net.TCPAddr{Port: portInt})
 	if err != nil {
 		panic(err)
 	}
