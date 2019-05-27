@@ -45,13 +45,13 @@ func newClient() (RunServiceClient, func()) {
 func TestRun(t *testing.T) {
 	c, teardown := newClient()
 	defer teardown()
-	assertRun(t, &simpleRunner{c})
+	assertRun(t, &SimpleRunner{c})
 }
 
 func TestRunStream(t *testing.T) {
 	c, teardown := newClient()
 	defer teardown()
-	assertRun(t, &streamingRunner{c})
+	assertRun(t, &StreamingRunner{c})
 }
 
 func assertRun(t *testing.T, runner Runner) {
@@ -66,6 +66,7 @@ func assertRun(t *testing.T, runner Runner) {
 			Formatter: "csv",
 			Options: map[string]string{
 				pkg.OPT_HEADER: "HEADER",
+				pkg.OPT_DEBUG:  "true",
 			},
 		},
 	)

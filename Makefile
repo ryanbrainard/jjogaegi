@@ -32,7 +32,7 @@ generate:
 build: generate
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-server ./cmd/$(BINARY)-grpc-server
-	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-client ./cmd/$(BINARY)-grpc-client
+	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-client-go ./cmd/$(BINARY)-grpc-client-go
 
 build_all:
 	$(foreach GOOS, $(PLATFORMS),\

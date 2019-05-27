@@ -8,22 +8,22 @@ import (
 	"log"
 )
 
-// Runner is an interface of wrappers around the generated client
+// Runner is an interface of wrappers around the generated Client
 type Runner interface {
 	Run(in io.Reader, out io.Writer, config *RunConfig) error
 }
 
-type simpleRunner struct {
-	client RunServiceClient
+type SimpleRunner struct {
+	Client RunServiceClient
 }
 
-func (r *simpleRunner) Run(in io.Reader, out io.Writer, config *RunConfig) error {
+func (r *SimpleRunner) Run(in io.Reader, out io.Writer, config *RunConfig) error {
 	input, err := ioutil.ReadAll(in)
 	if err != nil {
 		return nil
 	}
 
-	response, err := r.client.Run(context.TODO(), &RunRequest{
+	response, err := r.Client.Run(context.TODO(), &RunRequest{
 		Config: config,
 		Input:  input,
 	})
@@ -35,12 +35,12 @@ func (r *simpleRunner) Run(in io.Reader, out io.Writer, config *RunConfig) error
 	return err
 }
 
-type streamingRunner struct {
-	client RunServiceClient
+type StreamingRunner struct {
+	Client RunServiceClient
 }
 
-func (r *streamingRunner) Run(in io.Reader, out io.Writer, config *RunConfig) error {
-	stream, err := r.client.RunStream(context.TODO())
+func (r *StreamingRunner) Run(in io.Reader, out io.Writer, config *RunConfig) error {
+	stream, err := r.Client.RunStream(context.TODO())
 	if err != nil {
 		return err
 	}
@@ -52,14 +52,14 @@ func (r *streamingRunner) Run(in io.Reader, out io.Writer, config *RunConfig) er
 			response, err := stream.Recv()
 			if err != nil {
 				if err == io.EOF {
-					log.Println("fn=streamingRunner.Run at=stream.receive.eof")
+					log.Println("fn=StreamingRunner.Run at=stream.receive.eof")
 					close(waitc)
 					return
 				}
 				panic(err) // TODO
 			}
 
-			log.Printf("fn=streamingRunner.Run at=stream.receive.output [%v]", string(response.Output))
+			log.Printf("fn=StreamingRunner.Run at=stream.receive.output [%v]", string(response.Output))
 			if _, err := out.Write(response.Output); err != nil {
 				panic(err) // TODO
 			}
@@ -78,7 +78,7 @@ func (r *streamingRunner) Run(in io.Reader, out io.Writer, config *RunConfig) er
 		}
 	}
 
-	log.Println("fn=streamingRunner.Run at=stream.CloseSend")
+	log.Println("fn=StreamingRunner.Run at=stream.CloseSend")
 	if err := stream.CloseSend(); err != nil {
 		return err
 	}

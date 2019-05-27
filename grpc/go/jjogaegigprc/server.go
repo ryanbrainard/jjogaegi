@@ -33,7 +33,7 @@ func (s *server) Run(ctx context.Context, req *RunRequest) (*RunResponse, error)
 func (s *server) RunStream(stream RunService_RunStreamServer) error {
 	log.Println("fn=RunStream run_stream.start")
 
-	inputBuf := &bytes.Buffer{}
+	inputBuf := newBlockingByteBuffer()
 	runOnce := sync.Once{}
 	waitc := make(chan struct{})
 
@@ -42,6 +42,7 @@ func (s *server) RunStream(stream RunService_RunStreamServer) error {
 		if err != nil {
 			if err == io.EOF {
 				log.Println("fn=RunStream stream.receive.eof")
+				inputBuf.Close()
 				break
 			}
 
@@ -78,6 +79,31 @@ func (s *server) RunStream(stream RunService_RunStreamServer) error {
 	log.Println("fn=RunStream run_stream.wait")
 	<-waitc
 	log.Println("fn=RunStream run_stream.done")
+	return nil
+}
+
+type blockingReaderWriter struct {
+	ch chan byte
+}
+
+func newBlockingByteBuffer() io.ReadWriteCloser {
+	return &blockingReaderWriter{ch: make(chan byte, 1024)}
+}
+
+func (r *blockingReaderWriter) Write(p []byte) (int, error) {
+	for _, b := range p {
+		r.ch <- b
+	}
+	return len(p), nil
+}
+
+func (r *blockingReaderWriter) Read(p []byte) (n int, err error) {
+	p[0] = <-r.ch // TODO: super inefficient, but hey, experimenting!
+	return 1, nil
+}
+
+func (r *blockingReaderWriter) Close() (err error) {
+	close(r.ch)
 	return nil
 }
 
