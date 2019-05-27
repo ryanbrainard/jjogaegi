@@ -33,7 +33,7 @@ func (s *server) Run(ctx context.Context, req *RunRequest) (*RunResponse, error)
 func (s *server) RunStream(stream RunService_RunStreamServer) error {
 	log.Println("fn=RunStream run_stream.start")
 
-	inputBuf := newBlockingByteBuffer()
+	inputBuf := newBlockingReadWriteCloser()
 	runOnce := sync.Once{}
 	waitc := make(chan struct{})
 
@@ -82,27 +82,40 @@ func (s *server) RunStream(stream RunService_RunStreamServer) error {
 	return nil
 }
 
-type blockingReaderWriter struct {
+type blockingReadWriteCloser struct {
 	ch chan byte
 }
 
-func newBlockingByteBuffer() io.ReadWriteCloser {
-	return &blockingReaderWriter{ch: make(chan byte, 1024)}
+func newBlockingReadWriteCloser() io.ReadWriteCloser {
+	return &blockingReadWriteCloser{ch: make(chan byte, 1024)}
 }
 
-func (r *blockingReaderWriter) Write(p []byte) (int, error) {
+func (r *blockingReadWriteCloser) Write(p []byte) (int, error) {
 	for _, b := range p {
 		r.ch <- b
 	}
 	return len(p), nil
 }
 
-func (r *blockingReaderWriter) Read(p []byte) (n int, err error) {
-	p[0] = <-r.ch // TODO: super inefficient, but hey, experimenting!
-	return 1, nil
+func (r *blockingReadWriteCloser) Read(p []byte) (n int, err error) {
+	i := 0
+	for ; i < len(p); i++ {
+		select {
+		case b := <-r.ch:
+			// non-blocking: try to read as long as we have bytes in the channel
+			p[i] = b
+		default:
+			// blocking: read at least one byte
+			if i == 0 {
+				b := <-r.ch
+				p[i] = b
+			}
+		}
+	}
+	return i, nil
 }
 
-func (r *blockingReaderWriter) Close() (err error) {
+func (r *blockingReadWriteCloser) Close() (err error) {
 	close(r.ch)
 	return nil
 }
