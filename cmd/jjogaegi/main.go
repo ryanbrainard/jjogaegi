@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"ryanbrainard.com/jjogaegi/cmd"
-	"ryanbrainard.com/jjogaegi/pkg"
-	"ryanbrainard.com/jjogaegi/run"
+	"go.ryanbrainard.com/jjogaegi/cmd"
+	"go.ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/run"
 
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -47,7 +47,7 @@ func main() {
 		flag.PrintDefaults()
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintf(os.Stderr, "See project readme for additional information:\n")
-		fmt.Fprintf(os.Stderr, "  https://ryanbrainard.com/jjogaegi\n")
+		fmt.Fprintf(os.Stderr, "  https://go.ryanbrainard.com/jjogaegi\n")
 	}
 
 	flag.Parse()

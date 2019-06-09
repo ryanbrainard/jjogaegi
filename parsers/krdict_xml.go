@@ -6,7 +6,7 @@ import (
 
 	"fmt"
 
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 	"launchpad.net/xmlpath"
 )
 

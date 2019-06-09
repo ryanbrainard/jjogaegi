@@ -1,7 +1,7 @@
 package interceptors
 
 import (
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 )
 
 var xmlTestItems = []*pkg.Item{

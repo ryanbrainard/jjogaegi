@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"ryanbrainard.com/jjogaegi/interceptors"
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/interceptors"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 )
 
 func NewInteractivePrompt(interactiveOut io.Writer) pkg.ParseFunc {

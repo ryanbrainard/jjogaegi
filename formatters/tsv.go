@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 )
 
 func FormatTSV(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string) error {

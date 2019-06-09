@@ -3,8 +3,8 @@ package interceptors
 import (
 	"testing"
 
-	"ryanbrainard.com/jjogaegi/pkg"
-	mocks "ryanbrainard.com/jjogaegi/testing"
+	"go.ryanbrainard.com/jjogaegi/pkg"
+	mocks "go.ryanbrainard.com/jjogaegi/testing"
 
 	"github.com/stretchr/testify/assert"
 

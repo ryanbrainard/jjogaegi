@@ -2,7 +2,7 @@ package interceptors
 
 import (
 	"github.com/google/uuid"
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 )
 
 func GenerateNoteId(item *pkg.Item, options map[string]string) error {

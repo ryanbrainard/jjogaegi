@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"ryanbrainard.com/jjogaegi/pkg"
+	"go.ryanbrainard.com/jjogaegi/pkg"
 	"github.com/stretchr/testify/assert"
 )
 

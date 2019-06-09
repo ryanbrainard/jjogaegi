@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ryanbrainard.com/jjogaegi/grpc/go/jjogaegigprc"
+	"go.ryanbrainard.com/jjogaegi/grpc/go/jjogaegigprc"
 	"google.golang.org/grpc"
 	"log"
 	"net"

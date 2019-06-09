@@ -1,4 +1,4 @@
-module ryanbrainard.com/jjogaegi
+module go.ryanbrainard.com/jjogaegi
 
 go 1.12
 

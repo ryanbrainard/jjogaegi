@@ -147,8 +147,8 @@ This application also has a web interface with a simplified set of options, whic
 Make sure you have [Go](http://golang.org/doc/install) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
 ```sh
-$ go get -u ryanbrainard.com/jjogaegi
-$ cd $GOPATH/src/ryanbrainard.com/jjogaegi
+$ go get -u go.ryanbrainard.com/jjogaegi
+$ cd $GOPATH/src/go.ryanbrainard.com/jjogaegi
 $ heroku local
 ```
 
