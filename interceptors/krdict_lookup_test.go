@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/ryanbrainard/jjogaegi/pkg"
-	mocks "github.com/ryanbrainard/jjogaegi/testing"
+	"ryanbrainard.com/jjogaegi/pkg"
+	mocks "ryanbrainard.com/jjogaegi/testing"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ryanbrainard/jjogaegi/pkg"
+	"ryanbrainard.com/jjogaegi/pkg"
 	"launchpad.net/xmlpath"
 )
 

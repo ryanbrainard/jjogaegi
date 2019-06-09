@@ -5,7 +5,7 @@ import (
 	"encoding/csv"
 	"io"
 
-	"github.com/ryanbrainard/jjogaegi/pkg"
+	"ryanbrainard.com/jjogaegi/pkg"
 )
 
 func formatXSV(ctx context.Context, items <-chan *pkg.Item, w io.Writer, options map[string]string, delim rune) error {

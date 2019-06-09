@@ -5,7 +5,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/ryanbrainard/jjogaegi/pkg"
+	"ryanbrainard.com/jjogaegi/pkg"
 )
 
 func ParseList(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {

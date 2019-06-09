@@ -3,9 +3,9 @@ package cmd
 import (
 	"os"
 
-	"github.com/ryanbrainard/jjogaegi/formatters"
-	"github.com/ryanbrainard/jjogaegi/parsers"
-	"github.com/ryanbrainard/jjogaegi/pkg"
+	"ryanbrainard.com/jjogaegi/formatters"
+	"ryanbrainard.com/jjogaegi/parsers"
+	"ryanbrainard.com/jjogaegi/pkg"
 )
 
 type Capabilities struct {

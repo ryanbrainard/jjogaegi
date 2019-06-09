@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ryanbrainard/jjogaegi/cmd"
-	"github.com/ryanbrainard/jjogaegi/run"
+	"ryanbrainard.com/jjogaegi/cmd"
+	"ryanbrainard.com/jjogaegi/run"
 )
 
 func main() {
