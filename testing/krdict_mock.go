@@ -34,7 +34,6 @@ func NewKrdictMockServer() *httptest.Server {
 		io.WriteString(h, vcrFilenameRaw)
 		vcrFilenameHash := base64.RawURLEncoding.EncodeToString((h.Sum(nil)))
 
-		vcrFilepathRaw := "../testing/fixtures/vcr/krdict/" + vcrFilenameRaw
 		vcrFilepathHash := "../testing/fixtures/vcr/krdict/" + vcrFilenameHash
 
 		if os.Getenv("VCR_RECORD") == strconv.FormatBool(true) {
@@ -53,12 +52,12 @@ func NewKrdictMockServer() *httptest.Server {
 
 			// TODO: copy headers?
 
-			err = os.MkdirAll(path.Dir(vcrFilepathRaw), os.ModePerm)
+			err = os.MkdirAll(path.Dir(vcrFilepathHash), os.ModePerm)
 			if err != nil {
 				panic(err)
 			}
 
-			vcrFile, err := os.Create(vcrFilepathRaw)
+			vcrFile, err := os.Create(vcrFilepathHash)
 			if err != nil {
 				panic(err)
 			}
@@ -72,16 +71,10 @@ func NewKrdictMockServer() *httptest.Server {
 			vcrFile.Close()
 		}
 
-		vcrFile, err := os.Open(vcrFilepathRaw)
+		vcrFile, err := os.Open(vcrFilepathHash)
 		if err == nil {
 			defer vcrFile.Close()
 			vcrData, err := ioutil.ReadAll(vcrFile)
-			if err != nil {
-				panic(err)
-			}
-
-			_ = vcrFilepathHash
-			err = ioutil.WriteFile(vcrFilepathHash, vcrData, 0666)
 			if err != nil {
 				panic(err)
 			}
