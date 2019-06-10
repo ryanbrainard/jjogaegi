@@ -1,0 +1,396 @@
+
+
+
+
+
+<!doctype html>
+<!--[if IE 7 ]><html class="no-js ie7" lang="ko"> <![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8" lang="ko"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9" lang="ko"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="ko" class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>홈 | 자료 나눔터</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=medium-dpi" />
+		<meta name="format-detection" content="telephone=no, address=no, email=no" />
+		<meta name="subject" content="[자료 나눔터]" />
+		<meta name="keywords" content="자료 나눔터" />
+		<meta name="description" content="[자료 나눔터]" />
+		<link rel="stylesheet" href="/front/css/style.css" />
+		<link rel="stylesheet" href="/front/css/jquery-ui.min.css" />
+		<link rel="stylesheet" href="/front/css/jquery.ui.datepicker.css" />
+		<script type="text/javascript" src="/front/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="/front/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="/front/js/jquery.ui.datepicker-ko.js"></script>
+		<script type="text/javascript" src="/front/js/jquery.ui.datepicker.js"></script>
+		<script type="text/javascript" src="/front/js/jquery.simplemodal.1.4.4.min.js"></script>
+		<script type="text/javascript" src="/front/js/clipboard.min.js"></script>
+		<script type="text/javascript" src="/front/js/onlypub.js"></script>
+		
+		<script type="text/javascript" src="/front/js/head_dqAutoCompleteCommon.js"></script>
+		<script type="text/javascript" src="/front/js/player.js"></script>
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="/front/js/placeholders.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div id="skipToContent">
+	  		<a href="#container">메인콘텐츠 바로가기 </a>
+		</div><!-- //skipToContent -->
+		<div id="wrap">
+			
+<header>
+	<div class="gnb" id="topGnb">
+		<h1>
+			<a href="/front/main/index.do">자료 나눔터</a>
+		</h1>
+		<form name="topSearch" action="/front/search/searchResult.do" method="post" autocomplete="off">
+			<input type="hidden" id="top_file_no" name="file_no" value="" />
+			<div class="search">
+				<fieldset>
+					<legend>통합검색 폼</legend>
+					<label for="searchText" class="hidden">통합검색</label>
+					<p><input type="text" class="search_input" title="검색어 입력" id="searchText" name="searchText" value=""  style="ime-mode:active;" onfocus="return dq_setTextbox('0',event);" onmousedown="dq_setTextbox('1',event);" onkeydown="dq_setTextbox('1',event);"/><input type="button" value="검색" class="btnMd01" onclick="javascript:fnSearchTop();" /></p>
+					<input type="button" value="자세히 찾기" class="btnMd02" onclick="javascript:fnMoveSearchDetail();" />
+					<div id="main_auto_complet" class="searchAuto" onmouseover="dq_setMouseon();" onmouseout="dq_setMouseoff();"></div>
+				</fieldset>
+			</div>
+			<script type="text/javascript" src="/front/js/index_dqAutoComplete.js"></script>
+		</form>
+	</div>
+</header>
+			
+
+
+
+
+
+
+
+
+
+	<div id="container">
+		<h1 class="hidden">메인콘텐츠</h1>
+
+		<section id="contents">
+			<form id="form1" name="form1" action="/front/search/searchResultView.do" method="get">
+				<input type="hidden" name="job_pag" value="view" />
+				<input type="hidden" name="prev_search_type" id="prev_search_type" value="" />
+				<input type="hidden" name="search_param" id="search_param" value="" />
+				<input type="hidden" name="file_no" id="file_no_view" value="" />
+				
+				<div id="searchOptionDetail"></div>
+				
+				<div class="h2TitBox">
+					<h2 class="subTit">참기름</h2>
+					<div class="btn">
+						<a href="#" class="btnMdGy" onclick="javascript:fnOpenDownloadModal('1');">내려받기</a>
+						<a href="#" class="btnMdGy" onclick="javascript:fnViewShareLayer();">공유하기</a>
+						<a href="#" class="btnMdOg" onclick="javascript:fnOpenUserReportModal();">신고하기</a>
+						<a href="#" class="btnShare mb" class="레이어열림" onclick="javascript:fnViewShareLayer();">모바일공유하기</a>
+					</div>
+				</div>
+	
+				<div class="mediaWrap">
+					<div class="number">
+						<span>조회 12회</span>
+						<span>내려받기 0회</span>
+					</div>
+	
+					<!-- [D] 모바일공유하기 활성화 경우 class="active" -->
+					<div class="snsLayer">
+						<a href="#f1" class="uLink" onclick="javascript:fnOpenUrlCopyModal();">URL 복사</a>
+						<a href="#f1" class="fLink" onclick="javascript:openFacebook('참기름', '197671');">페이스북</a>
+						<a href="#f1" class="tLink" onclick="javascript:openTwitter('참기름', '197671');">트위터</a>
+					</div>
+	
+					
+						
+							
+					<p class="pic">
+						
+							
+						<img src="http://dicmedia.korean.go.kr:8899/multimedia/multimedia_files/convert/20150929/201390//PIC000197671_700X466.jpg" alt=" : 참기름_01_01.jpg"   />
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						 
+					
+						<!-- <a href="#" class="more">더보기</a> -->
+					</p>
+					
+							
+							
+							
+						
+					
+				</div>
+	</form>
+				<table class="tblView mb">
+					<caption>자료 내용 상세: 연결 정보, 설명, 태그, 저작권, 저작자, 출처, 올린 날짜로 구성 됨</caption>
+					<colgroup>
+						<col style="width:20%;">
+						<col style="width:auto;">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th scope="row">연결 정보</th>
+							<td>
+								<ul class="dicList">
+									
+									<li><em class="blue">우리말샘</em>
+										<div>
+										
+											<a href="http://opendict.korean.go.kr/dictionary/view?sense_no=287803&viewType=confirm" target="_blank">참-기름「001」</a>
+																				
+										</div>
+									</li>
+									
+									
+									<li><em class="sky">한국어기초사전</em>
+										<div>
+										
+											<a href="http://krdict.korean.go.kr/dicSearch/SearchView?ParaWordNo=71793" target="_blank">참기름</a>
+										
+										</div>
+									</li>
+									
+									
+									
+								</ul>
+	
+							</td>
+						</tr>
+						
+						
+						<tr>
+							<th scope="row">저작권</th>
+							<td>
+								<ul class="txtList">
+									
+						
+						<ul class="ul_copyright">
+						<li>저작자 표시 : <strong>필수</strong></li>
+						<li>상업적 이용 : 
+							<strong>
+								
+									
+			                       		  허용
+			                       	
+			                       	
+			                    
+			                </strong>
+		                </li>
+						<li>저작물 변경 : 
+							<strong>
+								
+							    	
+							    	
+							    	
+							      	동일한 적용 조건이면 허용
+							    							    						    
+				                
+							</strong>
+						</li>
+						</ul>
+						<p class="mt10">저작권의 자세한 사항은 <span class="font_darksky_b"><a href="http://creativecommons.org/licenses" target="_blank" style="text-decoration:underline;">CCL 이용허락규약</a></span>을 참고하십시오.</p>
+						<span class="ccl">
+						
+							
+							
+							
+								<a href="http://creativecommons.org/licenses/by-sa/2.0/kr/legalcode" target="_blank" title="새창 열림" ><img src="/front/images/common/cc_by_sa.png" alt="cc_by_sa" width="88px" height="31px" /></a>
+							
+							
+							
+							
+						
+						</span>
+						
+						
+						
+					
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">저작자</th>
+							<td>국립국어원</td>
+						</tr>
+						<tr>
+							<th scope="row">출처</th>
+							<td>국립국어원</td>
+						</tr>
+						<tr>
+							<th scope="row">올린 날짜</th>
+							<td>2015.09.29 17:25:41</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<div class="modal_popup downModal" id="downloadModal" >
+					<div class="modal_header">자료 내려받기</div>
+						
+					<div class="modal_content popStyle01 popM">
+						<div class="popCont">
+							<table class="tblView mt0" summary="자료 내려받기 양식 양식">
+								<caption>자료 내려받기 입력 폼으로 원본 자료, 변환 자료로 구성 됨</caption>
+								<colgroup>
+									<col style="width:20%">
+									<col style="width:auto">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="row">원본 자료</th>
+										<td>
+											<strong class="tTit">JPG</strong>
+											<span class="radioWrap"><input type="radio" id="file_no_org" name="file_no" value="197671" checked="checked" /><label for="file_no_org">참기름_01_01.jpg<span> (279 KB)</span></label></span>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">변환 자료</th>
+										<td>
+											
+												
+												
+													
+											<strong class="tTit">JPG</strong>
+													
+											<span class="radioWrap"><input type="radio" id="file_no0" name="file_no" value="convert,197671,1"/><label for="file_no0">PIC000197671_700X466.jpg  <span>700X466 (10 KB)</span></label></span>
+													
+												
+												
+												
+												
+												
+												
+												
+													
+											<span class="radioWrap"><input type="radio" id="file_no1" name="file_no" value="convert,197671,2"/><label for="file_no1">PIC000197671_320X240.jpg  <span>320X240 (4 KB)</span></label></span>
+													
+												
+												
+												
+												
+												
+												
+												
+													
+											<span class="radioWrap"><input type="radio" id="file_no2" name="file_no" value="convert,197671,4"/><label for="file_no2">PIC000197671_215X161.jpg  <span>215X161 (2 KB)</span></label></span>
+													
+												
+												
+												
+												
+												
+												
+												
+													
+											<span class="radioWrap"><input type="radio" id="file_no3" name="file_no" value="convert,197671,5"/><label for="file_no3">PIC000197671_143X107.jpg  <span>143X107 (1 KB)</span></label></span>
+													
+												
+												
+												
+												
+												
+												
+												
+													
+											<span class="radioWrap"><input type="radio" id="file_no4" name="file_no" value="convert,197671,3"/><label for="file_no4">PIC000197671_105X105.jpg  <span>105X105 (1 KB)</span></label></span>
+													
+												
+												
+												
+												
+												
+										</td>
+									</tr>
+								</tbody>
+							</table>
+			               	<div class="btnAreaPop">
+			               		<button type="button" class="btnMdOg bg" onclick="javascript:fnCmdFileDownLoad();">내려 받기</button>
+			               		<button type="button" class="btnMdGyR bg simplemodal-close">취소</button>
+			               	</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal_popup copyModal" id="urlCopyModal" >
+					<div class="modal_header">URL 복사하기</div>
+					<div class="modal_content popStyle01 popM">
+						<div class="popCont">
+							<div class="urlBox" id="urlBox">
+								<textarea id="copy_url" name="copy_url" class="url_input" title="copy_url" rows="5" cols="10">http://dicmedia.korean.go.kr:8899/front/search/searchResultView.do?file_no=197671</textarea> 
+							</div>
+			               	<div class="btnAreaPop">
+			               		<button type="button" id="btnCopyClip"  class="btnMdOg bg" data-clipboard-action="copy" data-clipboard-target="#copy_url">복사하기</button>
+			               		<button type="button" class="btnMdGyR bg simplemodal-close">취소</button>
+			               	</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal_popup reportModal" id="userReportModal" >
+					<div class="modal_header">신고하기</div>
+					<div class="modal_content popStyle01 popM">
+						<div class="popCont">
+							<p class="popTopTxt">해당 자료가 저작권을 침해하는 경우 신고해 주세요.</p>
+							<table class="tblView mt0">
+								<caption>신고하기 입력 폼으로 보안 문자, 이름, 제목, 내용으로 구성 됨</caption>
+								<colgroup>
+									<col style="width:20%">
+									<col style="width:auto">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="row">보안 문자</th>
+										<td>
+											<div class="securityBox">
+												<p id="captchaImage"></p>
+												<a href="#captchaImage" onclick="javascript:fnListeningKorea('K');" class="btnListen">음성으로 듣기</a>
+												<a href="#captchaImage" onclick="javascript:fnRefershCaptcha('captchaImage');" class="btnRefresh">새로고침</a>
+											</div>
+											<input type="password" id="captchaNumber" name="captchaNumber" class="w60" title="보안문자 입력">
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">이름</th>
+										<td>
+											<input type="text" id="report_name" name="report_name" class="w60" title="이름 입력">
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">제목</th>
+										<td>
+											<input type="text" id="report_title" name="report_title"  class="w100" title="제목 입력">
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">내용</th>
+										<td>
+											<div class="textarea">
+												<textarea id="report_content" name="report_content" title="내용 입력"></textarea>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+			               	<div class="btnAreaPop">
+			               		<button type="button" class="btnMdOg bg" onclick="javascript:fnCmdSaveReport();">신고하기</button>
+			               		<button type="button" class="btnMdGyR bg simplemodal-close">취소</button>
+			               	</div>
+					</div>
+					</div>
+				</div>
+				
+				

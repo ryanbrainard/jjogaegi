@@ -1,15 +1,17 @@
 package testing
 
 import (
+	"bytes"
+	"crypto/md5"
+	"encoding/base64"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path"
 	"strconv"
-	"io/ioutil"
-	"net/url"
-	"bytes"
 )
 
 func NewKrdictMockServer() *httptest.Server {
@@ -19,14 +21,21 @@ func NewKrdictMockServer() *httptest.Server {
 			return
 		}
 
-		vcrFilename := "../testing/fixtures/vcr/krdict/" + r.URL.Path
+		vcrFilenameRaw := r.URL.Path
 		vcrQuerty := r.URL.Query()
 		vcrQuerty.Del("key")
 		baseUrl := "https://krdict.korean.go.kr"
 		if customBaseUrl := vcrQuerty.Get("_baseUrl"); customBaseUrl != "" {
 			baseUrl = customBaseUrl
 		}
-		vcrFilename += "?" + vcrQuerty.Encode()
+		vcrFilenameRaw += "?" + vcrQuerty.Encode()
+
+		h := md5.New()
+		io.WriteString(h, vcrFilenameRaw)
+		vcrFilenameHash := base64.RawURLEncoding.EncodeToString((h.Sum(nil)))
+
+		vcrFilepathRaw := "../testing/fixtures/vcr/krdict/" + vcrFilenameRaw
+		vcrFilepathHash := "../testing/fixtures/vcr/krdict/" + vcrFilenameHash
 
 		if os.Getenv("VCR_RECORD") == strconv.FormatBool(true) {
 			baseUrl, _ := url.Parse(baseUrl)
@@ -44,12 +53,12 @@ func NewKrdictMockServer() *httptest.Server {
 
 			// TODO: copy headers?
 
-			err = os.MkdirAll(path.Dir(vcrFilename), os.ModePerm)
+			err = os.MkdirAll(path.Dir(vcrFilepathRaw), os.ModePerm)
 			if err != nil {
 				panic(err)
 			}
 
-			vcrFile, err := os.Create(vcrFilename)
+			vcrFile, err := os.Create(vcrFilepathRaw)
 			if err != nil {
 				panic(err)
 			}
@@ -63,10 +72,16 @@ func NewKrdictMockServer() *httptest.Server {
 			vcrFile.Close()
 		}
 
-		vcrFile, err := os.Open(vcrFilename)
+		vcrFile, err := os.Open(vcrFilepathRaw)
 		if err == nil {
 			defer vcrFile.Close()
 			vcrData, err := ioutil.ReadAll(vcrFile)
+			if err != nil {
+				panic(err)
+			}
+
+			_ = vcrFilepathHash
+			err = ioutil.WriteFile(vcrFilepathHash, vcrData, 0666)
 			if err != nil {
 				panic(err)
 			}
@@ -76,6 +91,7 @@ func NewKrdictMockServer() *httptest.Server {
 			if err != nil {
 				panic(err)
 			}
+
 			return
 		}
 
