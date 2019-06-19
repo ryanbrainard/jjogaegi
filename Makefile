@@ -3,7 +3,7 @@
 # Includes cross-compiling, installation, cleanup
 # ########################################################## #
 
-.PHONY: check clean install generate grpc build_all all
+.PHONY: check clean install generate build build_cli build_gprc dist all
 
 # Check for required command tools to build or stop immediately
 EXECUTABLES = git go find pwd
@@ -23,18 +23,22 @@ LDFLAGS=-ldflags "-X main.Version=$(VERSION)"
 
 default: build
 
-all: clean test build_all install
+all: clean test build install
 
 generate:
 	protoc -I grpc/proto/ grpc/proto/services.proto --go_out=plugins=grpc:grpc/go/jjogaegigprc
 	grpc_tools_ruby_protoc -I grpc/proto/ --ruby_out=grpc/ruby/lib --grpc_out=grpc/ruby/lib grpc/proto/services.proto
 
-build: generate
+build: generate build_cli build_grpc
+
+build_cli:
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY) ./cmd/$(BINARY)
+
+build_grpc: generate
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-server ./cmd/$(BINARY)-grpc-server
 	go build ${LDFLAGS} -o $(OUTPUT_DIR)/$(BINARY)-grpc-client-go ./cmd/$(BINARY)-grpc-client-go
 
-build_all:
+dist: clean
 	$(foreach GOOS, $(PLATFORMS),\
 		$(foreach GOARCH, $(ARCHITECTURES),\
 			$(shell env GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(LDFLAGS) -o $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH)/$(BINARY) ./cmd/$(BINARY) && zip --quiet --junk-paths --recurse-paths $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH).zip $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH))))
