@@ -15,13 +15,13 @@ type Capabilities struct {
 
 var AppCapabilities = Capabilities{
 	Parsers: map[string]string{
-		"prompt":         "Interactive Prompt",
-		"tsv":            "TSV: Tab-Separated Values",
-		"list":           "Hangul-English Space-Separated List",
+		"prompt":              "Interactive Prompt",
+		"tsv":                 "TSV: Tab-Separated Values",
+		"list":                "Hangul-English Space-Separated List",
 		"naver-wordbook-html": "Naver Wordbook Print Out HTML",
 		"naver-wordbook-json": "Naver Wordbook JSON", // example URL: https://learn.dict.naver.com/gateway-api/enkodict/mywordbook/word/list/search?page_size=20&wbId=a41dd7534bd04c02b50942f6fa935f51&qt=0&st=0&hasBookmark=true&bookmarkWordId=f855470720c6a72b7108df104cd461fa&domain=naver
-		"krdict-xml":     "KR Dict XML",
-		"memrise-list":   "Memrise List",
+		"krdict-xml":          "KR Dict XML",
+		"memrise-list":        "Memrise List",
 	},
 	Formatters: map[string]string{
 		"json": "JSON",
@@ -46,6 +46,8 @@ func ParseOptParser(s string) pkg.ParseFunc {
 		return parsers.ParseTSV
 	case "list":
 		return parsers.ParseList
+	case "naver-wordbook":
+		panic("deprecated. legacy version renamed to 'naver-wordbook-html'. use 'naver-wordbook-json' instead.")
 	case "naver-wordbook-html":
 		return parsers.ParseNaverWordbookHTML
 	case "naver-wordbook-json":
