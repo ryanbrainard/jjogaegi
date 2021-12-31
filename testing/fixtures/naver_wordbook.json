@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "status": 1,
+    "message": "success!"
+  },
+  "data": {
+    "over_last_page": false,
+    "next_cursor": "AoJ17cjHh/4CPwEwYjE3Y2U5NmVhNTQ4NTU2YzFlMDE1OTIyYWM5N2VmZQ==",
+    "m_total": 3,
+    "m_items": [
+      {
+        "id": "f855470720c6a72b7108df104cd461fa",
+        "entryId": "b2f004c463a04303a917fa24bef83906",
+        "wordbookId": "a41dd7534bd04c02b50942f6fa935f51",
+        "service": "enkodict",
+        "dicType": "koen",
+        "name": "나열",
+        "contentType": 0,
+        "saveType": "basic",
+        "sourceType": "dict",
+        "content": "{\"entry\":{\"entry_id\":\"b2f004c463a04303a917fa24bef83906\",\"service\":\"enkodict\",\"dict_type\":\"koen\",\"dict_cid\":\"08099047\",\"mix_pron\":\"\",\"korean_mix_pron\":\"\",\"stroke_show_file\":\"\",\"stroke_cnt\":\"0\",\"radical_id\":\"\",\"show_radical\":\"\",\"korean_radical_name\":\"\",\"source_type\":\"dict\",\"source_name\":\"ET-house 능률 한영사전\",\"language\":\"ko\",\"members\":[{\"member_id\":\"db921eee751949cdbe351d03dea59595\",\"entry_name\":\"나열\",\"super_script\":\"0\",\"entry_importance\":\"0\",\"origin_language\":\"羅列\",\"kanji\":\"\",\"prons\":[{\"pron_id\":\"89213fb6facf43e1bc13c22723735064\",\"pron_symbol\":\"[nayeol]\",\"pron_alias\":\"\",\"pron_type\":\"roma\",\"korean_pron_symbol\":\"\",\"order_seq\":1,\"male_pron_file\":\"\",\"female_pron_file\":\"\"}]}],\"means\":[{\"mean_id\":\"4be2361bfc154da38a7893b3131b2a3a\",\"part_id\":\"f053076c279347b3b50a69a4be0762ca\",\"part_name\":\"\",\"show_mean\":\"[동사] list, (formal) enumerate\",\"language\":\"en\",\"description_json\":{},\"mean_type\":\"nomal\",\"mean_level\":1,\"mean_seq\":\"1\",\"examples\":[{\"example_id\":\"a183d353c3a9465db7705fca6c35d9a3\",\"show_example\":\"단편적인 정보를 나열하다\",\"language\":\"ko\",\"example_type\":\"\",\"dict_cid\":\"08099047\",\"example_pron\":\"\",\"example_pron_file\":\"\",\"translations\":[{\"language\":\"en\",\"translation_id\":\"a314db94a5914b74bded278c3b7797a2\",\"show_translation\":\"list fragments of information\"}]}]}]}}",
+        "memo": null,
+        "createDate": 1640931496795,
+        "read": false
+      },
+      {
+        "id": "55ce4ce6e748130bab5d415d84b8debd",
+        "entryId": "cea6a785192d44608c4e6207442ef68d",
+        "wordbookId": "a41dd7534bd04c02b50942f6fa935f51",
+        "service": "enkodict",
+        "dicType": "koen",
+        "name": "화살표",
+        "contentType": 0,
+        "saveType": "basic",
+        "sourceType": "dict",
+        "content": "{\"entry\":{\"entry_id\":\"cea6a785192d44608c4e6207442ef68d\",\"service\":\"enkodict\",\"dict_type\":\"koen\",\"dict_cid\":\"08099047\",\"mix_pron\":\"\",\"korean_mix_pron\":\"\",\"stroke_show_file\":\"\",\"stroke_cnt\":\"0\",\"radical_id\":\"\",\"show_radical\":\"\",\"korean_radical_name\":\"\",\"source_type\":\"dict\",\"source_name\":\"ET-house 능률 한영사전\",\"language\":\"ko\",\"members\":[{\"member_id\":\"8f925aeb3e5e4c4cb5feb64545a57442\",\"entry_name\":\"화살표\",\"super_script\":\"0\",\"entry_importance\":\"0\",\"origin_language\":\"\",\"kanji\":\"\",\"prons\":[{\"pron_id\":\"d24972595bc8480ca48fd6417c6f152e\",\"pron_symbol\":\"[hwasalpyo]\",\"pron_alias\":\"\",\"pron_type\":\"roma\",\"korean_pron_symbol\":\"\",\"order_seq\":1,\"male_pron_file\":\"\",\"female_pron_file\":\"\"}]}],\"means\":[{\"mean_id\":\"e88076ea344a4da7b21da08a89712afa\",\"part_id\":\"f053076c279347b3b50a69a4be0762ca\",\"part_name\":\"\",\"show_mean\":\"arrow\",\"language\":\"en\",\"description_json\":{},\"mean_type\":\"nomal\",\"mean_level\":1,\"mean_seq\":\"1\",\"examples\":[{\"example_id\":\"45345fdbbc7e4d359d4107103ed02ef2\",\"show_example\":\"화살표 방향으로 가시오\",\"language\":\"ko\",\"example_type\":\"\",\"dict_cid\":\"08099047\",\"example_pron\":\"\",\"example_pron_file\":\"\",\"translations\":[{\"language\":\"en\",\"translation_id\":\"0131f90b597045d9a312d7d27d79fa9c\",\"show_translation\":\"Please follow this arrow.\"}]}]}]}}",
+        "memo": null,
+        "createDate": 1640931439149,
+        "read": false
+      },
+      {
+        "id": "0b17ce96ea548556c1e015922ac97efe",
+        "entryId": "729520861170427890b0340413d2af5a",
+        "wordbookId": "a41dd7534bd04c02b50942f6fa935f51",
+        "service": "enkodict",
+        "dicType": "koen",
+        "name": "처리",
+        "contentType": 0,
+        "saveType": "basic",
+        "sourceType": "dict",
+        "content": "{\"entry\":{\"entry_id\":\"729520861170427890b0340413d2af5a\",\"service\":\"enkodict\",\"dict_type\":\"koen\",\"dict_cid\":\"08099047\",\"mix_pron\":\"\",\"korean_mix_pron\":\"\",\"stroke_show_file\":\"\",\"stroke_cnt\":\"0\",\"radical_id\":\"\",\"show_radical\":\"\",\"korean_radical_name\":\"\",\"source_type\":\"dict\",\"source_name\":\"ET-house 능률 한영사전\",\"language\":\"ko\",\"members\":[{\"member_id\":\"65ca51cd0ab64c40ab89aa40ca4b2017\",\"entry_name\":\"처리\",\"super_script\":\"0\",\"entry_importance\":\"0\",\"origin_language\":\"處理\",\"kanji\":\"\",\"prons\":[{\"pron_id\":\"bb348ff278e8495892b7a999ea03b9b3\",\"pron_symbol\":\"[cheo-ri]\",\"pron_alias\":\"\",\"pron_type\":\"roma\",\"korean_pron_symbol\":\"\",\"order_seq\":1,\"male_pron_file\":\"\",\"female_pron_file\":\"\"}]}],\"means\":[{\"mean_id\":\"9c1f206a6c7448cea78367ecca01e571\",\"part_id\":\"f053076c279347b3b50a69a4be0762ca\",\"part_name\":\"\",\"show_mean\":\"(일·사건 등의) handling; (쓰레기·폭탄 등의) disposal; (데이터 등의) processing, handle, deal with, take care of; (처분·제거하다) dispose of; (데이터 등을) process\",\"language\":\"en\",\"description_json\":{},\"mean_type\":\"nomal\",\"mean_level\":1,\"mean_seq\":\"1\",\"examples\":[{\"example_id\":\"b391f44d26874eb286bce85690a67342\",\"show_example\":\"정보처리\",\"language\":\"ko\",\"example_type\":\"\",\"dict_cid\":\"08099047\",\"example_pron\":\"\",\"example_pron_file\":\"\",\"translations\":[{\"language\":\"en\",\"translation_id\":\"bba47451f8fc40429b9b4361d3a7cdab\",\"show_translation\":\"data[information] processing\"}]}]},{\"mean_id\":\"d7ea0c6249b849b9aea2230c73fd5da0\",\"part_id\":\"f053076c279347b3b50a69a4be0762ca\",\"part_name\":\"\",\"show_mean\":\"(물리적, 화학적) treatment, treat\",\"language\":\"en\",\"description_json\":{},\"mean_type\":\"nomal\",\"mean_level\":1,\"mean_seq\":\"2\",\"examples\":[{\"example_id\":\"d224652e4bd74937bfeada7092d5c734\",\"show_example\":\"핵 재처리 시설\",\"language\":\"ko\",\"example_type\":\"\",\"dict_cid\":\"08099047\",\"example_pron\":\"\",\"example_pron_file\":\"\",\"translations\":[{\"language\":\"en\",\"translation_id\":\"50f21d03ad744ecf97de438cb0d03f64\",\"show_translation\":\"nuclear reprocessing facilities\"}]}]}]}}",
+        "memo": null,
+        "createDate": 1640931149525,
+        "read": false
+      }
+    ]
+  }
+}

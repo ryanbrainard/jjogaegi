@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func ParseNaverWordbook(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
+func ParseNaverWordbookHTML(ctx context.Context, r io.Reader, items chan<- *pkg.Item, options map[string]string) error {
 	rootNode, err := xmlpath.ParseHTML(r)
 	if err != nil {
 		return err
