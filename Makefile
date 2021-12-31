@@ -43,7 +43,7 @@ dist: clean
 		$(foreach GOARCH, $(ARCHITECTURES),\
 			$(shell env GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(LDFLAGS) -o $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH)/$(BINARY) ./cmd/$(BINARY) && zip --quiet --junk-paths --recurse-paths $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH).zip $(OUTPUT_DIR)/$(BINARY)-$(GOOS)-$(GOARCH))))
 
-install: build
+install: build_cli
 	cp $(OUTPUT_DIR)/$(BINARY) $(GOPATH)/bin
 
 test:
