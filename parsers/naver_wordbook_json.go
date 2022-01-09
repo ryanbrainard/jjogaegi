@@ -32,6 +32,8 @@ func ParseNaverWordbookJSON(ctx context.Context, r io.Reader, items chan<- *pkg.
 			return err
 		}
 
+		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s content=%+v", content.Entry.EntryID, content)
+
 		item := &pkg.Item{
 			ExternalID: content.Entry.EntryID,
 		}
@@ -66,6 +68,8 @@ func ParseNaverWordbookJSON(ctx context.Context, r io.Reader, items chan<- *pkg.
 				})
 			}
 		}
+
+		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s item=%+v", content.Entry.EntryID, item)
 
 		items <- item
 	}
