@@ -19,6 +19,16 @@ func TestParseNaverWordbookJSON(t *testing.T) {
 	assert.Nil(t, err)
 
 	assert.Equal(t, &pkg.Item{
+		ExternalID: "4f77177535f04442814a226f289ffef8",
+		Examples: []pkg.Translation{
+			{
+				Korean:  "그들은 연상 연하 커플이다",
+				English: "The woman is the older of the couple.",
+			},
+		},
+	}, <-items)
+
+	assert.Equal(t, &pkg.Item{
 		ExternalID:    "b2f004c463a04303a917fa24bef83906",
 		Pronunciation: "[nayeol]",
 		Hangul:        "나열",

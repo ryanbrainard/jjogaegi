@@ -22,59 +22,100 @@ func ParseNaverWordbookJSON(ctx context.Context, r io.Reader, items chan<- *pkg.
 		default:
 		}
 
-		if mitem.ContentType != 0 {
+		item := &pkg.Item{
+			ExternalID: mitem.EntryID,
+		}
+
+		var content interface{}
+		var handleContent func(*pkg.Item, interface{})
+
+		switch mitem.ContentType {
+		case 0:
+			content = &NaverWordbookItemContentType0{}
+			handleContent = func(item *pkg.Item, content interface{}) {
+				handleContentType0(item, content.(*NaverWordbookItemContentType0))
+			}
+		case 1:
+			content = &NaverWordbookItemContentType1{}
+			handleContent = func(item *pkg.Item, content interface{}) {
+				handleContentType1(item, content.(*NaverWordbookItemContentType1))
+			}
+		default:
 			log.Printf("unknown content type=%d name=%s", mitem.ContentType, mitem.Name)
 			continue
 		}
 
-		content := &NaverWordbookItemContent{}
-		if err := json.Unmarshal([]byte(mitem.Content), content); err != nil {
+		if err := json.Unmarshal([]byte(mitem.Content), &content); err != nil {
 			return err
 		}
 
-		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s content=%+v", content.Entry.EntryID, content)
+		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s content=%+v", mitem.EntryID, content)
 
-		item := &pkg.Item{
-			ExternalID: content.Entry.EntryID,
-		}
+		handleContent(item, content)
 
-		if len(content.Entry.Members) > 0 {
-			member := content.Entry.Members[0]
-
-			item.Hangul = member.EntryName
-			item.Hanja = member.OriginLanguage
-
-			if len(member.Prons) > 0 {
-				item.Pronunciation = member.Prons[0].PronSymbol
-			}
-		}
-
-		if len(content.Entry.Means) > 0 {
-			mean := content.Entry.Means[0]
-
-			item.Def = pkg.Translation{
-				English: mean.ShowMean,
-			}
-
-			for _, example := range mean.Examples {
-				var english string
-				if len(example.Translations) > 0 && example.Translations[0].Language == "en" {
-					english = example.Translations[0].ShowTranslation
-				}
-
-				item.Examples = append(item.Examples, pkg.Translation{
-					Korean:  example.ShowExample,
-					English: english,
-				})
-			}
-		}
-
-		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s item=%+v", content.Entry.EntryID, item)
+		pkg.Debug(options, "fn=ParseNaverWordbookJSON entry_id=%s item=%+v", mitem.EntryID, item)
 
 		items <- item
 	}
 
 	return nil
+}
+
+func handleContentType0(item *pkg.Item, content *NaverWordbookItemContentType0) {
+	if len(content.Entry.Members) > 0 {
+		member := content.Entry.Members[0]
+
+		item.Hangul = member.EntryName
+		item.Hanja = member.OriginLanguage
+
+		if len(member.Prons) > 0 {
+			item.Pronunciation = member.Prons[0].PronSymbol
+		}
+	}
+
+	if len(content.Entry.Means) > 0 {
+		mean := content.Entry.Means[0]
+
+		item.Def = pkg.Translation{
+			English: mean.ShowMean,
+		}
+
+		for _, example := range mean.Examples {
+			handleExample(item, example)
+		}
+	}
+}
+
+func handleContentType1(item *pkg.Item, content *NaverWordbookItemContentType1) {
+	handleExample(item, content.Example)
+}
+
+func handleExample(item *pkg.Item, example NaverWordbookExample) {
+	var englishExample string
+	var koreanExample string
+
+	switch example.Language {
+	case "en":
+		englishExample = example.ShowExample
+		koreanExample = findTranslations(example.Translations, "ko")
+	case "ko":
+		koreanExample = example.ShowExample
+		englishExample = findTranslations(example.Translations, "en")
+	}
+
+	item.Examples = append(item.Examples, pkg.Translation{
+		Korean:  koreanExample,
+		English: englishExample,
+	})
+}
+
+func findTranslations(translations []NaverWordbookTranslation, language string) string {
+	for _, translation := range translations {
+		if translation.Language == language {
+			return translation.ShowTranslation
+		}
+	}
+	return ""
 }
 
 type NaverWordbookPage struct {
@@ -104,7 +145,7 @@ type NaverWordbookPage struct {
 	} `json:"data"`
 }
 
-type NaverWordbookItemContent struct {
+type NaverWordbookItemContentType0 struct {
 	Entry struct {
 		EntryID           string `json:"entry_id"`
 		Service           string `json:"service"`
@@ -146,23 +187,33 @@ type NaverWordbookItemContent struct {
 			Language        string `json:"language"`
 			DescriptionJSON struct {
 			} `json:"description_json"`
-			MeanType  string      `json:"mean_type"`
-			MeanLevel int         `json:"mean_level"`
-			MeanSeq   interface{} `json:"mean_seq"`
-			Examples  []struct {
-				ExampleID       string `json:"example_id"`
-				ShowExample     string `json:"show_example"`
-				Language        string `json:"language"`
-				ExampleType     string `json:"example_type"`
-				DictCid         string `json:"dict_cid"`
-				ExamplePron     string `json:"example_pron"`
-				ExamplePronFile string `json:"example_pron_file"`
-				Translations    []struct {
-					Language        string `json:"language"`
-					TranslationID   string `json:"translation_id"`
-					ShowTranslation string `json:"show_translation"`
-				} `json:"translations"`
-			} `json:"examples"`
+			MeanType  string                 `json:"mean_type"`
+			MeanLevel int                    `json:"mean_level"`
+			MeanSeq   interface{}            `json:"mean_seq"`
+			Examples  []NaverWordbookExample `json:"examples"`
 		} `json:"means"`
 	} `json:"entry"`
+}
+
+type NaverWordbookItemContentType1 struct {
+	Example NaverWordbookExample `json:"examples"`
+}
+
+type NaverWordbookExample struct {
+	ExampleID       string                     `json:"example_id"`
+	ShowExample     string                     `json:"show_example"`
+	Language        string                     `json:"language"`
+	ExampleType     string                     `json:"example_type"`
+	DictCid         string                     `json:"dict_cid"`
+	DictType        string                     `json:"dict_type"`
+	ExampleSource   string                     `json:"example_source"`
+	ExamplePron     string                     `json:"example_pron"`
+	ExamplePronFile string                     `json:"example_pron_file"`
+	Translations    []NaverWordbookTranslation `json:"translations"`
+}
+
+type NaverWordbookTranslation struct {
+	Language        string `json:"language"`
+	TranslationID   string `json:"translation_id"`
+	ShowTranslation string `json:"show_translation"`
 }
