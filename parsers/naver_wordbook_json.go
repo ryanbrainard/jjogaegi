@@ -16,6 +16,12 @@ func ParseNaverWordbookJSON(ctx context.Context, r io.Reader, items chan<- *pkg.
 	}
 
 	for _, mitem := range page.Data.MItems {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		if mitem.ContentType != 0 {
 			log.Printf("unknown content type=%d name=%s", mitem.ContentType, mitem.Name)
 			continue
