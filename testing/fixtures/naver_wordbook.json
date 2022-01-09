@@ -6,8 +6,23 @@
   "data": {
     "over_last_page": false,
     "next_cursor": "AoJ17cjHh/4CPwEwYjE3Y2U5NmVhNTQ4NTU2YzFlMDE1OTIyYWM5N2VmZQ==",
-    "m_total": 4,
+    "m_total": 5,
     "m_items": [
+      {
+        "id": "e05043a96dfd8279ffd92dad96497b3d",
+        "entryId": "3c174668f4e328ba38bbf09e3e454f0b",
+        "wordbookId": "a41dd7534bd04c02b50942f6fa935f51",
+        "service": "enkodict",
+        "dicType": "enko",
+        "name": "siberian onion",
+        "contentType": 0,
+        "saveType": "basic",
+        "sourceType": "user",
+        "content": "{\"entry\":{\"entry_id\":\"3c174668f4e328ba38bbf09e3e454f0b\",\"service\":\"endict\",\"dict_type\":\"enko\",\"dict_cid\":\"\",\"source_name\":\"오픈사전\",\"source_type\":\"user\",\"language\":\"en\",\"members\":[{\"member_id\":\"\",\"entry_name\":\"siberian onion\",\"super_script\":\"0\",\"entry_importance\":\"0\",\"origin_language\":\"\",\"prons\":[]}],\"means\":[{\"mean_id\":\"60180132127f4f9ab493b82f9f2f0800\",\"part_id\":\"\",\"part_code\":\"\",\"part_name\":\"\",\"show_mean\":\"명이나물\",\"language\":\"ko\",\"description_json\":{},\"mean_type\":\"\",\"mean_level\":0,\"mean_seq\":1,\"examples\":[]}]}}",
+        "memo": null,
+        "createDate": 1641691909178,
+        "read": false
+      },
       {
         "id": "e5b66436328e54e7fe0bd488fb6aea43",
         "entryId": "4f77177535f04442814a226f289ffef8",

@@ -62,27 +62,40 @@ func ParseNaverWordbookJSON(ctx context.Context, r io.Reader, items chan<- *pkg.
 }
 
 func handleContentType0(item *pkg.Item, content *NaverWordbookItemContentType0) {
-	if len(content.Entry.Members) > 0 {
-		member := content.Entry.Members[0]
-
-		item.Hangul = member.EntryName
-		item.Hanja = member.OriginLanguage
-
-		if len(member.Prons) > 0 {
-			item.Pronunciation = member.Prons[0].PronSymbol
+	switch content.Entry.Language {
+	case "en":
+		if len(content.Entry.Members) > 0 {
+			item.Def = pkg.Translation{
+				English: content.Entry.Members[0].EntryName,
+			}
 		}
+
+		if len(content.Entry.Means) > 0 {
+			item.Hangul = content.Entry.Means[0].ShowMean
+		}
+	case "ko":
+		if len(content.Entry.Members) > 0 {
+			member := content.Entry.Members[0]
+
+			item.Hangul = member.EntryName
+			item.Hanja = member.OriginLanguage
+
+			if len(member.Prons) > 0 {
+				item.Pronunciation = member.Prons[0].PronSymbol
+			}
+		}
+
+		if len(content.Entry.Means) > 0 {
+			item.Def = pkg.Translation{
+				English: content.Entry.Means[0].ShowMean,
+			}
+		}
+	default:
+		panic("unknown language:" + content.Entry.Language)
 	}
 
-	if len(content.Entry.Means) > 0 {
-		mean := content.Entry.Means[0]
-
-		item.Def = pkg.Translation{
-			English: mean.ShowMean,
-		}
-
-		for _, example := range mean.Examples {
-			handleExample(item, example)
-		}
+	for _, example := range content.Entry.Means[0].Examples {
+		handleExample(item, example)
 	}
 }
 
@@ -101,6 +114,8 @@ func handleExample(item *pkg.Item, example NaverWordbookExample) {
 	case "ko":
 		koreanExample = example.ShowExample
 		englishExample = findTranslations(example.Translations, "en")
+	default:
+		panic("unknown language: " + example.Language)
 	}
 
 	item.Examples = append(item.Examples, pkg.Translation{
